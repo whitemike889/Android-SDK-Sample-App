@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="@dimen/twenty"
-    android:id="@+id/enterCardDetailsLayout">
+    android:layout_margin="@dimen/twenty">
 
-    <ListView
-        android:id="@+id/netBankingListView"
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:id="@+id/clickButton"
+        android:text="Using SDK UI"/>
 
 </LinearLayout>

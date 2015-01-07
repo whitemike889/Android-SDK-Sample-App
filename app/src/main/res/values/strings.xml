@@ -11,5 +11,6 @@
     <string name="store_card_check">Do you want to store this card</string>
     <string name="card_name">Card Name</string>
     <string name="pay_now">Pay Now</string>
+    <string name="title_activity_credit_card_fragment">CreditCardFragmentActivity</string>
 
 </resources>
