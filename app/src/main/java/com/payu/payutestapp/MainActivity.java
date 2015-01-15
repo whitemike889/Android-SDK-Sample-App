@@ -19,12 +19,12 @@ public class MainActivity extends ActionBarActivity {
     private String txnid = "myTxn123";
     private String surl = "http://www.payu.in";
     private String productinfo = "myproduct";
-    private String key = "smsplus";
-    private String salt = "1b1b0";
+    private String key = "yourkey";
+    private String salt = "yoursalt";
     private String firstname = "";
     private String email = "";
 
-    private String ccnum = "5326760120826933";
+    private String ccnum = "5123456789012346";
     private String ccexpmon = "5";
     private String ccexpyr = "2020";
     private String ccvv = "123";
