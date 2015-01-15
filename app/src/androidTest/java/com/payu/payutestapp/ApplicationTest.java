@@ -1,4 +1,4 @@
-package com.payu.sample;
+package com.payu.payutestapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

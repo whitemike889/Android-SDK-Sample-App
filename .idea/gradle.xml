@@ -9,7 +9,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/CustomBrowser" />
-            <option value="$PROJECT_DIR$/PayU" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
