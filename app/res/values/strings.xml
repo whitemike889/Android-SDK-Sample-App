@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Payu Test App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="offer_key">AndroidKitOffer@3974</string>
+    <string name="title_activity_fragments">FragmentsActivity</string>
+    <string name="title_activity_fragments_container">FragmentsContainerActivity</string>
+
+</resources>
