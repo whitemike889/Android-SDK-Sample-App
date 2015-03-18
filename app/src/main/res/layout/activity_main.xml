@@ -1,104 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="@dimen/twenty"
-    android:id="@+id/enterCardDetailsLayout">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/enterCardDetailsTextView"
-        android:layout_marginBottom="@dimen/fifteen"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cardNumberEditText"
-        android:hint="@string/card_number"
-        android:background="@drawable/box"
-        android:inputType="number"
-        android:maxLength="19"
-        android:layout_marginBottom="@dimen/one"
-        android:padding="3dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/nameOnCardEditText"
-        android:hint="@string/name_on_card"
-        android:background="@drawable/box"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
-        android:layout_marginBottom="@dimen/one"
-        android:padding="@dimen/three"/>
+    tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/params"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/expiryCvvLinearLayout">
+        android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/box"
-            android:id="@+id/cvvEditText"
-            android:hint="CVV"
-            android:layout_marginBottom="@dimen/one"
-            android:padding="@dimen/three"
-            android:inputType="date" />
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/expiryMonth"
-            android:layout_gravity="center"
-            android:hint="expiryMonth"
-            android:background="@drawable/box"
-            android:inputType="number"
-            android:maxLength="2"
-            android:layout_marginBottom="@dimen/one"
-            android:padding="@dimen/three"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="amount"
+                android:enabled="false"
+                android:layout_weight="1" />
 
-        <EditText
-            android:layout_width="match_parent"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Value"
+                android:text="10"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="surl"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Value"
+                android:text="https://dl.dropboxusercontent.com/s/dtnvwz5p4uymjvg/success.html"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="productinfo"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Value"
+                android:text="myprod"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="txnid"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/txn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Value"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="user_credentials"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="some:some"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/expiryYear"
-            android:layout_gravity="center"
-            android:hint="expiryYear"
-            android:background="@drawable/box"
-            android:inputType="number"
-            android:maxLength="4"
-            android:layout_marginBottom="@dimen/one"
-            android:padding="@dimen/three"/>
+            android:text="Add Parameter" />
+
+        <Button
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done" />
 
     </LinearLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/errorMessage"
-        android:text="It seems your bank is down. "
-        android:visibility="gone"
-        android:textColor="@color/errorRed"/>
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/makePayment"
-        android:text="@string/pay_now"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@drawable/button"
-        android:layout_marginTop="@dimen/ten"
-        android:layout_marginLeft="@dimen/twenty"
-        android:layout_marginRight="@dimen/twenty"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/ten"
-        android:paddingBottom="@dimen/ten"/>
-</LinearLayout>
+</ScrollView>
