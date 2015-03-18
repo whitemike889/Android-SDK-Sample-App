@@ -77,25 +77,15 @@
 
     </LinearLayout>
 
-<!--
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/storeCardCheckBox"
-        android:text="@string/store_card_check"
-        android:visibility="gone"/>
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardNameEditText"
-        android:hint="@string/card_name"
-        android:background="@drawable/box"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
+        android:id="@+id/errorMessage"
+        android:text="It seems your bank is down. "
         android:visibility="gone"
-        android:layout_marginBottom="@dimen/one"
-        android:padding="@dimen/three"/>
--->
+        android:textColor="@color/errorRed"/>
+
 
     <Button
         android:layout_width="match_parent"

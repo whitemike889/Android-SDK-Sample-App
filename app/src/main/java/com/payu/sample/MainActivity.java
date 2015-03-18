@@ -4,21 +4,34 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.payu.sdk.Constants;
+import com.payu.sdk.GetResponseTask;
 import com.payu.sdk.Params;
 import com.payu.sdk.PayU;
 import com.payu.sdk.Payment;
+import com.payu.sdk.PaymentListener;
 import com.payu.sdk.ProcessPaymentActivity;
 import com.payu.sdk.exceptions.HashException;
 import com.payu.sdk.exceptions.MissingParameterException;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
 
-public class MainActivity extends ActionBarActivity {
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+
+
+public class MainActivity extends ActionBarActivity implements PaymentListener{
 
     String cardNumber;
     String expiryMonth;
@@ -33,9 +46,29 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(Constants.ENABLE_VAS){
+            if(Constants.ENABLE_VAS && PayU.issuingBankDownBin == null){ // vas has not been called, lets fetch bank down time.
+                HashMap<String, String> varList = new HashMap<String, String>();
+
+                varList.put("var1", "default");
+                varList.put("var2", "default");
+                varList.put("var3", "default");
+
+                List<NameValuePair> postParams = null;
+
+                try {
+                    postParams = PayU.getInstance(this).getParams(Constants.GET_VAS, varList);
+                    GetResponseTask getResponse = new GetResponseTask(MainActivity.this);
+                    getResponse.execute(postParams);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         builder.set(PayU.PRODUCT_INFO, "product");
         builder.set(PayU.AMOUNT, "5.0");
-        builder.set(PayU.TXNID, "mytxn1");
+        builder.set(PayU.TXNID, String.valueOf("Production :" + System.currentTimeMillis()));
         builder.set(PayU.SURL, "http://www.google.com");
         builder.set(PayU.MODE, String.valueOf(PayU.PaymentMode.CC));
 
@@ -86,6 +119,33 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        ((EditText)findViewById(R.id.cardNumberEditText)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() > 7 && PayU.issuingBankDownBin != null && PayU.issuingBankDownBin.has(s.toString().substring(0, 6))){
+                    try {
+                        ((TextView)findViewById(R.id.errorMessage)).setText("We are experiencing high failure rate for " + PayU.issuingBankDownBin.getString(s.toString().substring(0, 6)) + " cards at this time. We recommend you pay using any other means of payment.");
+                        findViewById(R.id.errorMessage).setVisibility(View.VISIBLE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    findViewById(R.id.errorMessage).setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
 
@@ -109,5 +169,15 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPaymentOptionSelected(PayU.PaymentMode paymentMode) {
+
+    }
+
+    @Override
+    public void onGetResponse(String responseMessage) {
+        Toast.makeText(this, responseMessage, Toast.LENGTH_SHORT).show();
     }
 }

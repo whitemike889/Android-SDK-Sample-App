@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('CustomBrowser-release.aar'))
+artifacts.add("default", file('CustomBrowser.aar'))
