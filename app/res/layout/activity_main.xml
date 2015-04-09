@@ -45,7 +45,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Value"
-                android:text="https://dl.dropboxusercontent.com/s/dtnvwz5p4uymjvg/success.html"
+                android:text="http://webapp.bookmycab.com/ab/index.php?r=Order/PaymentSuccess"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="furl"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Value"
+                android:text="http://webapp.bookmycab.com/ab/index.php?r=Order/PaymentFailure"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -64,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Value"
-                android:text="khdfb"
+                android:text="myprod"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -84,6 +103,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Value"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="user_credentials"
+                android:enabled="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ra:ra"
                 android:layout_weight="1" />
         </LinearLayout>
 

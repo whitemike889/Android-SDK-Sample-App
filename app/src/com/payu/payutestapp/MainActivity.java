@@ -1,8 +1,13 @@
-package com.payu.www.payutestapp;
+package com.payu.payutestapp;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,22 +16,45 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.payu.sdk.Constants;
 import com.payu.sdk.PayU;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    Intent intent;
+    ProgressDialog mProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mProgressDialog = new ProgressDialog(MainActivity.this);
+
+
         if(savedInstanceState == null) {
             setContentView(R.layout.activity_main);
         }
-        ((EditText) findViewById(R.id.txn)).setText("" + System.currentTimeMillis());
+
         findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.params);
-                HashMap<String, String> params = new HashMap<String, String>();
+                final HashMap<String, String> params = new HashMap<String, String>();
                 double amount = 10;
                 for (int i = 0; i < linearLayout.getChildCount() - 2; i++) {
                     LinearLayout param = (LinearLayout) linearLayout.getChildAt(i);
@@ -48,17 +76,100 @@ public class MainActivity extends ActionBarActivity {
                     }
                     params.put(((TextView) param.getChildAt(0)).getText().toString(), ((EditText) param.getChildAt(1)).getText().toString());
                 }
+//                String hash = calculateHash(params);
                 params.remove("amount");
-                PayU.getInstance(MainActivity.this).startPaymentProcess(amount, params);
+//                params.put("hash", hash);
+
+                if(!Constants.SDK_HASH_GENERATION){ // cool we gotta fetch hash from the server.
+
+                    mProgressDialog.setCancelable(false);
+                    mProgressDialog.setMessage("Calculating Hash. please wait..");
+                    mProgressDialog.show();
+
+                    final double finalAmount = amount;
+                    new AsyncTask<Void, Void, Void>(){
+                        @Override
+                        protected Void doInBackground(Void... voids){
+                            try {
+                                HttpClient httpclient = new DefaultHttpClient();
+                                HttpPost httppost = new HttpPost(Constants.FETCH_DATA_URL);
+                                List<NameValuePair> postParams = new ArrayList<NameValuePair>(5);
+                                postParams.add(new BasicNameValuePair("command", "mobileHashTestWs"));
+                                postParams.add(new BasicNameValuePair("key", (getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData).getString("payu_merchant_id")));
+                                postParams.add(new BasicNameValuePair("var1", params.get("txnid")));
+                                postParams.add(new BasicNameValuePair("var2", String.valueOf(finalAmount)));
+                                postParams.add(new BasicNameValuePair("var3", params.get("productinfo")));
+                                postParams.add(new BasicNameValuePair("var4", params.get("user_credentials")));
+                                postParams.add(new BasicNameValuePair("hash", "helo"));
+                                httppost.setEntity(new UrlEncodedFormEntity(postParams));
+                                JSONObject response = new JSONObject(EntityUtils.toString(httpclient.execute(httppost).getEntity()));
+
+
+                                // set the hash values here.
+
+                                if(response.has("result") ){
+                                    PayU.merchantCodesHash = response.getJSONObject("result").getString("merchantCodesHash");
+                                    PayU.paymentHash = response.getJSONObject("result").getString("paymentHash");
+                                    PayU.vasHash = response.getJSONObject("result").getString("mobileSdk");
+                                    PayU.ibiboCodeHash = response.getJSONObject("result").getString("detailsForMobileSdk");
+
+                                    if(response.getJSONObject("result").has("deleteHash")){
+                                        PayU.deleteCardHash = response.getJSONObject("result").getString("deleteHash");
+                                        PayU.getUserCardHash = response.getJSONObject("result").getString("getUserCardHash");
+                                        PayU.editUserCardHash = response.getJSONObject("result").getString("editUserCardHash");
+                                        PayU.saveUserCardHash = response.getJSONObject("result").getString("saveUserCardHash");
+                                    }
+
+                                }
+                                mProgressDialog.dismiss();
+
+//                                PayU.getInstance(MainActivity.this).startPaymentProcess(finalAmount, params);
+                                PayU.getInstance(MainActivity.this).startPaymentProcess(finalAmount, params, new PayU.PaymentMode[]{PayU.PaymentMode.CC, PayU.PaymentMode.NB});
+
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                                /*if(mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();*/
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            } catch (ClientProtocolException e) {
+                                e.printStackTrace();
+                                /*if(mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();*/
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                if(mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                /*if(mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();*/
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                                /*if(mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();*/
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                            return null;
+                        }
+                    }.execute();
+                }else{
+                    PayU.getInstance(MainActivity.this).startPaymentProcess(amount, params);
+//                    PayU.getInstance(MainActivity.this).startPaymentProcess(amount, params, new PayU.PaymentMode[]{PayU.PaymentMode.CC, PayU.PaymentMode.NB});
+                }
+
+
+
             }
         });
 
-//        intent =  new Intent(MainActivity.this, PaymentOptionsActivity.class);
-//        params.put(PayU.TXNID, "0nf7" + System.currentTimeMillis());
-//        params.put(PayU.PRODUCT_INFO, "product");
-//        params.put(PayU.SURL, "http://pay4india.com/check.aspx");
-//        params.put(PayU.USER_CREDENTIALS, "smsplus:1msdf");
-//        params.put(PayU.FURL, "http://103.15.179.17/AggregatorResponseHandler/aggresphandler/initPayuTrans/app/initPayuResps");
+        ((EditText) findViewById(R.id.txn)).setText(String.valueOf(System.currentTimeMillis()));
+
+        String version = "version 2.1 sms";
+
+        Toast.makeText(MainActivity.this, Constants.DEBUG ? "Debug build " + version   : "Production build " + version, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, Constants.SDK_HASH_GENERATION ? "SDK is generating Hash " : "SDK fetches hash form API", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -81,91 +192,17 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-//    public void withOutUserDefinedModes(View view) {
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params);
-//    }
-//
-//    public void CcDcNbCash(View view) {
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params, new PayU.PaymentMode[] {PayU.PaymentMode.CC, PayU.PaymentMode.DC, PayU.PaymentMode.NB, PayU.PaymentMode.CASH});
-//    }
-//
-//    public void DcCashNbCc(View view) {
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params, new PayU.PaymentMode[] {PayU.PaymentMode.DC, PayU.PaymentMode.CASH, PayU.PaymentMode.NB, PayU.PaymentMode.CC});
-//    }
-//
-//    public void PayuMoneyStoredCardsCc(View view) {
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params, new PayU.PaymentMode[] {PayU.PaymentMode.PAYU_MONEY, PayU.PaymentMode.STORED_CARDS, PayU.PaymentMode.CC});
-//    }
-//
-//    public void makePaymentUsingCreditCard(View view){
-//        intent = new Intent(this, FragmentsContainerActivity.class);
-//        intent.putExtra("from", "makePaymentUsingCreditCard");
-//        intent.putExtra(PayU.AMOUNT, 100.00);
-//        intent.putExtra(PayU.TXNID, "0nf7" + System.currentTimeMillis());
-//        intent.putExtra(PayU.PRODUCT_INFO, "product");
-//        intent.putExtra(PayU.SURL, "https://dl.dropboxusercontent.com/u/14534468/index.html");
-//        intent.putExtra(PayU.FURL, "https://dl.dropboxusercontent.com/u/14534468/index.html");
-//        startActivity(intent);
-//    }
-//
-//    public void makePaymentUsingStoredCard(View view){
-//        intent = new Intent(this, FragmentsContainerActivity.class);
-//        intent.putExtra("from", "makePaymentUsingStoredCard");
-//        intent.putExtra(PayU.AMOUNT, 100.00);
-//        intent.putExtra(PayU.TXNID, "0nf7" + System.currentTimeMillis());
-//        intent.putExtra(PayU.PRODUCT_INFO, "product");
-//        intent.putExtra(PayU.SURL, "http://fiddle.jshell.net/u7v4Lqzu/show/");
-//        intent.putExtra(PayU.USER_CREDENTIALS, "smsplus:1msdf");
-//        intent.putExtra(PayU.FURL, "https://dl.dropboxusercontent.com/u/14534468/index.html");
-//        startActivity(intent);
-//    }
-//
-//    public void storeCard(View view){
-//        intent = new Intent(this, FragmentsContainerActivity.class);
-//        intent.putExtra("from", "storeCard");
-//        intent.putExtra(PayU.USER_CREDENTIALS, "smsplus:1msdf");
-//        startActivity(intent);
-//    }
-//
-//    public void editCard(View view){
-//        intent = new Intent(this, FragmentsContainerActivity.class);
-//        intent.putExtra("from", "editCard");
-//        intent.putExtra(PayU.USER_CREDENTIALS, "smsplus:1msdf");
-//        startActivity(intent);
-//    }
-//
-//    public void deleteCard(View view){
-//        intent = new Intent(this, FragmentsContainerActivity.class);
-//        intent.putExtra("from", "deleteCard");
-//        intent.putExtra(PayU.USER_CREDENTIALS, "smsplus:1msdf");
-//        startActivity(intent);
-//    }
-//
-//    public void testEnforce(View view){
-//        params.put(PayU.ENFORCE_PAYMETHOD, "creditcard|ICIB|LVRB|TMBB|EMIIC6|EMIIC12|EMIA3|YPAY|DONE|AMON|");
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params);
-//    }
-//
-//    public void dropCategory(View view){
-//        params.put(PayU.DROP_CATEGORY, "CC|MAST, DC|VISA|MAST, NB|LVRB|KRKB|ADBB|TMBB, EMI|EMIIC6|EMIIC12|EMIA3, CASH|AMON");
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params);
-//    }
-//
-//    public void testOffer(View view){
-//        params.put(PayU.OFFER_KEY, "ujjaltest@4240");
-//        PayU.getInstance(MainActivity.this).startPaymentProcess(100, params);
-//    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PayU.RESULT) {
             if(resultCode == RESULT_OK) {
                 //success
-                Toast.makeText(this, "Success" + data.getStringExtra("result"), Toast.LENGTH_LONG).show();
+                if(data != null )
+                    Toast.makeText(this, "Success:  " + data.getStringExtra("result"), Toast.LENGTH_LONG).show();
             }
             if (resultCode == RESULT_CANCELED) {
                 //failed
-                Toast.makeText(this, "Failed" + data.getStringExtra("result"), Toast.LENGTH_LONG).show();
+                if(data != null)
+                    Toast.makeText(this, "Failed:  " + data.getStringExtra("result"), Toast.LENGTH_LONG).show();
             }
         }
     }
