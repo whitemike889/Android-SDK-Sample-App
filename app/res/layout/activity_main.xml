@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Value"
-                android:text="http://webapp.bookmycab.com/ab/index.php?r=Order/PaymentSuccess"
+                android:text="https://dl.dropboxusercontent.com/s/dtnvwz5p4uymjvg/success.html"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Value"
-                android:text="http://webapp.bookmycab.com/ab/index.php?r=Order/PaymentFailure"
+                android:text="https://dl.dropboxusercontent.com/s/z69y7fupciqzr7x/furlWithParams.html"
                 android:layout_weight="1" />
         </LinearLayout>
 
