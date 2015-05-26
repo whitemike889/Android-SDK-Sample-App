@@ -1,6 +1,7 @@
 package com.payu.payutestapp;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -16,15 +17,16 @@ import java.security.NoSuchAlgorithmException;
 public class MainActivity extends ActionBarActivity {
 
     private String amount = "1.0";
-    private String txnid = "myTxn123";
-    private String surl = "http://www.payu.in";
+    private String txnid = "myTxn123"; //Unique transaction ID
+    private String surl = "https://dl.dropboxusercontent.com/s/dtnvwz5p4uymjvg/success.html"; // Add the surl-Success URL here
+    private String furl = "https://dl.dropboxusercontent.com/s/z69y7fupciqzr7x/furlWithParams.html"; //Add the furl-failure URL here
     private String productinfo = "myproduct";
-    private String key = "yourkey";
-    private String salt = "yoursalt";
+    private String key = "smsplus"; // Add the key here
+    private String salt = "1b1b0"; // Add the salt here
     private String firstname = "";
     private String email = "";
+    private String ccnum = "5123456789012346"; // add the card number
 
-    private String ccnum = "5123456789012346";
     private String ccexpmon = "5";
     private String ccexpyr = "2020";
     private String ccvv = "123";
@@ -78,6 +80,29 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onBackPressed(){
+        boolean disableBack = false;
+        try {
+            Bundle bundle = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
+           if(bundle!=null)
+            disableBack = bundle.containsKey("payu_disable_back") && bundle.getBoolean("payu_disable_back");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        if(!disableBack) {
+
+            Intent intent = new Intent();
+            intent.putExtra("result", "");
+            setResult(RESULT_CANCELED, intent);
+            super.onBackPressed();
+        }
+    }
+
     private String getPostData() {
 
         try {
@@ -94,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
                 hexString.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
             }
             postData = "";
-            postData = "pg=" + pg +"&device_type=" + device_type + "&txnid=" + txnid + "&amount=" + amount + "&ccnum=" + ccnum + "&ccvv=" + ccvv + "&ccexpmon=" + ccexpmon + "&bankcode=" + bankcode + "&productinfo=" + productinfo + "&key=" + key + "&ccexpyr=" + ccexpyr + "&ccname=" + ccname + "&surl=" + URLEncoder.encode(surl, "UTF-8") + "&hash=" + hexString.toString();
+            postData = "pg=" + pg +"&device_type=" + device_type + "&txnid=" + txnid + "&amount=" + amount + "&ccnum=" + ccnum + "&ccvv=" + ccvv + "&ccexpmon=" + ccexpmon + "&bankcode=" + bankcode + "&productinfo=" + productinfo + "&key=" + key + "&ccexpyr=" + ccexpyr + "&ccname=" + ccname + "&surl=" + URLEncoder.encode(surl, "UTF-8") + "&hash=" + hexString.toString()+"&furl="+URLEncoder.encode(furl, "UTF-8");
             return postData;
 
         } catch (NoSuchAlgorithmException e) {
