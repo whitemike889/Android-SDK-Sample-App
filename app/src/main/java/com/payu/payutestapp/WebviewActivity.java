@@ -10,16 +10,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
@@ -36,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Set;
 
-public class WebviewActivity extends ActionBarActivity {
+public class WebviewActivity extends FragmentActivity {
 
     private WebView webView;
     private BroadcastReceiver mReceiver = null;
@@ -44,19 +48,52 @@ public class WebviewActivity extends ActionBarActivity {
     private String checkValue;
     private boolean checkProgress;
     private Set<String> set;
+    private int checkForInput;
     private String webviewUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getIntent().getExtras()!=null && getIntent().getExtras().containsKey("postData") && !getIntent().getExtras().getString("postData").contains("pg=NB")) {
+        /*if(getIntent().getExtras()!=null && getIntent().getExtras().containsKey("postData") && !getIntent().getExtras().getString("postData").contains("pg=NB")) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);*/
 
         setContentView(R.layout.activity_webview);
+
+        //Closes the keyboard if opened
+        // use only if keyboard remain opened from last Activity
+        final View activityRootView = findViewById(R.id.r_layout);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    private final int DefaultKeyboardDP = 100;
+                    private final int EstimatedKeyboardDP = DefaultKeyboardDP + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 48 : 0);
+
+                    private final Rect r = new Rect();
+
+                    @Override
+                    public void onGlobalLayout() {
+                        // Convert the dp to pixels.
+                        int estimatedKeyboardHeight = (int) TypedValue
+                                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, EstimatedKeyboardDP, activityRootView.getResources().getDisplayMetrics());
+
+                        // Conclude whether the keyboard is shown or not.
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+                        int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                        boolean isShown = heightDiff >= estimatedKeyboardHeight;
+                        Log.d("isshown==",""+isShown);
+                        if (isShown) {
+                            if(checkForInput==0) {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                                imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+                                checkForInput = 1;
+                            }
+                        }
+
+                    }
+                });
 
         webView = (WebView) findViewById(R.id.webview);
 
@@ -94,6 +131,7 @@ public class WebviewActivity extends ActionBarActivity {
 
                 @Override
                 public void onHelpAvailable() {
+                    checkForInput=1;
                     findViewById(R.id.parent).setVisibility(View.VISIBLE);
                 }
 
@@ -139,9 +177,7 @@ public class WebviewActivity extends ActionBarActivity {
             webView.setWebChromeClient(new PayUWebChromeClient(bank) {
                 public void onProgressChanged(WebView view, int newProgress) {
                     super.onProgressChanged(view, newProgress);
-
                     progressBarVisibilityPayuChrome(View.VISIBLE);
-
                     if(newProgress>=95) {
                         if (checkProgress)
                             progressBarVisibilityPayuChrome(View.GONE);
@@ -181,28 +217,6 @@ public class WebviewActivity extends ActionBarActivity {
         webView.postUrl("https://secure.payu.in/_payment", EncodingUtils.getBytes(getIntent().getExtras().getString("postData"), "base64"));
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_webview, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     public void progressBarVisibilityPayuChrome(int visibility)
     {
         if(getBaseContext()!=null && !isFinishing() ) {
