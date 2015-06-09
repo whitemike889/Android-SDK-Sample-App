@@ -1,0 +1,132 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="30dp"
+
+    tools:context="com.payu.payutestapp.BaseActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/storedCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#368ecd"
+            android:padding="10dp"
+            android:onClick="storedCardPayment"
+            android:text="Stored card"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/creditCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#368ecd"
+            android:padding="10dp"
+            android:onClick="creditCardPayment"
+            android:text="Credit card"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/netBanking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#368ecd"
+            android:layout_centerInParent="true"
+            android:onClick="nbMakePayment"
+            android:padding="10dp"
+            android:text="Net Banking"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/cashCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#368ecd"
+            android:padding="10dp"
+            android:onClick="cashCardMakePayment"
+            android:text="Cash card"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/payumoney"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#368ecd"
+            android:layout_centerInParent="true"
+            android:onClick="payumoneyMakePayment"
+            android:padding="10dp"
+            android:text="Payumoney"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/emiPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#368ecd"
+            android:onClick="emiPayment"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:text="Emi"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/storeUserCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#368ecd"
+            android:onClick="storeUserCard"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:text="Store User card"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+
+</LinearLayout>

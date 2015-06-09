@@ -2,6 +2,7 @@ package com.payu.sdk.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,18 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import com.payu.sdk.Constants;
 import com.payu.sdk.GetResponseTask;
 import com.payu.sdk.PayU;
 import com.payu.sdk.PaymentListener;
 import com.payu.sdk.R;
 import com.payu.sdk.adapters.PaymentModeAdapter;
-
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +30,11 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
     ProgressDialog mProgressDialog;
     PayU.PaymentMode[] paymentOptions;
     private PayU.PaymentMode[] mAvailableOptions;
+
+
+    public PaymentOptionsFragment(){
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,6 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
         mPaymentListener = null;
     }
 
@@ -83,11 +85,12 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mProgressDialog.setMessage(getString(R.string.please_wait));
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
-
+        if(getActivity() != null && !isRemoving() && isAdded()){
+            mProgressDialog.setMessage(getString(R.string.please_wait));
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+        }
 //        PayU.PaymentMode[] paymentOptions;
 
         if (paymentOptions == null) {
@@ -103,7 +106,6 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
                 varList.put(Constants.VAR1, Constants.DEFAULT);
             }else{
                 varList.put(Constants.VAR1, getActivity().getIntent().getExtras().getString("user_credentials"));
-//                varList.put(Constants.VAR1, Constants.DEFAULT);
             }
 
             try {
@@ -127,50 +129,49 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
     }
 
     @Override
-    public void onGetResponse(String responseMessage) {
+    public void onGetResponse(String responseMessage){
         // list of available payment modes for the merchant
 
-        JSONArray availableModes = PayU.availableModes;
+        if(PayU.availableModes != null){  // not ok something went wrong with the api call
+            JSONArray availableModes = PayU.availableModes;
 
-        if (mAvailableOptions != null) {
-            // check all the mAvailableOptions present in availableMode
+            if (mAvailableOptions != null) {
+                List<String> availableModesList = new ArrayList<String>();
+                List<String> availableOptionsList = new ArrayList<String>();
+                try {
+                    for (int i = 0; i < availableModes.length(); i++)
+                        availableModesList.add(availableModes.getString(i));
+                    for (int i = 0; i < mAvailableOptions.length; i++)
+                        availableOptionsList.add(mAvailableOptions[i].toString());
 
-            // availableModes = cc dc cash nb , mavialbelopt cc nb payu
+                    availableModesList.toString();
 
-            List<String> availableModesList = new ArrayList<String>();
-            List<String> availableOptionsList = new ArrayList<String>();
-            try {
-                for (int i = 0; i < availableModes.length(); i++)
-                    availableModesList.add(availableModes.getString(i));
-                for (int i = 0; i < mAvailableOptions.length; i++)
-                    availableOptionsList.add(mAvailableOptions[i].toString());
+                    availableOptionsList.retainAll(availableModesList);
 
-                availableModesList.toString();
+                    availableOptionsList.toString();
 
-                availableOptionsList.retainAll(availableModesList);
+                    paymentOptions = new PayU.PaymentMode[availableOptionsList.size()];
+                    for (int i = 0; i < availableOptionsList.size(); i++) {
+                        paymentOptions[i] = PayU.PaymentMode.valueOf(availableOptionsList.get(i));
+                    }
 
-                availableOptionsList.toString();
 
-                paymentOptions = new PayU.PaymentMode[availableOptionsList.size()];
-                for (int i = 0; i < availableOptionsList.size(); i++) {
-                    paymentOptions[i] = PayU.PaymentMode.valueOf(availableOptionsList.get(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+                PayU.paymentOptions = paymentOptions;
 
-            PayU.paymentOptions = paymentOptions;
-
-            setAvailableModes(null, paymentOptions);
-        } else
-            setAvailableModes(availableModes, null);
+                setAvailableModes(null, paymentOptions);
+            } else
+                setAvailableModes(availableModes, null);
+        }else{
+            Intent intent = new Intent();
+            intent.putExtra("result", responseMessage);
+            getActivity().setResult(Activity.RESULT_CANCELED, intent);
+            getActivity().finish();
+        }
     }
-
-    /*@Override
-    public void onGetStoreCardDetails(JSONArray response) {
-
-    }*/
 
     private void setAvailableModes(JSONArray availableModes, PayU.PaymentMode[] availableOptions) {
         PaymentModeAdapter adapter;
@@ -193,16 +194,19 @@ public class PaymentOptionsFragment extends Fragment implements PaymentListener 
             adapter = new PaymentModeAdapter(getActivity(), paymentOptions);
         }
 
-        ListView listView = (ListView) getActivity().findViewById(R.id.paymentOptionsListView);
-        listView.setAdapter(adapter);
+        if(getActivity() != null){
+            ListView listView = (ListView) getActivity().findViewById(R.id.paymentOptionsListView);
+            listView.setAdapter(adapter);
 
-        mProgressDialog.dismiss();
+            mProgressDialog.dismiss();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mPaymentListener.onPaymentOptionSelected((PayU.PaymentMode) adapterView.getAdapter().getItem(i));
-            }
-        });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    mPaymentListener.onPaymentOptionSelected((PayU.PaymentMode) adapterView.getAdapter().getItem(i));
+                }
+            });
+        }
+
     }
 }

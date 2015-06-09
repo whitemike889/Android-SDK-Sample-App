@@ -120,7 +120,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="yourKey:userId"
+                android:text="0MQaQP:test"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -135,6 +135,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Done" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="next"
+            android:text="Next"/>
 
     </LinearLayout>
 

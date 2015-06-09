@@ -7,5 +7,13 @@
     <string name="offer_key">AndroidKitOffer@3974</string>
     <string name="title_activity_fragments">FragmentsActivity</string>
     <string name="title_activity_fragments_container">FragmentsContainerActivity</string>
+    <string name="title_activity_container">ContainerActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_credit_card">CreditCardActivity</string>
+    <string name="title_activity_nb">NbActivity</string>
+    <string name="title_activity_cash">CashActivity</string>
+    <string name="title_activity_stroed_card">StroedCardActivity</string>
+    <string name="title_activity_emi">EmiActivity</string>
+    <string name="title_activity_store_user_card">StoreUserCardActivity</string>
 
 </resources>
