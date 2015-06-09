@@ -52,19 +52,17 @@ public class WebviewActivity extends FragmentActivity {
     private String webviewUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        /*if(getIntent().getExtras()!=null && getIntent().getExtras().containsKey("postData") && !getIntent().getExtras().getString("postData").contains("pg=NB")) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+        if(savedInstanceState!=null){
+            super.onCreate(null);
+            finish();//call activity u want to as activity is being destroyed it is restarted
+        }else {
+            super.onCreate(savedInstanceState);
         }
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);*/
 
         setContentView(R.layout.activity_webview);
 
-        //Closes the keyboard if opened
-        // use only if keyboard remain opened from last Activity
+
         final View activityRootView = findViewById(R.id.r_layout);
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -135,25 +133,11 @@ public class WebviewActivity extends FragmentActivity {
                     findViewById(R.id.parent).setVisibility(View.VISIBLE);
                 }
 
-                @Override
-                public void updateSet(Set<String> urlSet,String check){
-                    if (urlSet != null && urlSet.size() > 0 && webviewUrl!=null && !urlSet.contains(webviewUrl)) {
-                        progressBarVisibilityPayuChrome(View.GONE);
-                    }
-
-                    set=urlSet;
-                    checkValue=check;
-                }
-
-                @Override
-                public void communicationError(){
-                    progressBarVisibilityPayuChrome(View.GONE);
-                }
-
             };
             Bundle args = new Bundle();
             args.putInt("webView", R.id.webview);
             args.putInt("tranLayout",R.id.trans_overlay);
+            args.putInt("mainLayout", R.id.r_layout);
             String [] list =  getIntent().getExtras().getString("postData").split("&");
             HashMap<String , String> intentMap = new HashMap<String , String>();
             for (String item : list) {
@@ -175,14 +159,7 @@ public class WebviewActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().setCustomAnimations(R.animator.fade_in,R.animator.face_out).add(R.id.parent, bank).commit();
 
             webView.setWebChromeClient(new PayUWebChromeClient(bank) {
-                public void onProgressChanged(WebView view, int newProgress) {
-                    super.onProgressChanged(view, newProgress);
-                    progressBarVisibilityPayuChrome(View.VISIBLE);
-                    if(newProgress>=95) {
-                        if (checkProgress)
-                            progressBarVisibilityPayuChrome(View.GONE);
-                    }
-                }
+
             });
 
             webView.setWebViewClient(new WebViewClient() {
@@ -212,72 +189,10 @@ public class WebviewActivity extends FragmentActivity {
             e.printStackTrace();
         }
 
+        webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.postUrl("https://secure.payu.in/_payment", EncodingUtils.getBytes(getIntent().getExtras().getString("postData"), "base64"));
-    }
-
-    public void progressBarVisibilityPayuChrome(int visibility)
-    {
-        if(getBaseContext()!=null && !isFinishing() ) {
-            if (visibility == View.GONE || visibility == View.INVISIBLE) {
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-            } else if (progressDialog == null) {
-                progressDialog = showProgress(this);
-            }
-        }
-    }
-    public ProgressDialog showProgress(Context context) {
-        if (getBaseContext() != null && !isFinishing()) {
-            LayoutInflater mInflater = LayoutInflater.from(context);
-            final Drawable[] drawables = {getResources().getDrawable(R.drawable.l_icon1),
-                    getResources().getDrawable(R.drawable.l_icon2),
-                    getResources().getDrawable(R.drawable.l_icon3),
-                    getResources().getDrawable(R.drawable.l_icon4)
-            };
-
-            View layout = mInflater.inflate(R.layout.prog_dialog, null);
-            final ImageView imageView;
-            imageView = (ImageView) layout.findViewById(R.id.imageView);
-            ProgressDialog progDialog = new ProgressDialog(context, R.style.ProgressDialog);
-
-            final Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                int i = -1;
-
-                @Override
-                synchronized public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            i++;
-                            if (i >= drawables.length) {
-                                i = 0;
-                            }
-                            imageView.setImageBitmap(null);
-                            imageView.destroyDrawingCache();
-                            imageView.refreshDrawableState();
-                            imageView.setImageDrawable(drawables[i]);
-                        }
-                    });
-
-                }
-            }, 0, 500);
-
-            progDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    timer.cancel();
-                }
-            });
-            progDialog.show();
-            progDialog.setContentView(layout);
-            progDialog.setCancelable(true);
-            progDialog.setCanceledOnTouchOutside(false);
-            return progDialog;
-        }
-        return null;
     }
 
     @Override
