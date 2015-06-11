@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Android-SDK-Sample-App.iml" filepath="$PROJECT_DIR$/Android-SDK-Sample-App.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CustomBrowser/CustomBrowser.iml" filepath="$PROJECT_DIR$/CustomBrowser/CustomBrowser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CustomBrowser-release/CustomBrowser-release.iml" filepath="$PROJECT_DIR$/CustomBrowser-release/CustomBrowser-release.iml" />
       <module fileurl="file://$PROJECT_DIR$/PayU/PayU.iml" filepath="$PROJECT_DIR$/PayU/PayU.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
