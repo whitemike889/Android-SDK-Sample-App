@@ -20,13 +20,15 @@ public class Payment extends HashMap<String, String> {
         String value = super.get(key);
         if (value == null) {
             value = "";
+        } else {
+            return value;
         }
-        try {
-            return URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return "";
+        // try {
+        //     return URLEncoder.encode(value, "UTF-8");
+        // } catch (UnsupportedEncodingException e) {
+        //     e.printStackTrace();
+        // }
+        // return "";
     }
 
     public void put(String key, double value) {
