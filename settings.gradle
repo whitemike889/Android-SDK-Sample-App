@@ -1,1 +1,1 @@
-include ':app', ':PayU', ':CustomBrowser-release'
+include ':app', ':sdkui', ':PayU-release', ':CustomBrowser-release'
