@@ -131,5 +131,13 @@
                 android:layout_height="wrap_content"
                 android:text="Emi Pay Now" />
         </LinearLayout>
+
+        <include
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/footer_image"
+            android:layout_alignParentBottom="true"/>
     </LinearLayout>
+
 </LinearLayout>

@@ -28,19 +28,21 @@ import org.apache.http.util.EncodingUtils;
 
 public class PaymentsActivity extends AppCompatActivity{
 
+
     Bundle bundle;
-    WebView mWebView;
     String url;
     boolean cancelTransaction = false;
-
     PayuConfig payuConfig;
     private BroadcastReceiver mReceiver = null;
-
+    private String UTF = "UTF-8";
+    private  boolean viewPortWide = false;
+    private WebView mWebView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**
          * when the device runing out of memory we dont want the user to restart the payment. rather we close it and redirect them to previous activity.
          */
+
         if(savedInstanceState!=null){
             super.onCreate(null);
             finish();//call activity u want to as activity is being destroyed it is restarted
@@ -48,6 +50,7 @@ public class PaymentsActivity extends AppCompatActivity{
             super.onCreate(savedInstanceState);
         }
         setContentView(R.layout.activity_payments);
+        mWebView = (WebView) findViewById(R.id.webview);
 
         //region Replace the whole code by the commented code if you are NOT using custombrowser
         // Replace the whole code by the commented code if you are NOT using custombrowser.
@@ -73,9 +76,37 @@ public class PaymentsActivity extends AppCompatActivity{
 
         bundle = getIntent().getExtras();
         payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
+        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
 
-        mWebView = (WebView) findViewById(R.id.webview);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // mWebView = (WebView) findViewById(R.id.webview);
+        // mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }*/
+
+        String [] list =  payuConfig.getData().split("&");
+        String txnId = null;
+        String merchantKey = null;
+        for (String item : list) {
+            String[] items = item.split("=");
+            if(items.length >= 2) {
+                String id = items[0];
+                switch (id) {
+                    case "txnid":
+                        txnId = items[1];
+                        break;
+                    case "key":
+                        merchantKey = items[1];
+                        break;
+                    case "pg":
+                        if (items[1].contentEquals("NB")) {
+                            viewPortWide = true;
+                        }
+                        break;
+                }
+            }
+        }
 
         try {
             Class.forName("com.payu.custombrowser.Bank");
@@ -112,33 +143,23 @@ public class PaymentsActivity extends AppCompatActivity{
                 }
             };
             Bundle args = new Bundle();
-            args.putInt("webView", R.id.webview);
-            args.putInt("tranLayout",R.id.trans_overlay);
-            args.putInt("mainLayout",R.id.r_layout);
+            args.putInt(Bank.WEBVIEW, R.id.webview);
+            args.putInt(Bank.TRANS_LAYOUT, R.id.trans_overlay);
+            args.putInt(Bank.MAIN_LAYOUT, R.id.r_layout);
+            args.putBoolean(Bank.VIEWPORTWIDE, viewPortWide);
 
-            String [] list =  payuConfig.getData().split("&");
-            String txnId = null;
-            String merchantKey = null;
-            for (String item : list) {
-                if(item.contains("txnid")){
-                    txnId = item.split("=")[1];
-                }else if (item.contains("key")){
-                    merchantKey = item.split("=")[1];
-                }
-                if (null != txnId && null != merchantKey) break;
-            }
             args.putString(Bank.TXN_ID, txnId == null ? String.valueOf(System.currentTimeMillis()) : txnId);
-            args.putString("merchant_key", null != merchantKey ? merchantKey : "could not find");
+            args.putString(Bank.MERCHANT_KEY, null != merchantKey ? merchantKey : "could not find");
             PayUSdkDetails payUSdkDetails = new PayUSdkDetails();
-            args.putString("sdk_details", "VersionCode: " + payUSdkDetails.getSdkVersionCode() + ", VersionName: " + payUSdkDetails.getSdkVersionName());
+            args.putString(Bank.SDK_DETAILS, payUSdkDetails.getSdkVersionName());
             if(getIntent().getExtras().containsKey("showCustom")) {
-                args.putBoolean("showCustom", getIntent().getBooleanExtra("showCustom", false));
+                args.putBoolean(Bank.SHOW_CUSTOMROWSER, getIntent().getBooleanExtra("showCustom", false));
             }
-            args.putBoolean("showCustom", true);
+            args.putBoolean(Bank.SHOW_CUSTOMROWSER, true);
             bank.setArguments(args);
             findViewById(R.id.parent).bringToFront();
             try {
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.face_out).add(R.id.parent, bank).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.cb_face_out).add(R.id.parent, bank).commit();
             }catch(Exception e)
             {
                 e.printStackTrace();
@@ -146,9 +167,19 @@ public class PaymentsActivity extends AppCompatActivity{
             }
             mWebView.setWebChromeClient(new PayUWebChromeClient(bank));
             mWebView.setWebViewClient(new PayUWebViewClient(bank));
+            mWebView.postUrl(url, payuConfig.getData().getBytes());
         } catch (ClassNotFoundException e) {
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.getSettings().setSupportMultipleWindows(true);
             mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            // Setting view port for NB
+            if(viewPortWide){
+                mWebView.getSettings().setUseWideViewPort(viewPortWide);
+            }
+            // Hiding the overlay
+            View transOverlay = findViewById(R.id.trans_overlay);
+            transOverlay.setVisibility(View.GONE);
+
             mWebView.addJavascriptInterface(new Object() {
                 @JavascriptInterface
                 public void onSuccess() {
@@ -188,17 +219,17 @@ public class PaymentsActivity extends AppCompatActivity{
                 }
             }, "PayU");
 
-            mWebView.setWebChromeClient(new WebChromeClient() {
-
-            });
+            mWebView.setWebChromeClient(new WebChromeClient() );
             mWebView.setWebViewClient(new WebViewClient());
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setDomStorageEnabled(true);
+            mWebView.postUrl(url, payuConfig.getData().getBytes());
         }
 
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        /*mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
-        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
-        mWebView.postUrl(url, EncodingUtils.getBytes(payuConfig.getData(), "base64"));
-
+        // url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
+        mWebView.postUrl(url, EncodingUtils.getBytes(payuConfig.getData(), "base64"));*/
     }
 
     @Override
@@ -252,5 +283,12 @@ public class PaymentsActivity extends AppCompatActivity{
             }
         });
         alertDialog.show();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        // Log.v("#### PAYU", "PAYMENTSACTIVITY: ondestroy");
+        /*Debug.stopMethodTracing();*/
     }
 }
