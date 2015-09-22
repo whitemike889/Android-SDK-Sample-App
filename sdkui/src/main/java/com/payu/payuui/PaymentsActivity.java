@@ -40,6 +40,7 @@ public class PaymentsActivity extends AppCompatActivity{
     private BroadcastReceiver mReceiver = null;
     private String UTF = "UTF-8";
     private  boolean viewPortWide = false;
+    private WebView mWebView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**
@@ -53,7 +54,7 @@ public class PaymentsActivity extends AppCompatActivity{
             super.onCreate(savedInstanceState);
         }
         setContentView(R.layout.activity_payments);
-
+        mWebView = (WebView) findViewById(R.id.webview);
 
         //region Replace the whole code by the commented code if you are NOT using custombrowser
         // Replace the whole code by the commented code if you are NOT using custombrowser.
@@ -144,22 +145,11 @@ public class PaymentsActivity extends AppCompatActivity{
                 public void onHelpAvailable() {
                     findViewById(R.id.parent).setVisibility(View.VISIBLE);
                 }
-
-                @Override
-                public void setWebViewProperty() {
-                    this.getWebView().setWebChromeClient(new PayUWebChromeClient(this) {
-                    });
-                   this.getWebView().setWebViewClient(new PayUWebViewClient(this));
-                }
-
-
             };
             Bundle args = new Bundle();
             args.putInt(Bank.WEBVIEW, R.id.webview);
             args.putInt(Bank.TRANS_LAYOUT, R.id.trans_overlay);
             args.putInt(Bank.MAIN_LAYOUT, R.id.r_layout);
-            args.putString(Bank.INITURL, url);
-            args.putString(Bank.DATA, payuConfig.getData());
             args.putBoolean(Bank.VIEWPORTWIDE, viewPortWide);
 
             args.putString(Bank.TXN_ID, txnId == null ? String.valueOf(System.currentTimeMillis()) : txnId);
@@ -173,17 +163,16 @@ public class PaymentsActivity extends AppCompatActivity{
             bank.setArguments(args);
             findViewById(R.id.parent).bringToFront();
             try {
-               getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.cb_face_out).add(R.id.parent, bank).commit();
-
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.cb_face_out).add(R.id.parent, bank).commit();
             }catch(Exception e)
             {
                 e.printStackTrace();
                 finish();
             }
-
-
+            mWebView.setWebChromeClient(new PayUWebChromeClient(bank));
+            mWebView.setWebViewClient(new PayUWebViewClient(bank));
+            mWebView.postUrl(url, payuConfig.getData().getBytes());
         } catch (ClassNotFoundException e) {
-            WebView mWebView = (WebView) findViewById(R.id.webview);
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.getSettings().setSupportMultipleWindows(true);
             mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -234,8 +223,8 @@ public class PaymentsActivity extends AppCompatActivity{
                 }
             }, "PayU");
 
-            mWebView.setWebChromeClient(new PayUWebChromeClient(null) );
-            mWebView.setWebViewClient(new PayUWebViewClient(null));
+            mWebView.setWebChromeClient(new WebChromeClient() );
+            mWebView.setWebViewClient(new WebViewClient());
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDomStorageEnabled(true);
             mWebView.postUrl(url, payuConfig.getData().getBytes());

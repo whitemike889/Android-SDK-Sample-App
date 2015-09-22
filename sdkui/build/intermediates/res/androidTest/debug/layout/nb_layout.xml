@@ -38,4 +38,4 @@
             android:layout_alignParentRight="true"
             android:id="@+id/native_button">
         </Button>
-</RelativeLayout><!-- From: file:/home/minie/AndroidStudioProjects/optimised/gitlatestcustombrowser/android-sdk-test-project/CustomBrowser/res/layout/nb_layout.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/layout/nb_layout.xml -->
+</RelativeLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/layout/nb_layout.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/layout/nb_layout.xml -->
