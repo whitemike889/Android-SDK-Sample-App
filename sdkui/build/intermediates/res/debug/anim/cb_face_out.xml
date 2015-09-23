@@ -8,4 +8,4 @@
         android:toAlpha="0.1"
         android:interpolator="@android:anim/accelerate_interpolator"
         android:duration="500"/>
-</set><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/anim/cb_face_out.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/anim/cb_face_out.xml -->
+</set><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/payu-custom-browser/res/anim/cb_face_out.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/github/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.payu.custombrowser/payu-custom-browser/5.2.1/res/anim/cb_face_out.xml -->

@@ -21,6 +21,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.0'
-    compile project(':CustomBrowser-release')
     compile project(':PayU-release')
+    compile 'com.payu.custombrowser:payu-custom-browser:5.2.1'
 }

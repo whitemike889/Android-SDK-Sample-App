@@ -12,4 +12,4 @@
                 android:top="5dp"/>
         </shape>
     </item>
-</layer-list><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/res/drawable/error_box.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/drawable/error_box.xml -->
+</layer-list><!-- From: file:/Users/franklin/AndroidStudioProjects/github/Android-SDK-Sample-App/sdkui/src/main/res/drawable/error_box.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/github/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/drawable/error_box.xml -->
