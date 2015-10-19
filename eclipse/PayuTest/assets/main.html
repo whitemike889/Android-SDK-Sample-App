@@ -1,0 +1,51 @@
+<html>
+
+ <head>
+ 	  <!-- Google's crypto js for sha 512 -->
+	  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+ </head>
+
+ <body>
+ 
+  <script language="javascript">
+
+  function make_payment(){
+	  var payu_params = {};
+	  payu_params.key = "0MQaQP";
+	  payu_params.amount = "1.0";
+	  payu_params.productinfo = "myproduct";
+	  payu_params.firstname = "firstname";
+	  payu_params.email = "me@itsmeonly.com";
+	  payu_params.txnid = Math.floor(Math.random() * 100000000000); // txnid. (should be unique for every transaction)
+	  payu_params.surl = encodeURI("https://payu.herokuapp.com/success"); // url needs to be encoded
+	  payu_params.furl = encodeURI("https://payu.herokuapp.com/failure"); // url needs to be encoded
+	  payu_params.user_credentials = "key:unique_id";
+	  payu_params.udf1 = "udf1";
+	  payu_params.udf2 = "udf2";
+	  payu_params.udf3 = "udf3";
+	  payu_params.udf4 = "udf4";
+	  payu_params.udf5 = "udf5";
+	  var hash_string =   payu_params.key+"|"+payu_params.txnid+"|"+payu_params.amount+"|"+payu_params.productinfo+"|"+payu_params.firstname+"|"+payu_params.email+"|"+payu_params.udf1+"|"+payu_params.udf2+"|"+payu_params.udf3+"|"+payu_params.udf4+"|"+payu_params.udf5+"||||||13p0PXZk";
+	  console.log(hash_string);
+	  
+	  payu_params.hash = CryptoJS.SHA512(hash_string).toString(CryptoJS.enc.Base64);
+	  var payu_params_string = '';
+	  for (var key in payu_params) {
+		  payu_params_string += key + "=" + payu_params[key] + "&";
+	  }
+
+	  // trim last character (&)
+	  payu_params_string = payu_params_string.slice(0,-1);
+	  
+	  // javascript interface call. 
+	  PayU.onResponse(payu_params_string); 
+
+  }
+
+  </script>
+
+	<input type="button" onClick="make_payment()" value="Make Payment">
+
+ </body>
+
+</html>

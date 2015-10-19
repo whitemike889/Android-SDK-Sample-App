@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">lirish</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+	<string name="cancel_text">cancel</string>
+	<string name="ok_text">oktext</string>
+	<string name="app_dialog_title">calling fn</string>
+</resources>
