@@ -8,4 +8,4 @@
         android:toAlpha="0.1"
         android:interpolator="@android:anim/accelerate_interpolator"
         android:duration="500"/>
-</set><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/anim/cb_face_out.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/anim/cb_face_out.xml -->
+</set><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry/CustomBrowser/res/anim/cb_face_out.xml --><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/android-sdk-test-project-magic-retry%20with-aar/CustomBrowser-release/unspecified/res/anim/cb_face_out.xml -->

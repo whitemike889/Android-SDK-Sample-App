@@ -24,7 +24,7 @@ import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Extras.PayUChecksum;
-import com.payu.payuui.PayUBaseActivity;
+import com.payu.payuui.Activity.PayuBaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void navigateToBaseActivity(){
-        intent = new Intent(this, PayUBaseActivity.class);
+        intent = new Intent(this, PayuBaseActivity.class);
         LinearLayout rowContainerLayout = (LinearLayout) findViewById(R.id.linear_layout_row_container);
         mPaymentParams = new PaymentParams();
         payuConfig = new PayuConfig();
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(null != cardBin)
             postParamsBuffer.append(concatParams("card_bin", cardBin));
 
-        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1).toString() : postParamsBuffer.toString();
+        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1) : postParamsBuffer.toString();
         // make api call
         GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
         getHashesFromServerTask.execute(postParams);
@@ -546,6 +546,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checksum.setSalt(salt);
         return checksum.getHash();
     }
+
+
 }
 
 

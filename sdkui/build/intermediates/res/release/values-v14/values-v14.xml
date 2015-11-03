@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml -->
+    <!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-v14/values-v14.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat.Button">
         <item name="android:textSize">@dimen/abc_text_size_button_material</item>
@@ -28,4 +28,14 @@
     </style>
     <style name="TextAppearance.StatusBar.EventContent.Time"/>
     <style name="TextAppearance.StatusBar.EventContent.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title"/>
+    <!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.6.4/res/values-v14/values.xml -->
+    <eat-comment/>
+    <style name="com_mixpanel_android_SurveyActivityTheme" parent="android:Theme.DeviceDefault">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/com_mixpanel_android_SurveyActivityAnimation</item>
+    </style>
 </resources>

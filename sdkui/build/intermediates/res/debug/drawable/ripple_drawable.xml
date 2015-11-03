@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/cb_grey" android:state_selected="true" />
+    <item android:drawable="@color/cb_grey" android:state_pressed="true" />
+</selector><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/magicRetry/android-sdk-test-project/magicretry/src/main/res/drawable/ripple_drawable.xml --><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/com.payu.magicretry/magicretry/0.1/res/drawable/ripple_drawable.xml -->

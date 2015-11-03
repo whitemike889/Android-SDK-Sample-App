@@ -32,9 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/cb_textColor"
-                android:textSize="@dimen/sixteenScaled"
-                android:layout_marginTop="@dimen/eight"
-                android:layout_marginBottom="@dimen/eight"
+                android:textSize="@dimen/cb_sixteenScaled"
+                android:layout_marginTop="@dimen/cb_eight"
+                android:layout_marginBottom="@dimen/cb_eight"
                 android:drawableTop="@drawable/slider"
                 android:gravity="center"/>
         </LinearLayout>
@@ -50,4 +50,4 @@
         </ImageView>-->
 
     </RelativeLayout>
-</LinearLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/layout/bank.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/layout/bank.xml -->
+</LinearLayout><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry/CustomBrowser/res/layout/bank.xml --><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/android-sdk-test-project-magic-retry%20with-aar/CustomBrowser-release/unspecified/res/layout/bank.xml -->

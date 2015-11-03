@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+
     <solid android:color="#59000000"></solid>
     <corners
         android:radius="0dp"/>
-</shape><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/res/drawable/background_drawable.xml -->
+
+</shape><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry/CustomBrowser/res/drawable/background_drawable.xml --><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/exploded-aar/android-sdk-test-project-magic-retry%20with-aar/CustomBrowser-release/unspecified/res/drawable/background_drawable.xml -->

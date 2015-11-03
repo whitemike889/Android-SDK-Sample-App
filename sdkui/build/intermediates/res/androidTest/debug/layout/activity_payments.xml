@@ -5,23 +5,32 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:gravity="center_horizontal">
 
-    <FrameLayout
-        android:id="@+id/parent"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+<FrameLayout
+    android:id="@+id/parent"
+    android:visibility="gone"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+<WebView
+    android:id="@+id/webview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:id="@+id/magic_retry_container"
         android:layout_width="match_parent"
-        android:id="@+id/trans_overlay"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@drawable/background_drawable">
+        android:layout_height="match_parent">
     </LinearLayout>
-</RelativeLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/res/layout/activity_payments.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/layout/activity_payments.xml -->
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/trans_overlay"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/background_drawable">
+</LinearLayout>
+</RelativeLayout>
+<!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/src/main/res/layout/activity_payments.xml --><!-- From: file:/Users/piyushkhandelwal/androidSdk/android-sdk-test-project-magic-retry%20with-aar/sdkui/build/intermediates/bundles/debug/res/layout/activity_payments.xml -->
