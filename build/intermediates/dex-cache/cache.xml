@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-4969c6e6c398643b5b851fe5bec928aab83f35c7.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.6.4/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="0adb9447509bdd9a674c1c3e7e5ee996247df478">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-b4999d99cdddcbf543056e6e022630d005d5d74f.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/android-sdk-test-project/sdkui/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="b720b3755b23f552a20203f6b3b4e1c9e2620a18">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-1a213f0d013326f1392376a0f1e18805a67f3325.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.payu.magicretry/magicretry/0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="1637dd87dad84a1a4e382381fd734b4743295286">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-ef0b455f24f635d385dc22655c976271cd2643e4.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-7948ddcdd4b352127314d035f1946ef9d1e4efdd.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-0473158f99e70231b637e635d6a3474ed23f7b02.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.payu.custombrowser/payu-custom-browser/5.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="f36e0bb391670741f315759db3fedbc2a81e5a25">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-018db81a6201d980247d3b10cf613bd5c97d47dd.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-bf2a83671647352f6184d8db02e9f4d866659d37.jar" />
+    </item>
+    <item
+        jar="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/exploded-aar/android-sdk-test-project/PayU/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="cf67f688f35b45278994b4306bc6796bd5717d76">
+        <dex dex="/Users/franklin/AndroidStudioProjects/gitlab/cvvLess/android-sdk-test-project/app/build/intermediates/pre-dexed/debug/classes-f0c46af1f54d7d1f2becea6d163507d79c7d1b7a.jar" />
+    </item>
+
+</items>
