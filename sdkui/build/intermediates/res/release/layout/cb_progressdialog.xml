@@ -105,7 +105,7 @@
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/twelve" />
+        android:paddingTop="@dimen/cb_twelve" />
 
 
-</RelativeLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/layout/cb_progressdialog.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/layout/cb_progressdialog.xml -->
+</RelativeLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/gradle/android-sdk-test-project/payu-custom-browser/res/layout/cb_progressdialog.xml --><!-- From: file:/Users/franklin/AndroidStudioProjects/github/gradle/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.payu.custombrowser/payu-custom-browser/5.3.1/res/layout/cb_progressdialog.xml -->

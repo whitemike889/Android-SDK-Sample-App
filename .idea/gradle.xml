@@ -9,8 +9,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/CustomBrowser-release" />
-            <option value="$PROJECT_DIR$/PayU-release" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/sdkui" />
           </set>

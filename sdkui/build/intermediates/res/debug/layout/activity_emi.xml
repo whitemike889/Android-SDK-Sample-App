@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.payuResponse.testapp.EmiActivity">
 
     <LinearLayout
@@ -140,5 +139,5 @@
             android:layout_alignParentBottom="true"/>
     </LinearLayout>
 
-</LinearLayout>
-<!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/res/layout/activity_emi.xml -->
+</ScrollView>
+<!-- From: file:/Users/franklin/AndroidStudioProjects/github/gradle/Android-SDK-Sample-App/sdkui/src/main/res/layout/activity_emi.xml -->
