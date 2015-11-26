@@ -32,22 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/cb_textColor"
-                android:textSize="@dimen/sixteenScaled"
-                android:layout_marginTop="@dimen/eight"
-                android:layout_marginBottom="@dimen/eight"
+                android:textSize="@dimen/cb_sixteenScaled"
+                android:layout_marginTop="@dimen/cb_eight"
+                android:layout_marginBottom="@dimen/cb_eight"
                 android:drawableTop="@drawable/slider"
                 android:gravity="center"/>
         </LinearLayout>
 
-       <!-- <ImageView
-            android:layout_gravity="right|center_vertical"
-            android:padding="5dp"
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/arrow_cb">
-        </ImageView>-->
-
     </RelativeLayout>
-</LinearLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/android-sdk-test-project/CustomBrowser/res/layout/bank.xml -->
+</LinearLayout><!-- From: file:/Users/franklin/AndroidStudioProjects/gitlab/gradle/android-sdk-test-project/payu-custom-browser/res/layout/bank.xml -->

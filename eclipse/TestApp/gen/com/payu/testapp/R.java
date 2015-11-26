@@ -27,6 +27,9 @@ public final class R {
         public static final int face_out=0x7f05000f;
         public static final int fade_in=0x7f050010;
     }
+    public static final class array {
+        public static final int offer_modes=0x7f0d0000;
+    }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -264,6 +267,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int autoCompleteTextViewStyle=0x7f010062;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int autoplay=0x7f0100cc;
         /**  Specifies a background drawable for the action bar. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -630,6 +641,15 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int dividerVertical=0x7f010038;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotsColor=0x7f0100c9;
         /**  The total size of the drawable 
          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
@@ -794,6 +814,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int itemPadding=0x7f01007c;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int jumpHeight=0x7f0100cb;
         /**  The layout to use for the search view. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -998,6 +1026,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int panelMenuListWidth=0x7f01004f;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int period=0x7f0100ca;
         /**  Default PopupMenu style. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1598,19 +1634,19 @@ containing a value of this type.
         public static final int abc_config_showMenuShortcutsWhenKeyboardPresent=0x7f060003;
     }
     public static final class color {
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f070041;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f070042;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f070042;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f070043;
         public static final int abc_input_method_navigation_guard=0x7f070003;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f070043;
-        public static final int abc_primary_text_disable_only_material_light=0x7f070044;
-        public static final int abc_primary_text_material_dark=0x7f070045;
-        public static final int abc_primary_text_material_light=0x7f070046;
-        public static final int abc_search_url_text=0x7f070047;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f070044;
+        public static final int abc_primary_text_disable_only_material_light=0x7f070045;
+        public static final int abc_primary_text_material_dark=0x7f070046;
+        public static final int abc_primary_text_material_light=0x7f070047;
+        public static final int abc_search_url_text=0x7f070048;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
-        public static final int abc_secondary_text_material_dark=0x7f070048;
-        public static final int abc_secondary_text_material_light=0x7f070049;
+        public static final int abc_secondary_text_material_dark=0x7f070049;
+        public static final int abc_secondary_text_material_light=0x7f07004a;
         public static final int accent_material_dark=0x7f07000f;
         public static final int accent_material_light=0x7f07000e;
         public static final int background_floating_material_dark=0x7f070006;
@@ -1630,18 +1666,19 @@ containing a value of this type.
         public static final int button_material_dark=0x7f070010;
         public static final int button_material_light=0x7f070011;
         public static final int cb_background=0x7f070033;
-        public static final int cb_blue_button=0x7f070034;
-        public static final int cb_border=0x7f070035;
-        public static final int cb_dark_blue_button=0x7f070036;
-        public static final int cb_dark_grey=0x7f070037;
-        public static final int cb_errorRed=0x7f070038;
-        public static final int cb_grey=0x7f070039;
-        public static final int cb_input_gray=0x7f07003a;
-        public static final int cb_otpColor=0x7f07003b;
-        public static final int cb_otpDisabledColor=0x7f07003c;
-        public static final int cb_otpDisabledTextColor=0x7f07003d;
-        public static final int cb_otpReceivedColor=0x7f07003e;
-        public static final int cb_textColor=0x7f07003f;
+        public static final int cb_blue_button=0x7f07003d;
+        public static final int cb_border=0x7f070034;
+        public static final int cb_dark_blue_button=0x7f07003e;
+        public static final int cb_dark_grey=0x7f07003f;
+        public static final int cb_errorRed=0x7f07003a;
+        public static final int cb_grey=0x7f07003c;
+        public static final int cb_input_gray=0x7f07003b;
+        public static final int cb_otpColor=0x7f070036;
+        public static final int cb_otpDisabledColor=0x7f070038;
+        public static final int cb_otpDisabledTextColor=0x7f070039;
+        public static final int cb_otpReceivedColor=0x7f070037;
+        public static final int cb_payu_blue=0x7f070041;
+        public static final int cb_textColor=0x7f070035;
         public static final int dim_foreground_disabled_material_dark=0x7f07001e;
         public static final int dim_foreground_disabled_material_light=0x7f07001f;
         public static final int dim_foreground_material_dark=0x7f07001c;
@@ -1661,7 +1698,7 @@ containing a value of this type.
         public static final int material_blue_grey_950=0x7f070032;
         public static final int material_deep_teal_200=0x7f07002e;
         public static final int material_deep_teal_500=0x7f07002f;
-        public static final int otp_approve_button_color=0x7f07004a;
+        public static final int otp_approve_button_color=0x7f07004b;
         public static final int payu_blue=0x7f070040;
         public static final int primary_dark_material_dark=0x7f07000a;
         public static final int primary_dark_material_light=0x7f07000b;
@@ -1683,8 +1720,8 @@ containing a value of this type.
         public static final int secondary_text_disabled_material_light=0x7f07002b;
         public static final int switch_thumb_disabled_material_dark=0x7f070014;
         public static final int switch_thumb_disabled_material_light=0x7f070015;
-        public static final int switch_thumb_material_dark=0x7f07004b;
-        public static final int switch_thumb_material_light=0x7f07004c;
+        public static final int switch_thumb_material_dark=0x7f07004c;
+        public static final int switch_thumb_material_light=0x7f07004d;
         public static final int switch_thumb_normal_material_dark=0x7f070012;
         public static final int switch_thumb_normal_material_light=0x7f070013;
     }
@@ -1839,6 +1876,10 @@ containing a value of this type.
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). 
  Default screen margins, per the Android Design guidelines. 
+ Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). 
+ Default screen margins, per the Android Design guidelines. 
 
          Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
@@ -1847,8 +1888,28 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080045;
         public static final int activity_vertical_margin=0x7f080046;
-        public static final int circle_indicator_outer_radius=0x7f080047;
-        public static final int circle_indicator_radius=0x7f080048;
+        public static final int cb_activity_horizontal_margin=0x7f080057;
+        public static final int cb_activity_vertical_margin=0x7f080058;
+        public static final int cb_circle_indicator_outer_radius=0x7f080059;
+        public static final int cb_circle_indicator_radius=0x7f08005a;
+        public static final int cb_eight=0x7f08005b;
+        public static final int cb_eighteen=0x7f08005c;
+        public static final int cb_four=0x7f08005d;
+        public static final int cb_fourteen=0x7f08005e;
+        public static final int cb_fourteenScaled=0x7f08005f;
+        public static final int cb_fourtytwo=0x7f080060;
+        public static final int cb_sixteen=0x7f080061;
+        public static final int cb_sixteenScaled=0x7f080062;
+        public static final int cb_thirtysix=0x7f080063;
+        public static final int cb_thirtytwo=0x7f080064;
+        public static final int cb_twelve=0x7f080065;
+        public static final int cb_twelveScaled=0x7f080066;
+        public static final int cb_twentyfour=0x7f080067;
+        public static final int cb_two=0x7f080068;
+        public static final int circle_indicator_outer_radius=0x7f080056;
+        /**  Progressbar circle 
+         */
+        public static final int circle_indicator_radius=0x7f080055;
         /**  The platform's desired fixed height for a dialog along the major axis
          (the screen is in portrait). This may be either a fraction or a dimension.
  The platform's desired fixed height for a dialog along the major axis
@@ -1883,12 +1944,12 @@ containing a value of this type.
         public static final int dialog_fixed_width_minor=0x7f08000d;
         public static final int disabled_alpha_material_dark=0x7f080001;
         public static final int disabled_alpha_material_light=0x7f080000;
-        public static final int eight=0x7f080049;
-        public static final int eighteen=0x7f08004a;
-        public static final int four=0x7f08004b;
-        public static final int fourteen=0x7f08004c;
-        public static final int fourteenScaled=0x7f08004d;
-        public static final int fourtytwo=0x7f08004e;
+        public static final int eight=0x7f08004e;
+        public static final int eighteen=0x7f080051;
+        public static final int four=0x7f080050;
+        public static final int fourteen=0x7f080047;
+        public static final int fourteenScaled=0x7f080053;
+        public static final int fourtytwo=0x7f08004c;
         /**  The width of the big icons in notifications. 
          */
         public static final int notification_large_icon_height=0x7f080022;
@@ -1900,13 +1961,13 @@ containing a value of this type.
          */
         public static final int notification_subtext_size=0x7f080023;
         public static final int sixteen=0x7f08004f;
-        public static final int sixteenScaled=0x7f080050;
-        public static final int thirtysix=0x7f080051;
-        public static final int thirtytwo=0x7f080052;
-        public static final int twelve=0x7f080053;
+        public static final int sixteenScaled=0x7f080052;
+        public static final int thirtysix=0x7f08004b;
+        public static final int thirtytwo=0x7f08004a;
+        public static final int twelve=0x7f080048;
         public static final int twelveScaled=0x7f080054;
-        public static final int twentyfour=0x7f080055;
-        public static final int two=0x7f080056;
+        public static final int twentyfour=0x7f080049;
+        public static final int two=0x7f08004d;
     }
     public static final class drawable {
         public static final int abc_ab_share_pack_mtrl_alpha=0x7f020000;
@@ -1969,12 +2030,12 @@ containing a value of this type.
         public static final int abc_textfield_search_default_mtrl_alpha=0x7f020039;
         public static final int abc_textfield_search_material=0x7f02003a;
         public static final int amex=0x7f02003b;
-        public static final int amex_logo=0x7f02003c;
-        public static final int approve_otp_button=0x7f02003d;
-        public static final int arrow_cb=0x7f02003e;
-        public static final int axis_logo=0x7f02003f;
-        public static final int background_drawable=0x7f020040;
-        public static final int card=0x7f020041;
+        public static final int approve_otp_button=0x7f02003c;
+        public static final int arrow_cb=0x7f02003d;
+        public static final int axis_logo=0x7f02003e;
+        public static final int background_drawable=0x7f02003f;
+        public static final int card=0x7f020040;
+        public static final int cb_amex_logo=0x7f020041;
         public static final int cb_edit_text=0x7f020042;
         public static final int citi=0x7f020043;
         public static final int diner=0x7f020044;
@@ -1984,280 +2045,332 @@ containing a value of this type.
         public static final int hdfc_bank=0x7f020048;
         public static final int hsbc=0x7f020049;
         public static final int ic_launcher=0x7f02004a;
-        public static final int icici=0x7f02004b;
-        public static final int icicicc=0x7f02004c;
-        public static final int icicinet=0x7f02004d;
-        public static final int idbi=0x7f02004e;
-        public static final int induslogo=0x7f02004f;
-        public static final int ing_logo=0x7f020050;
-        public static final int inner_circle=0x7f020051;
-        public static final int jcb=0x7f020052;
-        public static final int kotak=0x7f020053;
-        public static final int kotaknet=0x7f020054;
-        public static final int l_icon1=0x7f020055;
-        public static final int l_icon2=0x7f020056;
-        public static final int l_icon3=0x7f020057;
-        public static final int l_icon4=0x7f020058;
-        public static final int laser=0x7f020059;
-        public static final int logo_payu=0x7f02005a;
-        public static final int maestro=0x7f02005b;
-        public static final int master=0x7f02005c;
-        public static final int notification_template_icon_bg=0x7f020071;
-        public static final int otp_button_selector=0x7f02005d;
-        public static final int otp_icon_large=0x7f02005e;
-        public static final int otp_icon_over=0x7f02005f;
-        public static final int otpicon=0x7f020060;
-        public static final int outer_circle=0x7f020061;
-        public static final int password_icon_large=0x7f020062;
-        public static final int password_icon_over=0x7f020063;
-        public static final int pin_button_selector=0x7f020064;
-        public static final int rectangle_box=0x7f020065;
-        public static final int red_background=0x7f020066;
-        public static final int rupay=0x7f020067;
-        public static final int sbi=0x7f020068;
-        public static final int sbinet=0x7f020069;
-        public static final int scblogo=0x7f02006a;
-        public static final int secured_payu=0x7f02006b;
-        public static final int shape_progress=0x7f02006c;
-        public static final int slider=0x7f02006d;
-        public static final int trusticon=0x7f02006e;
-        public static final int visa=0x7f02006f;
-        public static final int yesbank_logo=0x7f020070;
+        public static final int ic_refresh_black_36dp=0x7f02004b;
+        public static final int ic_repeat_black_36dp=0x7f02004c;
+        public static final int icici=0x7f02004d;
+        public static final int icicicc=0x7f02004e;
+        public static final int icicinet=0x7f02004f;
+        public static final int idbi=0x7f020050;
+        public static final int induslogo=0x7f020051;
+        public static final int ing_logo=0x7f020052;
+        public static final int inner_circle=0x7f020053;
+        public static final int jcb=0x7f020054;
+        public static final int kotak=0x7f020055;
+        public static final int kotaknet=0x7f020056;
+        public static final int l_icon1=0x7f020057;
+        public static final int l_icon2=0x7f020058;
+        public static final int l_icon3=0x7f020059;
+        public static final int l_icon4=0x7f02005a;
+        public static final int laser=0x7f02005b;
+        public static final int logo_payu=0x7f02005c;
+        public static final int maestro=0x7f02005d;
+        public static final int master=0x7f02005e;
+        public static final int notification_template_icon_bg=0x7f020074;
+        public static final int otp_button_selector=0x7f02005f;
+        public static final int otp_icon_large=0x7f020060;
+        public static final int otp_icon_over=0x7f020061;
+        public static final int otpicon=0x7f020062;
+        public static final int outer_circle=0x7f020063;
+        public static final int password_icon_large=0x7f020064;
+        public static final int password_icon_over=0x7f020065;
+        public static final int pin_button_selector=0x7f020066;
+        public static final int rectangle_box=0x7f020067;
+        public static final int red_background=0x7f020068;
+        public static final int ripple_drawable=0x7f020069;
+        public static final int rupay=0x7f02006a;
+        public static final int sbi=0x7f02006b;
+        public static final int sbinet=0x7f02006c;
+        public static final int scblogo=0x7f02006d;
+        public static final int secured_payu=0x7f02006e;
+        public static final int shape_progress=0x7f02006f;
+        public static final int slider=0x7f020070;
+        public static final int trusticon=0x7f020071;
+        public static final int visa=0x7f020072;
+        public static final int yesbank_logo=0x7f020073;
     }
     public static final class id {
-        public static final int Enter_manually_gone=0x7f0a00d7;
-        public static final int Regenerate_layout_gone=0x7f0a00d9;
-        public static final int action0=0x7f0a00c5;
-        public static final int action_bar=0x7f0a0040;
+        public static final int Enter_manually_gone=0x7f0a0108;
+        public static final int Regenerate_layout_gone=0x7f0a010a;
+        public static final int action0=0x7f0a00f6;
+        public static final int action_bar=0x7f0a0064;
         public static final int action_bar_activity_content=0x7f0a0003;
-        public static final int action_bar_container=0x7f0a003f;
-        public static final int action_bar_root=0x7f0a003b;
+        public static final int action_bar_container=0x7f0a0063;
+        public static final int action_bar_root=0x7f0a005f;
         public static final int action_bar_spinner=0x7f0a0002;
-        public static final int action_bar_subtitle=0x7f0a0024;
-        public static final int action_bar_title=0x7f0a0023;
-        public static final int action_context_bar=0x7f0a0041;
-        public static final int action_demo=0x7f0a00e8;
-        public static final int action_divider=0x7f0a00c9;
-        public static final int action_exit=0x7f0a00e7;
+        public static final int action_bar_subtitle=0x7f0a0048;
+        public static final int action_bar_title=0x7f0a0047;
+        public static final int action_context_bar=0x7f0a0065;
+        public static final int action_demo=0x7f0a0119;
+        public static final int action_divider=0x7f0a00fa;
+        public static final int action_exit=0x7f0a0118;
         public static final int action_menu_divider=0x7f0a0005;
         public static final int action_menu_presenter=0x7f0a0006;
-        public static final int action_mode_bar=0x7f0a003d;
-        public static final int action_mode_bar_stub=0x7f0a003c;
-        public static final int action_mode_close_button=0x7f0a0025;
-        public static final int action_settings=0x7f0a00e6;
-        public static final int activity_chooser_view_content=0x7f0a0026;
-        public static final int alertTitle=0x7f0a0030;
-        public static final int always=0x7f0a0019;
-        public static final int app_bar=0x7f0a0060;
-        public static final int approve=0x7f0a00d4;
-        public static final int arrow=0x7f0a0094;
-        public static final int bank_logo=0x7f0a00a0;
-        public static final int beginning=0x7f0a0020;
-        public static final int buttonLayout=0x7f0a007f;
-        public static final int buttonPanel=0x7f0a0036;
-        public static final int button_add=0x7f0a0080;
-        public static final int button_card_make_payment=0x7f0a006b;
-        public static final int button_cash_card=0x7f0a0057;
-        public static final int button_credit_debit_card=0x7f0a0055;
-        public static final int button_delete_user_card=0x7f0a008c;
-        public static final int button_edit_user_card=0x7f0a008d;
-        public static final int button_emi=0x7f0a0059;
-        public static final int button_emi_pay_now=0x7f0a007b;
-        public static final int button_get_card_information=0x7f0a008e;
-        public static final int button_get_ibibo_codes=0x7f0a008f;
-        public static final int button_get_offer_status=0x7f0a0092;
-        public static final int button_get_transaction_information=0x7f0a0091;
-        public static final int button_get_user_cards=0x7f0a008b;
-        public static final int button_get_value_added_services=0x7f0a0090;
-        public static final int button_merchant_payment=0x7f0a005d;
-        public static final int button_netbanking=0x7f0a0053;
-        public static final int button_next=0x7f0a0081;
-        public static final int button_pay_now=0x7f0a0084;
-        public static final int button_payumoney=0x7f0a005b;
-        public static final int button_store_user_card=0x7f0a008a;
-        public static final int button_stored_card=0x7f0a0051;
-        public static final int button_verify_api=0x7f0a005f;
-        public static final int button_verify_transaction=0x7f0a0093;
-        public static final int cancel=0x7f0a00a4;
-        public static final int cancel_action=0x7f0a00c6;
-        public static final int check_box_save_card=0x7f0a006a;
-        public static final int checkbox=0x7f0a0038;
-        public static final int choose_text=0x7f0a009d;
-        public static final int chronometer=0x7f0a00cc;
-        public static final int collapseActionView=0x7f0a001a;
-        public static final int contentPanel=0x7f0a0031;
-        public static final int custom=0x7f0a0035;
-        public static final int customPanel=0x7f0a0034;
-        public static final int cvv=0x7f0a00a1;
-        public static final int decor_content_parent=0x7f0a003e;
-        public static final int default_activity_button=0x7f0a0029;
-        public static final int dialog=0x7f0a001e;
-        public static final int dialog_desc=0x7f0a009a;
-        public static final int dialog_title=0x7f0a0099;
-        public static final int disableHome=0x7f0a000d;
-        public static final int dotsProgressBar=0x7f0a009b;
-        public static final int dropdown=0x7f0a001f;
-        public static final int edit_query=0x7f0a0042;
-        public static final int edit_text_card_cvv=0x7f0a0069;
-        public static final int edit_text_card_holder_name=0x7f0a00aa;
-        public static final int edit_text_card_name=0x7f0a00ab;
-        public static final int edit_text_card_number=0x7f0a0065;
-        public static final int edit_text_cvv=0x7f0a00ba;
-        public static final int edit_text_emi_card_number=0x7f0a0076;
-        public static final int edit_text_emi_cvv=0x7f0a007a;
-        public static final int edit_text_emi_expiry_month=0x7f0a0078;
-        public static final int edit_text_emi_expiry_year=0x7f0a0079;
-        public static final int edit_text_emi_name_on_card=0x7f0a0077;
-        public static final int edit_text_expiry_month=0x7f0a0067;
-        public static final int edit_text_expiry_year=0x7f0a0068;
-        public static final int edit_text_from_date=0x7f0a00b7;
-        public static final int edit_text_name_on_card=0x7f0a0066;
-        public static final int edit_text_offer_amount=0x7f0a00af;
-        public static final int edit_text_offer_bank_code=0x7f0a00b1;
-        public static final int edit_text_offer_card_number=0x7f0a00b2;
-        public static final int edit_text_offer_category=0x7f0a00b0;
-        public static final int edit_text_offer_email=0x7f0a00b5;
-        public static final int edit_text_offer_key=0x7f0a00ae;
-        public static final int edit_text_offer_name_on_card=0x7f0a00b3;
-        public static final int edit_text_offer_phone_number=0x7f0a00b4;
-        public static final int edit_text_to_date=0x7f0a00b8;
-        public static final int edit_text_verify_payment_transaction_id=0x7f0a00bc;
-        public static final int end=0x7f0a0021;
-        public static final int end_padder=0x7f0a00d1;
-        public static final int enter_manually=0x7f0a00d8;
-        public static final int error_message=0x7f0a009c;
-        public static final int error_title=0x7f0a00a3;
-        public static final int expand_activities_button=0x7f0a0027;
-        public static final int expanded_menu=0x7f0a0037;
-        public static final int footer=0x7f0a0072;
-        public static final int footer_image=0x7f0a00a5;
-        public static final int header=0x7f0a00be;
-        public static final int help_view=0x7f0a0095;
+        public static final int action_mode_bar=0x7f0a0061;
+        public static final int action_mode_bar_stub=0x7f0a0060;
+        public static final int action_mode_close_button=0x7f0a0049;
+        public static final int action_settings=0x7f0a0117;
+        public static final int activity_chooser_view_content=0x7f0a004a;
+        public static final int alertTitle=0x7f0a0054;
+        public static final int always=0x7f0a003d;
+        public static final int app_bar=0x7f0a0099;
+        public static final int approve=0x7f0a0105;
+        public static final int arrow=0x7f0a00be;
+        public static final int bank_logo=0x7f0a00ca;
+        public static final int beginning=0x7f0a0044;
+        public static final int buttonLayout=0x7f0a00a6;
+        public static final int buttonPanel=0x7f0a005a;
+        public static final int button_add=0x7f0a00a7;
+        public static final int button_card_make_payment=0x7f0a0091;
+        public static final int button_cash_card=0x7f0a007d;
+        public static final int button_credit_debit_card=0x7f0a007b;
+        public static final int button_delete_cvv=0x7f0a00bd;
+        public static final int button_delete_user_card=0x7f0a00b5;
+        public static final int button_edit_user_card=0x7f0a00b6;
+        public static final int button_emi=0x7f0a007f;
+        public static final int button_emi_pay_now=0x7f0a00a2;
+        public static final int button_get_card_information=0x7f0a00b7;
+        public static final int button_get_ibibo_codes=0x7f0a00b8;
+        public static final int button_get_offer_status=0x7f0a00bb;
+        public static final int button_get_transaction_information=0x7f0a00ba;
+        public static final int button_get_user_cards=0x7f0a00b4;
+        public static final int button_get_value_added_services=0x7f0a00b9;
+        public static final int button_merchant_payment=0x7f0a0083;
+        public static final int button_netbanking=0x7f0a0079;
+        public static final int button_next=0x7f0a00a8;
+        public static final int button_one_click_payment=0x7f0a0075;
+        public static final int button_pay_now=0x7f0a00ab;
+        public static final int button_payumoney=0x7f0a0081;
+        public static final int button_store_user_card=0x7f0a00b3;
+        public static final int button_stored_card=0x7f0a0077;
+        public static final int button_verify_api=0x7f0a0085;
+        public static final int button_verify_transaction=0x7f0a00bc;
+        public static final int cancel=0x7f0a00ce;
+        public static final int cancel_action=0x7f0a00f7;
+        public static final int check_box_enable_one_click_payment=0x7f0a0090;
+        public static final int check_box_save_card=0x7f0a008f;
+        public static final int checkbox=0x7f0a005c;
+        public static final int choose_text=0x7f0a00c7;
+        public static final int chronometer=0x7f0a00fd;
+        public static final int collapseActionView=0x7f0a003e;
+        public static final int contentPanel=0x7f0a0055;
+        public static final int custom=0x7f0a0059;
+        public static final int customPanel=0x7f0a0058;
+        public static final int cvv=0x7f0a00cb;
+        public static final int decor_content_parent=0x7f0a0062;
+        public static final int default_activity_button=0x7f0a004d;
+        public static final int dialog=0x7f0a0042;
+        public static final int dialog_desc=0x7f0a00c4;
+        public static final int dialog_title=0x7f0a00c3;
+        public static final int disableHome=0x7f0a0031;
+        public static final int dotsProgressBar=0x7f0a00c5;
+        public static final int dropdown=0x7f0a0043;
+        public static final int edit_query=0x7f0a0066;
+        public static final int edit_text_card_cvv=0x7f0a008e;
+        public static final int edit_text_card_holder_name=0x7f0a00d6;
+        public static final int edit_text_card_name=0x7f0a00d7;
+        public static final int edit_text_card_number=0x7f0a008a;
+        public static final int edit_text_cvv=0x7f0a00e4;
+        public static final int edit_text_emi_card_number=0x7f0a009d;
+        public static final int edit_text_emi_cvv=0x7f0a00a1;
+        public static final int edit_text_emi_expiry_month=0x7f0a009f;
+        public static final int edit_text_emi_expiry_year=0x7f0a00a0;
+        public static final int edit_text_emi_name_on_card=0x7f0a009e;
+        public static final int edit_text_expiry_month=0x7f0a008c;
+        public static final int edit_text_expiry_year=0x7f0a008d;
+        public static final int edit_text_from_date=0x7f0a00e1;
+        public static final int edit_text_name_on_card=0x7f0a008b;
+        public static final int edit_text_offer_card_mode=0x7f0a00dc;
+        public static final int edit_text_offer_card_number=0x7f0a00dd;
+        public static final int edit_text_offer_name_on_card=0x7f0a00de;
+        public static final int edit_text_to_date=0x7f0a00e2;
+        public static final int edit_text_verify_payment_transaction_id=0x7f0a00e6;
+        public static final int end=0x7f0a0045;
+        public static final int end_padder=0x7f0a0102;
+        public static final int enter_manually=0x7f0a0109;
+        public static final int error_message=0x7f0a00c6;
+        public static final int error_title=0x7f0a00cd;
+        public static final int error_title2=0x7f0a00ec;
+        public static final int expand_activities_button=0x7f0a004b;
+        public static final int expanded_menu=0x7f0a005b;
+        public static final int footer=0x7f0a0098;
+        public static final int footer_image=0x7f0a00cf;
+        public static final int header=0x7f0a00e8;
+        public static final int help_view=0x7f0a00bf;
         public static final int home=0x7f0a0000;
-        public static final int homeAsUp=0x7f0a000e;
-        public static final int icon=0x7f0a002b;
-        public static final int ifRoom=0x7f0a001b;
-        public static final int image=0x7f0a0028;
-        public static final int imageView=0x7f0a0098;
-        public static final int image_view_card_icon=0x7f0a00dd;
-        public static final int image_view_card_trash=0x7f0a00e2;
-        public static final int img_view=0x7f0a00c2;
-        public static final int info=0x7f0a00d0;
-        public static final int l_nativebutton=0x7f0a00c1;
-        public static final int line1=0x7f0a00ca;
-        public static final int line3=0x7f0a00ce;
-        public static final int linear_layout_card=0x7f0a00de;
-        public static final int linear_layout_cash_card=0x7f0a0056;
-        public static final int linear_layout_credit_debit_card=0x7f0a0054;
-        public static final int linear_layout_cvv_paynow=0x7f0a00e1;
-        public static final int linear_layout_dont_have_cvv_expiry=0x7f0a006f;
-        public static final int linear_layout_emi=0x7f0a0058;
-        public static final int linear_layout_have_cvv_expiry=0x7f0a006c;
-        public static final int linear_layout_merchant_payment=0x7f0a005c;
-        public static final int linear_layout_netbanking=0x7f0a0052;
-        public static final int linear_layout_payumoney=0x7f0a005a;
-        public static final int linear_layout_root_button=0x7f0a007d;
-        public static final int linear_layout_root_detail=0x7f0a0063;
-        public static final int linear_layout_row=0x7f0a00dc;
-        public static final int linear_layout_row_container=0x7f0a007e;
-        public static final int linear_layout_stored_card=0x7f0a0050;
-        public static final int linear_layout_verify_api=0x7f0a005e;
-        public static final int listMode=0x7f0a000a;
-        public static final int list_item=0x7f0a002a;
-        public static final int list_view_cash_card=0x7f0a0073;
-        public static final int list_view_delete_user_card=0x7f0a00a7;
-        public static final int list_view_user_card=0x7f0a0089;
-        public static final int loading=0x7f0a00bd;
-        public static final int media_actions=0x7f0a00c8;
-        public static final int middle=0x7f0a0022;
-        public static final int multiply=0x7f0a0014;
-        public static final int native_button=0x7f0a00c3;
-        public static final int never=0x7f0a001c;
-        public static final int none=0x7f0a000f;
-        public static final int normal=0x7f0a000b;
-        public static final int offer_status_text_view_header=0x7f0a00ad;
-        public static final int otp=0x7f0a009f;
-        public static final int otp_recieved=0x7f0a00e4;
-        public static final int otp_sms=0x7f0a00d3;
-        public static final int parent=0x7f0a0086;
-        public static final int parentPanel=0x7f0a002d;
-        public static final int pin=0x7f0a009e;
-        public static final int pin_layout_gone=0x7f0a00d6;
-        public static final int progress=0x7f0a00bf;
-        public static final int progress_bar=0x7f0a004f;
+        public static final int homeAsUp=0x7f0a0032;
+        public static final int icon=0x7f0a004f;
+        public static final int ifRoom=0x7f0a003f;
+        public static final int image=0x7f0a004c;
+        public static final int imageView=0x7f0a00c2;
+        public static final int image_view_card_icon=0x7f0a010e;
+        public static final int image_view_card_trash=0x7f0a0113;
+        public static final int img_view=0x7f0a00f3;
+        public static final int info=0x7f0a0101;
+        public static final int k_amount=0x7f0a000b;
+        public static final int k_email=0x7f0a000e;
+        public static final int k_env=0x7f0a0018;
+        public static final int k_first_name=0x7f0a000d;
+        public static final int k_furl=0x7f0a0011;
+        public static final int k_merchant_key=0x7f0a0009;
+        public static final int k_offer_key=0x7f0a0019;
+        public static final int k_product_info=0x7f0a000c;
+        public static final int k_salt=0x7f0a000a;
+        public static final int k_store_one_click_payment=0x7f0a001a;
+        public static final int k_surl=0x7f0a0010;
+        public static final int k_txnid=0x7f0a000f;
+        public static final int k_udf1=0x7f0a0013;
+        public static final int k_udf2=0x7f0a0014;
+        public static final int k_udf3=0x7f0a0015;
+        public static final int k_udf4=0x7f0a0016;
+        public static final int k_udf5=0x7f0a0017;
+        public static final int k_user_credentials=0x7f0a0012;
+        public static final int l_nativebutton=0x7f0a00f2;
+        public static final int line1=0x7f0a00fb;
+        public static final int line3=0x7f0a00ff;
+        public static final int linear_layout_card=0x7f0a010f;
+        public static final int linear_layout_cash_card=0x7f0a007c;
+        public static final int linear_layout_credit_debit_card=0x7f0a007a;
+        public static final int linear_layout_cvv_paynow=0x7f0a0112;
+        public static final int linear_layout_dont_have_cvv_expiry=0x7f0a0095;
+        public static final int linear_layout_emi=0x7f0a007e;
+        public static final int linear_layout_have_cvv_expiry=0x7f0a0092;
+        public static final int linear_layout_merchant_payment=0x7f0a0082;
+        public static final int linear_layout_netbanking=0x7f0a0078;
+        public static final int linear_layout_new_card=0x7f0a00db;
+        public static final int linear_layout_one_click_payment=0x7f0a0074;
+        public static final int linear_layout_payumoney=0x7f0a0080;
+        public static final int linear_layout_root_button=0x7f0a00a4;
+        public static final int linear_layout_root_detail=0x7f0a0088;
+        public static final int linear_layout_row=0x7f0a010d;
+        public static final int linear_layout_row_container=0x7f0a00a5;
+        public static final int linear_layout_stored_card=0x7f0a0076;
+        public static final int linear_layout_verify_api=0x7f0a0084;
+        public static final int listMode=0x7f0a002e;
+        public static final int list_item=0x7f0a004e;
+        public static final int list_view_cash_card=0x7f0a009a;
+        public static final int list_view_delete_stored_card_cvv=0x7f0a00d1;
+        public static final int list_view_delete_user_card=0x7f0a00d3;
+        public static final int list_view_one_click_payment=0x7f0a00ac;
+        public static final int list_view_user_card=0x7f0a00b2;
+        public static final int loading=0x7f0a00e7;
+        public static final int magic_reload_progress=0x7f0a00ef;
+        public static final int magic_retry_container=0x7f0a00b0;
+        public static final int magic_retry_parent=0x7f0a00eb;
+        public static final int media_actions=0x7f0a00f9;
+        public static final int middle=0x7f0a0046;
+        public static final int multiply=0x7f0a0038;
+        public static final int native_button=0x7f0a00f4;
+        public static final int never=0x7f0a0040;
+        public static final int none=0x7f0a0033;
+        public static final int normal=0x7f0a002f;
+        public static final int offer_status_text_view_header=0x7f0a00d9;
+        public static final int otp=0x7f0a00c9;
+        public static final int otp_recieved=0x7f0a0115;
+        public static final int otp_sms=0x7f0a0104;
+        public static final int parent=0x7f0a00ae;
+        public static final int parentPanel=0x7f0a0051;
+        public static final int pin=0x7f0a00c8;
+        public static final int pin_layout_gone=0x7f0a0107;
+        public static final int progress=0x7f0a00e9;
+        public static final int progress_bar=0x7f0a0073;
         public static final int progress_circular=0x7f0a0007;
         public static final int progress_horizontal=0x7f0a0008;
-        public static final int r_layout=0x7f0a0085;
-        public static final int radio=0x7f0a003a;
-        public static final int regenerate_layout=0x7f0a00d5;
-        public static final int regenerate_text=0x7f0a00d2;
-        public static final int retry=0x7f0a00da;
-        public static final int retry_text=0x7f0a00e5;
-        public static final int row=0x7f0a00db;
-        public static final int screen=0x7f0a0015;
-        public static final int scrollView=0x7f0a0032;
-        public static final int scroll_view_main=0x7f0a007c;
-        public static final int search_badge=0x7f0a0044;
-        public static final int search_bar=0x7f0a0043;
-        public static final int search_button=0x7f0a0045;
-        public static final int search_close_btn=0x7f0a004a;
-        public static final int search_edit_frame=0x7f0a0046;
-        public static final int search_go_btn=0x7f0a004c;
-        public static final int search_mag_icon=0x7f0a0047;
-        public static final int search_plate=0x7f0a0048;
-        public static final int search_src_text=0x7f0a0049;
-        public static final int search_voice_btn=0x7f0a004d;
-        public static final int select_dialog_listview=0x7f0a004e;
-        public static final int shortcut=0x7f0a0039;
-        public static final int showCustom=0x7f0a0010;
-        public static final int showHome=0x7f0a0011;
-        public static final int showTitle=0x7f0a0012;
-        public static final int spinner_edit_card=0x7f0a00a9;
-        public static final int spinner_emi_bank_name=0x7f0a0074;
-        public static final int spinner_emi_duration=0x7f0a0075;
-        public static final int spinner_netbanking=0x7f0a0083;
+        public static final int r_layout=0x7f0a00ad;
+        public static final int radio=0x7f0a005e;
+        public static final int regenerate_layout=0x7f0a0106;
+        public static final int regenerate_text=0x7f0a0103;
+        public static final int retry=0x7f0a010b;
+        public static final int retry_btn=0x7f0a00ed;
+        public static final int retry_text=0x7f0a0116;
+        public static final int row=0x7f0a010c;
+        public static final int screen=0x7f0a0039;
+        public static final int scrollView=0x7f0a0056;
+        public static final int scroll_view_main=0x7f0a00a3;
+        public static final int search_badge=0x7f0a0068;
+        public static final int search_bar=0x7f0a0067;
+        public static final int search_button=0x7f0a0069;
+        public static final int search_close_btn=0x7f0a006e;
+        public static final int search_edit_frame=0x7f0a006a;
+        public static final int search_go_btn=0x7f0a0070;
+        public static final int search_mag_icon=0x7f0a006b;
+        public static final int search_plate=0x7f0a006c;
+        public static final int search_src_text=0x7f0a006d;
+        public static final int search_voice_btn=0x7f0a0071;
+        public static final int select_dialog_listview=0x7f0a0072;
+        public static final int shortcut=0x7f0a005d;
+        public static final int showCustom=0x7f0a0034;
+        public static final int showHome=0x7f0a0035;
+        public static final int showTitle=0x7f0a0036;
+        public static final int spinner_edit_card=0x7f0a00d5;
+        public static final int spinner_emi_bank_name=0x7f0a009b;
+        public static final int spinner_emi_duration=0x7f0a009c;
+        public static final int spinner_netbanking=0x7f0a00aa;
+        public static final int spinner_select_offer_mode=0x7f0a00da;
+        public static final int spinner_stored_cards=0x7f0a00df;
         public static final int split_action_bar=0x7f0a0004;
-        public static final int src_atop=0x7f0a0016;
-        public static final int src_in=0x7f0a0017;
-        public static final int src_over=0x7f0a0018;
-        public static final int status_bar_latest_event_content=0x7f0a00c7;
-        public static final int submit_area=0x7f0a004b;
-        public static final int tabMode=0x7f0a000c;
-        public static final int text=0x7f0a00cf;
-        public static final int text2=0x7f0a00cd;
-        public static final int textSpacerNoButtons=0x7f0a0033;
-        public static final int text_view_amount=0x7f0a0061;
-        public static final int text_view_card_name=0x7f0a00df;
-        public static final int text_view_card_number=0x7f0a00e0;
-        public static final int text_view_cash_card=0x7f0a0097;
-        public static final int text_view_delete_card_info_header=0x7f0a00a6;
-        public static final int text_view_dont_have_click_here=0x7f0a0070;
-        public static final int text_view_dont_have_cvv_and_expiry=0x7f0a0071;
-        public static final int text_view_edit_card_info_header=0x7f0a00a8;
-        public static final int text_view_emi_list=0x7f0a00a2;
-        public static final int text_view_get_card_info_header=0x7f0a00ac;
-        public static final int text_view_get_transaction_info_header=0x7f0a00b6;
-        public static final int text_view_have_click_here=0x7f0a006d;
-        public static final int text_view_have_cvv_and_expiry=0x7f0a006e;
-        public static final int text_view_issuer_down=0x7f0a0064;
-        public static final int text_view_netbanking=0x7f0a00c4;
-        public static final int text_view_select_net_banking=0x7f0a0082;
-        public static final int text_view_store_card_info_header=0x7f0a00b9;
-        public static final int text_view_transaction_id=0x7f0a0062;
-        public static final int text_view_verify_payment_info_header=0x7f0a00bb;
-        public static final int time=0x7f0a00cb;
-        public static final int timer=0x7f0a00e3;
-        public static final int title=0x7f0a002c;
-        public static final int title_template=0x7f0a002f;
-        public static final int topPanel=0x7f0a002e;
-        public static final int trans_overlay=0x7f0a0088;
+        public static final int src_atop=0x7f0a003a;
+        public static final int src_in=0x7f0a003b;
+        public static final int src_over=0x7f0a003c;
+        public static final int status_bar_latest_event_content=0x7f0a00f8;
+        public static final int submit_area=0x7f0a006f;
+        public static final int tabMode=0x7f0a0030;
+        public static final int text=0x7f0a0100;
+        public static final int text2=0x7f0a00fe;
+        public static final int textSpacerNoButtons=0x7f0a0057;
+        public static final int text_view_amount=0x7f0a0086;
+        public static final int text_view_card_name=0x7f0a0110;
+        public static final int text_view_card_number=0x7f0a0111;
+        public static final int text_view_cash_card=0x7f0a00c1;
+        public static final int text_view_delete_card_cvv_info_header=0x7f0a00d0;
+        public static final int text_view_delete_card_info_header=0x7f0a00d2;
+        public static final int text_view_dont_have_click_here=0x7f0a0096;
+        public static final int text_view_dont_have_cvv_and_expiry=0x7f0a0097;
+        public static final int text_view_edit_card_info_header=0x7f0a00d4;
+        public static final int text_view_emi_list=0x7f0a00cc;
+        public static final int text_view_get_card_info_header=0x7f0a00d8;
+        public static final int text_view_get_transaction_info_header=0x7f0a00e0;
+        public static final int text_view_have_click_here=0x7f0a0093;
+        public static final int text_view_have_cvv_and_expiry=0x7f0a0094;
+        public static final int text_view_issuer_down=0x7f0a0089;
+        public static final int text_view_netbanking=0x7f0a00f5;
+        public static final int text_view_select_net_banking=0x7f0a00a9;
+        public static final int text_view_store_card_info_header=0x7f0a00e3;
+        public static final int text_view_transaction_id=0x7f0a0087;
+        public static final int text_view_verify_payment_info_header=0x7f0a00e5;
+        public static final int time=0x7f0a00fc;
+        public static final int timer=0x7f0a0114;
+        public static final int title=0x7f0a0050;
+        public static final int title_template=0x7f0a0053;
+        public static final int topPanel=0x7f0a0052;
+        public static final int trans_overlay=0x7f0a00b1;
         public static final int up=0x7f0a0001;
-        public static final int useLogo=0x7f0a0013;
-        public static final int view=0x7f0a0096;
-        public static final int waiting=0x7f0a00c0;
-        public static final int webview=0x7f0a0087;
-        public static final int withText=0x7f0a001d;
-        public static final int wrap_content=0x7f0a0009;
+        public static final int useLogo=0x7f0a0037;
+        public static final int v_amount=0x7f0a001d;
+        public static final int v_email=0x7f0a0020;
+        public static final int v_env=0x7f0a002a;
+        public static final int v_first_name=0x7f0a001f;
+        public static final int v_furl=0x7f0a0023;
+        public static final int v_merchant_key=0x7f0a001b;
+        public static final int v_offer_key=0x7f0a002b;
+        public static final int v_product_info=0x7f0a001e;
+        public static final int v_salt=0x7f0a001c;
+        public static final int v_store_one_click_payment=0x7f0a002c;
+        public static final int v_surl=0x7f0a0022;
+        public static final int v_txnid=0x7f0a0021;
+        public static final int v_udf1=0x7f0a0025;
+        public static final int v_udf2=0x7f0a0026;
+        public static final int v_udf3=0x7f0a0027;
+        public static final int v_udf4=0x7f0a0028;
+        public static final int v_udf5=0x7f0a0029;
+        public static final int v_user_credentials=0x7f0a0024;
+        public static final int view=0x7f0a00c0;
+        public static final int waiting=0x7f0a00ea;
+        public static final int waiting_dots=0x7f0a00f0;
+        public static final int waiting_dots_parent=0x7f0a00ee;
+        public static final int webview=0x7f0a00af;
+        public static final int withText=0x7f0a0041;
+        public static final int wrap_content=0x7f0a002d;
+        public static final int wv1=0x7f0a00f1;
     }
     public static final class integer {
         public static final int abc_config_activityDefaultDur=0x7f090001;
@@ -2327,62 +2440,67 @@ containing a value of this type.
         public static final int activity_emi=0x7f04001c;
         public static final int activity_main=0x7f04001d;
         public static final int activity_net_banking=0x7f04001e;
-        public static final int activity_payments=0x7f04001f;
-        public static final int activity_user_cards=0x7f040020;
-        public static final int activity_verify_api=0x7f040021;
-        public static final int app_bar=0x7f040022;
-        public static final int bank=0x7f040023;
-        public static final int cash_card_list_item=0x7f040024;
-        public static final int cb_prog_dialog=0x7f040025;
-        public static final int cb_progressdialog=0x7f040026;
-        public static final int choose_action=0x7f040027;
-        public static final int dialog_cvv=0x7f040028;
-        public static final int emi_list_item=0x7f040029;
-        public static final int error_page=0x7f04002a;
-        public static final int footer_image=0x7f04002b;
-        public static final int layout_delete_user_cards=0x7f04002c;
-        public static final int layout_edit_user_cards=0x7f04002d;
-        public static final int layout_get_card_information=0x7f04002e;
-        public static final int layout_get_offer_status=0x7f04002f;
-        public static final int layout_get_transaction_information=0x7f040030;
-        public static final int layout_get_user_cards=0x7f040031;
-        public static final int layout_store_user_cards=0x7f040032;
-        public static final int layout_user_cards=0x7f040033;
-        public static final int layout_verify_payment=0x7f040034;
-        public static final int loading=0x7f040035;
-        public static final int mainprogress=0x7f040036;
-        public static final int nb_layout=0x7f040037;
-        public static final int netbanking_list_item=0x7f040038;
-        public static final int notification_media_action=0x7f040039;
-        public static final int notification_media_cancel_action=0x7f04003a;
-        public static final int notification_template_big_media=0x7f04003b;
-        public static final int notification_template_big_media_narrow=0x7f04003c;
-        public static final int notification_template_lines=0x7f04003d;
-        public static final int notification_template_media=0x7f04003e;
-        public static final int notification_template_part_chronometer=0x7f04003f;
-        public static final int notification_template_part_time=0x7f040040;
-        public static final int register=0x7f040041;
-        public static final int register_pin=0x7f040042;
-        public static final int retry_otp=0x7f040043;
-        public static final int row=0x7f040044;
-        public static final int select_dialog_item_material=0x7f040045;
-        public static final int select_dialog_multichoice_material=0x7f040046;
-        public static final int select_dialog_singlechoice_material=0x7f040047;
-        public static final int support_simple_spinner_dropdown_item=0x7f040048;
-        public static final int user_card_item=0x7f040049;
-        public static final int wait_for_otp=0x7f04004a;
+        public static final int activity_one_click_payment=0x7f04001f;
+        public static final int activity_payments=0x7f040020;
+        public static final int activity_user_cards=0x7f040021;
+        public static final int activity_verify_api=0x7f040022;
+        public static final int app_bar=0x7f040023;
+        public static final int bank=0x7f040024;
+        public static final int cash_card_list_item=0x7f040025;
+        public static final int cb_prog_dialog=0x7f040026;
+        public static final int cb_progressdialog=0x7f040027;
+        public static final int choose_action=0x7f040028;
+        public static final int dialog_cvv=0x7f040029;
+        public static final int emi_list_item=0x7f04002a;
+        public static final int error_page=0x7f04002b;
+        public static final int footer_image=0x7f04002c;
+        public static final int layout_delete_stored_card_cvv=0x7f04002d;
+        public static final int layout_delete_user_cards=0x7f04002e;
+        public static final int layout_edit_user_cards=0x7f04002f;
+        public static final int layout_get_card_information=0x7f040030;
+        public static final int layout_get_offer_status=0x7f040031;
+        public static final int layout_get_transaction_information=0x7f040032;
+        public static final int layout_get_user_cards=0x7f040033;
+        public static final int layout_store_user_cards=0x7f040034;
+        public static final int layout_user_cards=0x7f040035;
+        public static final int layout_verify_payment=0x7f040036;
+        public static final int loading=0x7f040037;
+        public static final int magicretry_fragment=0x7f040038;
+        public static final int magicretry_main=0x7f040039;
+        public static final int mainprogress=0x7f04003a;
+        public static final int nb_layout=0x7f04003b;
+        public static final int netbanking_list_item=0x7f04003c;
+        public static final int notification_media_action=0x7f04003d;
+        public static final int notification_media_cancel_action=0x7f04003e;
+        public static final int notification_template_big_media=0x7f04003f;
+        public static final int notification_template_big_media_narrow=0x7f040040;
+        public static final int notification_template_lines=0x7f040041;
+        public static final int notification_template_media=0x7f040042;
+        public static final int notification_template_part_chronometer=0x7f040043;
+        public static final int notification_template_part_time=0x7f040044;
+        public static final int register=0x7f040045;
+        public static final int register_pin=0x7f040046;
+        public static final int retry_otp=0x7f040047;
+        public static final int row=0x7f040048;
+        public static final int select_dialog_item_material=0x7f040049;
+        public static final int select_dialog_multichoice_material=0x7f04004a;
+        public static final int select_dialog_singlechoice_material=0x7f04004b;
+        public static final int support_simple_spinner_dropdown_item=0x7f04004c;
+        public static final int user_card_item=0x7f04004d;
+        public static final int wait_for_otp=0x7f04004e;
     }
     public static final class menu {
-        public static final int main=0x7f0d0000;
-        public static final int menu_base=0x7f0d0001;
-        public static final int menu_card=0x7f0d0002;
-        public static final int menu_cash_card=0x7f0d0003;
-        public static final int menu_emi=0x7f0d0004;
-        public static final int menu_merchant_payment=0x7f0d0005;
-        public static final int menu_net_banking=0x7f0d0006;
-        public static final int menu_payments=0x7f0d0007;
-        public static final int menu_user_cards=0x7f0d0008;
-        public static final int menu_verify_api=0x7f0d0009;
+        public static final int main=0x7f0e0000;
+        public static final int menu_base=0x7f0e0001;
+        public static final int menu_card=0x7f0e0002;
+        public static final int menu_cash_card=0x7f0e0003;
+        public static final int menu_emi=0x7f0e0004;
+        public static final int menu_main=0x7f0e0005;
+        public static final int menu_merchant_payment=0x7f0e0006;
+        public static final int menu_net_banking=0x7f0e0007;
+        public static final int menu_payments=0x7f0e0008;
+        public static final int menu_user_cards=0x7f0e0009;
+        public static final int menu_verify_api=0x7f0e000a;
     }
     public static final class mipmap {
         public static final int amex=0x7f030000;
@@ -2399,6 +2517,8 @@ containing a value of this type.
         public static final int visa=0x7f03000b;
     }
     public static final class string {
+        public static final int MR_Error_text=0x7f0b0015;
+        public static final int MR_Tap_retry_text=0x7f0b0016;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0b0001;
@@ -2458,76 +2578,80 @@ containing a value of this type.
         /**  Content description for the Toolbar icon used to collapse an expanded action mode. [CHAR LIMIT=NONE] 
          */
         public static final int abc_toolbar_collapse_description=0x7f0b0004;
-        public static final int action_demo=0x7f0b004e;
-        public static final int action_exit=0x7f0b004c;
-        public static final int action_next=0x7f0b004d;
-        public static final int action_settings=0x7f0b004b;
-        public static final int analytics_waiting_for_otp=0x7f0b0012;
-        public static final int app_name=0x7f0b0049;
-        public static final int approve_otp=0x7f0b0013;
-        public static final int approved_otp=0x7f0b0014;
-        public static final int authenticate_with=0x7f0b0015;
-        public static final int b_cancel=0x7f0b0016;
-        public static final int b_retry=0x7f0b0017;
-        public static final int bank_page_loading=0x7f0b0018;
-        public static final int btn_action=0x7f0b0019;
-        public static final int cancel=0x7f0b001a;
-        public static final int card_not_registered_with_pin=0x7f0b001b;
-        public static final int choose=0x7f0b001c;
-        public static final int click_here=0x7f0b0058;
-        public static final int detect_bank=0x7f0b001d;
-        public static final int detect_otp=0x7f0b001e;
-        public static final int detecting_bank=0x7f0b001f;
-        public static final int detecting_page=0x7f0b0020;
-        public static final int enter_manually=0x7f0b0021;
-        public static final int enter_manually_log=0x7f0b0022;
-        public static final int enter_otp=0x7f0b0023;
-        public static final int enter_pin=0x7f0b0024;
-        public static final int error=0x7f0b0025;
-        public static final int failure=0x7f0b0026;
-        public static final int find_otp=0x7f0b0027;
+        public static final int action_demo=0x7f0b0050;
+        public static final int action_exit=0x7f0b004e;
+        public static final int action_next=0x7f0b004f;
+        public static final int action_settings=0x7f0b0014;
+        public static final int app_name=0x7f0b0012;
+        public static final int cancel=0x7f0b0059;
+        public static final int cb_analytics_waiting_for_otp=0x7f0b0017;
+        public static final int cb_approve_otp=0x7f0b0018;
+        public static final int cb_approved_otp=0x7f0b0019;
+        public static final int cb_authenticate_with=0x7f0b001a;
+        public static final int cb_b_cancel=0x7f0b001b;
+        public static final int cb_b_retry=0x7f0b001c;
+        public static final int cb_bank_page_loading=0x7f0b001d;
+        public static final int cb_btn_action=0x7f0b001e;
+        public static final int cb_cancel=0x7f0b001f;
+        public static final int cb_card_not_registered_with_pin=0x7f0b0020;
+        public static final int cb_choose=0x7f0b0021;
+        public static final int cb_detect_bank=0x7f0b0022;
+        public static final int cb_detect_otp=0x7f0b0023;
+        public static final int cb_detecting_bank=0x7f0b0024;
+        public static final int cb_detecting_page=0x7f0b0025;
+        public static final int cb_enter_manually=0x7f0b0026;
+        public static final int cb_enter_manually_log=0x7f0b0027;
+        public static final int cb_enter_otp=0x7f0b0028;
+        public static final int cb_enter_pin=0x7f0b0029;
+        public static final int cb_error=0x7f0b002a;
+        public static final int cb_failure=0x7f0b002b;
+        public static final int cb_find_otp=0x7f0b002c;
+        public static final int cb_incorrect_OTP_2=0x7f0b002d;
+        public static final int cb_incorrect_otp=0x7f0b002e;
+        public static final int cb_incorrect_password=0x7f0b002f;
+        public static final int cb_incorrect_pin=0x7f0b0030;
+        public static final int cb_init=0x7f0b0031;
+        public static final int cb_missing_txn_id=0x7f0b0032;
+        public static final int cb_otp=0x7f0b0033;
+        public static final int cb_otp_received=0x7f0b0034;
+        public static final int cb_otp_wv=0x7f0b0035;
+        public static final int cb_password=0x7f0b0036;
+        public static final int cb_password_value=0x7f0b0037;
+        public static final int cb_pin=0x7f0b0038;
+        public static final int cb_pin_c=0x7f0b0039;
+        public static final int cb_pin_wv=0x7f0b003a;
+        public static final int cb_populate_user_id=0x7f0b003b;
+        public static final int cb_process_otp=0x7f0b003c;
+        public static final int cb_reg_otp=0x7f0b003d;
+        public static final int cb_regen_otp=0x7f0b003e;
+        public static final int cb_regenerate=0x7f0b003f;
+        public static final int cb_regenerate_otp=0x7f0b0040;
+        public static final int cb_regenerate_otp_text=0x7f0b0041;
+        public static final int cb_register=0x7f0b0042;
+        public static final int cb_register_for_pin=0x7f0b0043;
+        public static final int cb_register_option=0x7f0b0044;
+        public static final int cb_registeration_detail=0x7f0b0045;
+        public static final int cb_result=0x7f0b0046;
+        public static final int cb_retry=0x7f0b0047;
+        public static final int cb_retry_otp=0x7f0b0048;
+        public static final int cb_skip_screen=0x7f0b0049;
+        public static final int cb_sms_otp=0x7f0b004a;
+        public static final int cb_success=0x7f0b004b;
+        public static final int cb_use_sms_otp=0x7f0b004c;
+        public static final int cb_waiting_for_otp=0x7f0b004d;
+        public static final int click_here=0x7f0b005b;
         /**  TODO: Remove or change this placeholder text 
          */
-        public static final int hello_blank_fragment=0x7f0b005f;
-        public static final int hello_world=0x7f0b004a;
-        public static final int if_cvv_and_expiry_on_card=0x7f0b0059;
-        public static final int if_dont_cvv_and_expiry_on_card=0x7f0b005a;
-        public static final int incorrect_OTP_2=0x7f0b0028;
-        public static final int incorrect_otp=0x7f0b0029;
-        public static final int incorrect_password=0x7f0b002a;
-        public static final int incorrect_pin=0x7f0b002b;
-        public static final int init=0x7f0b002c;
-        public static final int missing_txn_id=0x7f0b002d;
-        public static final int net_banking=0x7f0b005b;
+        public static final int hello_blank_fragment=0x7f0b0062;
+        public static final int hello_world=0x7f0b0013;
+        public static final int if_cvv_and_expiry_on_card=0x7f0b005c;
+        public static final int if_dont_cvv_and_expiry_on_card=0x7f0b005d;
+        public static final int net_banking=0x7f0b005e;
         /** note is ude to tell user 
          */
-        public static final int note=0x7f0b005e;
-        public static final int ok=0x7f0b0057;
-        public static final int otp=0x7f0b002e;
-        public static final int otp_received=0x7f0b002f;
-        public static final int otp_wv=0x7f0b0030;
-        public static final int password=0x7f0b0031;
-        public static final int password_value=0x7f0b0032;
-        public static final int pay_now=0x7f0b0056;
-        public static final int pin=0x7f0b0033;
-        public static final int pin_c=0x7f0b0034;
-        public static final int pin_wv=0x7f0b0035;
-        public static final int populate_user_id=0x7f0b0036;
-        public static final int process_otp=0x7f0b0037;
-        public static final int reg_otp=0x7f0b0038;
-        public static final int regen_otp=0x7f0b0039;
-        public static final int regenerate=0x7f0b003a;
-        public static final int regenerate_otp=0x7f0b003b;
-        public static final int regenerate_otp_text=0x7f0b003c;
-        public static final int register=0x7f0b003d;
-        public static final int register_for_pin=0x7f0b003e;
-        public static final int register_option=0x7f0b003f;
-        public static final int registeration_detail=0x7f0b0040;
-        public static final int result=0x7f0b0041;
-        public static final int retry=0x7f0b0042;
-        public static final int retry_otp=0x7f0b0043;
-        public static final int skip_screen=0x7f0b0044;
-        public static final int sms_otp=0x7f0b0045;
+        public static final int note=0x7f0b0061;
+        public static final int ok=0x7f0b005a;
+        public static final int pay_now=0x7f0b0058;
         /**  Text to use when the number in a notification info is too large
          (greater than status_bar_notification_info_maxnum, defined in
          values/config.xml) and must be truncated. May need to be localized
@@ -2535,18 +2659,15 @@ containing a value of this type.
          [CHAR LIMIT=4] 
          */
         public static final int status_bar_notification_info_overflow=0x7f0b0011;
-        public static final int success=0x7f0b0046;
-        public static final int title_activity_base=0x7f0b004f;
-        public static final int title_activity_card=0x7f0b0053;
-        public static final int title_activity_cash_card=0x7f0b0051;
-        public static final int title_activity_emi=0x7f0b0052;
-        public static final int title_activity_merchant_payment=0x7f0b005c;
-        public static final int title_activity_net_banking=0x7f0b0050;
-        public static final int title_activity_payments=0x7f0b0055;
-        public static final int title_activity_user_cards=0x7f0b0054;
-        public static final int title_activity_verify_api=0x7f0b005d;
-        public static final int use_sms_otp=0x7f0b0047;
-        public static final int waiting_for_otp=0x7f0b0048;
+        public static final int title_activity_base=0x7f0b0051;
+        public static final int title_activity_card=0x7f0b0055;
+        public static final int title_activity_cash_card=0x7f0b0053;
+        public static final int title_activity_emi=0x7f0b0054;
+        public static final int title_activity_merchant_payment=0x7f0b005f;
+        public static final int title_activity_net_banking=0x7f0b0052;
+        public static final int title_activity_payments=0x7f0b0057;
+        public static final int title_activity_user_cards=0x7f0b0056;
+        public static final int title_activity_verify_api=0x7f0b0060;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0c0040;
@@ -2765,7 +2886,6 @@ containing a value of this type.
         public static final int Platform_V11_AppCompat_Light=0x7f0c011b;
         public static final int Platform_V14_AppCompat=0x7f0c011e;
         public static final int Platform_V14_AppCompat_Light=0x7f0c011f;
-        public static final int ProgressDialog=0x7f0c0124;
         public static final int RtlOverlay_DialogWindowTitle_AppCompat=0x7f0c00eb;
         public static final int RtlOverlay_Widget_AppCompat_ActionBar_TitleItem=0x7f0c00e4;
         public static final int RtlOverlay_Widget_AppCompat_ActionButton_Overflow=0x7f0c00e5;
@@ -2969,8 +3089,9 @@ containing a value of this type.
          */
         public static final int Widget_AppCompat_Toolbar=0x7f0c0042;
         public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f0c0043;
-        public static final int approve_otp=0x7f0c0125;
-        public static final int cb_edit_text=0x7f0c0126;
+        public static final int cb_approve_otp=0x7f0c0124;
+        public static final int cb_edit_text=0x7f0c0125;
+        public static final int cb_progress_dialog=0x7f0c0126;
     }
     public static final class styleable {
         /**  ============================================ 
@@ -7630,5 +7751,81 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           @attr name android:layout
         */
         public static final int ViewStubCompat_android_layout = 1;
+        /** Attributes that can be used with a WaitingDots.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #WaitingDots_autoplay com.payu.testapp:autoplay}</code></td><td></td></tr>
+           <tr><td><code>{@link #WaitingDots_dotsColor com.payu.testapp:dotsColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #WaitingDots_jumpHeight com.payu.testapp:jumpHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #WaitingDots_period com.payu.testapp:period}</code></td><td></td></tr>
+           </table>
+           @see #WaitingDots_autoplay
+           @see #WaitingDots_dotsColor
+           @see #WaitingDots_jumpHeight
+           @see #WaitingDots_period
+         */
+        public static final int[] WaitingDots = {
+            0x7f0100c9, 0x7f0100ca, 0x7f0100cb, 0x7f0100cc
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.payu.testapp.R.attr#autoplay}
+          attribute's value can be found in the {@link #WaitingDots} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.payu.testapp:autoplay
+        */
+        public static final int WaitingDots_autoplay = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.payu.testapp.R.attr#dotsColor}
+          attribute's value can be found in the {@link #WaitingDots} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.payu.testapp:dotsColor
+        */
+        public static final int WaitingDots_dotsColor = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.payu.testapp.R.attr#jumpHeight}
+          attribute's value can be found in the {@link #WaitingDots} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.payu.testapp:jumpHeight
+        */
+        public static final int WaitingDots_jumpHeight = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.payu.testapp.R.attr#period}
+          attribute's value can be found in the {@link #WaitingDots} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.payu.testapp:period
+        */
+        public static final int WaitingDots_period = 1;
     };
 }

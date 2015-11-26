@@ -1,5 +1,5 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1442816686000 124138 e18d74372c78fa6a6abb3fd8504fcfbf7d63a3ce /Users/franklin/Documents/workspace/version4.2/Android-SDK-Sample-App/eclipse/sdkui/libs/PayU-release.jar
-1442816719000 124138 e18d74372c78fa6a6abb3fd8504fcfbf7d63a3ce /Users/franklin/Documents/workspace/version4.2/Android-SDK-Sample-App/eclipse/TestApp/libs/PayU-release.jar
+1448270054000 143694 ba4a401ff560111faed05a18f562a43522f5abf3 /Users/franklin/AndroidStudioProjects/github/eclipse/Android-SDK-Sample-App/eclipse/sdkui/libs/PayU-release.jar
+1448269971000 143694 ba4a401ff560111faed05a18f562a43522f5abf3 /Users/franklin/AndroidStudioProjects/github/eclipse/Android-SDK-Sample-App/eclipse/TestApp/libs/PayU-release.jar
