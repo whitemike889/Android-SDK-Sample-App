@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
+    <eat-comment/>
+    <string-array name="offer_modes">
+        <item>New card</item>
+        <item>Stored card</item>
+        <item>Net Banking</item>
+    </string-array>
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -31,23 +38,6 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <color name="cb_background">#f6f6f6</color>
-    <color name="cb_blue_button">#368ecd</color>
-    <color name="cb_border">#d4dee2</color>
-    <color name="cb_dark_blue_button">#094774</color>
-    <color name="cb_dark_grey">#464646</color>
-    <color name="cb_errorRed">#e40000</color>
-    <color name="cb_grey">#e9e7e7</color>
-    <color name="cb_input_gray">#FFDEE6E6</color>
-    <color name="cb_otpColor">#368ecd</color>
-    <color name="cb_otpDisabledColor">#7d88b3</color>
-    <color name="cb_otpDisabledTextColor">#bec4d9</color>
-    <color name="cb_otpReceivedColor">#769b12</color>
-    <color name="cb_textColor">#8f8d8d</color>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
-    <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
@@ -70,11 +60,6 @@
     <color name="material_grey_800">#ff424242</color>
     <color name="material_grey_850">#ff303030</color>
     <color name="material_grey_900">#ff212121</color>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <color name="payu_blue">#368ecd</color>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
-    <eat-comment/>
     <color name="primary_dark_material_dark">@android:color/black</color>
     <color name="primary_dark_material_light">@color/material_grey_600</color>
     <color name="primary_material_dark">@color/material_grey_900</color>
@@ -180,15 +165,11 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <dimen name="circle_indicator_outer_radius">4dp</dimen>
-    <dimen name="circle_indicator_radius">3dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
     <item name="dialog_fixed_height_minor" type="dimen">100%</item>
@@ -196,34 +177,12 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <dimen name="eight">8dp</dimen>
-    <dimen name="eighteen">18dp</dimen>
-    <dimen name="four">4dp</dimen>
-    <dimen name="fourteen">14dp</dimen>
-    <dimen name="fourteenScaled">14sp</dimen>
-    <dimen name="fourtytwo">48dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
-    <eat-comment/>
     <item format="float" name="highlight_alpha_material_colored" type="dimen">0.26</item>
     <item format="float" name="highlight_alpha_material_dark" type="dimen">0.20</item>
     <item format="float" name="highlight_alpha_material_light" type="dimen">0.12</item>
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_large_icon_width">64dp</dimen>
     <dimen name="notification_subtext_size">12dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <dimen name="sixteen">16dp</dimen>
-    <dimen name="sixteenScaled">16sp</dimen>
-    <dimen name="thirtysix">36dp</dimen>
-    <dimen name="thirtytwo">32dp</dimen>
-    <dimen name="twelve">12dp</dimen>
-    <dimen name="twelveScaled">12sp</dimen>
-    <dimen name="twentyfour">24dp</dimen>
-    <dimen name="two">2dp</dimen>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
-    <eat-comment/>
     <drawable name="notification_template_icon_bg">#3333B5E5</drawable>
     <item name="action_bar_activity_content" type="id"/>
     <item name="action_bar_spinner" type="id"/>
@@ -256,107 +215,27 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <string name="action_demo">Demo</string>
     <string name="action_exit">Exit</string>
     <string name="action_next">Next</string>
     <string name="action_settings">Settings</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="analytics_waiting_for_otp">waiting_for_otp</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="app_name">Test App</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="approve_otp">Approve</string>
-    <string name="approved_otp">approved OTP</string>
-    <string name="authenticate_with">Select an option for Faster Payment</string>
-    <string name="b_cancel">Cancel</string>
-    <string name="b_retry">Retry</string>
-    <string name="bank_page_loading">Please wait. Bank page is loading..</string>
-    <string name="btn_action">btn_action</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="cancel">Cancel</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="card_not_registered_with_pin">Your card has not been registered for PIN yet. Do you want to continue with PIN?</string>
-    <string name="choose">choose</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="click_here">Click here</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="detect_bank">detectBank</string>
-    <string name="detect_otp">detectOtp</string>
-    <string name="detecting_bank">detecting bank</string>
-    <string name="detecting_page">detecting page</string>
-    <string name="enter_manually">Enter Manually</string>
-    <string name="enter_manually_log">enterManually</string>
-    <string name="enter_otp">enterOTP</string>
-    <string name="enter_pin">enterPIN</string>
-    <string name="error">error</string>
-    <string name="failure">failure</string>
-    <string name="find_otp">findOtp</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_world">Hello world!</string>
     <string name="if_cvv_and_expiry_on_card">  if you have CVV and Expiry on your card</string>
     <string name="if_dont_cvv_and_expiry_on_card">  if you don\'t have CVV and Expiry on your card</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="incorrect_OTP_2">incorrectOTP</string>
-    <string name="incorrect_otp">INCORRECT OTP ENTERED</string>
-    <string name="incorrect_password">Incorrect Password</string>
-    <string name="incorrect_pin">incorrectPIN</string>
-    <string name="init">init</string>
-    <string name="missing_txn_id">Missing Transaction ID</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="net_banking">Net Banking</string>
     <string name="note">Note : You will be navigated to payment gateway.</string>
     <string name="ok">Ok</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="otp">otp</string>
-    <string name="otp_received">OTP Received</string>
-    <string name="otp_wv">OTP_WV</string>
-    <string name="password">PASSWORD</string>
-    <string name="password_value">Password</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
-    <eat-comment/>
     <string name="pay_now">Pay</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="pin">pin</string>
-    <string name="pin_c">PIN</string>
-    <string name="pin_wv">PIN_WV</string>
-    <string name="populate_user_id">populate_user_id</string>
-    <string name="process_otp">process_otp</string>
-    <string name="reg_otp">REGENERATE OTP</string>
-    <string name="regen_otp">regenerate_otp</string>
-    <string name="regenerate">regenerate</string>
-    <string name="regenerate_otp">Regenerate OTP</string>
-    <string name="regenerate_otp_text">It is taking long.You may...</string>
-    <string name="register">register</string>
-    <string name="register_for_pin">REGISTER FOR PIN</string>
-    <string name="register_option">registerOption</string>
-    <string name="registeration_detail">Enter your registration details</string>
-    <string name="result">result</string>
-    <string name="retry">retry...</string>
-    <string name="retry_otp">retryOTP</string>
-    <string name="skip_screen">skipScreen</string>
-    <string name="sms_otp">SMS OTP</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="success">success</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_card">CardActivity</string>
@@ -367,21 +246,17 @@
     <string name="title_activity_payments">PaymentsActivity</string>
     <string name="title_activity_user_cards">UserCardsActivity</string>
     <string name="title_activity_verify_api">VerifyApiActivity</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <string name="use_sms_otp">USE SMS OTP</string>
-    <string name="waiting_for_otp">Waiting for OTP</string>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
     <style name="Animation.AppCompat.DropDownUp" parent="Base.Animation.AppCompat.DropDownUp"/>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="AppTheme">
     </style>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
+    <!-- From: file:/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.AlertDialog.AppCompat" parent="android:Widget">
         <item name="android:layout">@layout/abc_alert_dialog_material</item>
@@ -1394,22 +1269,6 @@
         <item name="android:dropDownItemStyle">@style/Widget.AppCompat.DropDownItem.Spinner</item>
     </style>
     <style name="Platform.Widget.AppCompat.Spinner" parent="android:Widget.Spinner"/>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <style name="ProgressDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowTitleStyle">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-        <item name="android:backgroundDimEnabled">true</item>
-
-    </style>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values/values.xml -->
-    <eat-comment/>
     <style name="RtlOverlay.DialogWindowTitle.AppCompat" parent="Base.DialogWindowTitle.AppCompat">
     </style>
     <style name="RtlOverlay.Widget.AppCompat.ActionBar.TitleItem" parent="android:Widget">
@@ -1637,16 +1496,4 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation"/>
-    <!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/build/intermediates/exploded-aar/Android-SDK-Sample-App/CustomBrowser-release/unspecified/res/values/values.xml -->
-    <eat-comment/>
-    <style name="approve_otp" parent="android:Widget.Button">
-        <item name="android:padding">0dp</item>
-        <item name="android:textSize">@dimen/fourteenScaled</item>
-        <item name="android:textColor">#FFFFFF</item>
-
-    </style>
-    <style name="cb_edit_text" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/cb_edit_text</item>
-
-    </style>
 </resources>

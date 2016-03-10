@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/rahul.hooda/Rahul-Data/SampleAppsForGit/AndroidSampleApp-with-sdk4.5-without-cb/sdkui/src/debug/assets"/></dataSet></merger>

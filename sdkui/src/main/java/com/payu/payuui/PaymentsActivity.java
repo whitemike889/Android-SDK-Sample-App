@@ -1,37 +1,41 @@
 package com.payu.payuui;
 
-import android.Manifest;
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Debug;
+import android.os.CountDownTimer;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.payu.custombrowser.Bank;
-import com.payu.custombrowser.PayUWebChromeClient;
-import com.payu.custombrowser.PayUWebViewClient;
 import com.payu.india.Extras.PayUSdkDetails;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Payu.PayuConstants;
+import com.payu.india.Payu.PayuUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class PaymentsActivity extends AppCompatActivity{
+public class PaymentsActivity extends AppCompatActivity {
 
     Bundle bundle;
     String url;
@@ -41,6 +45,20 @@ public class PaymentsActivity extends AppCompatActivity{
     private String UTF = "UTF-8";
     private  boolean viewPortWide = false;
     private WebView mWebView;
+    private PayuUtils mPayuUtils;
+
+    private int storeOneClickHash;
+    private Boolean smsPermission;
+
+    private String merchantHash;
+    String txnId = null;
+
+    private String payuReponse; // response received from payu js interface
+    private String merchantResponse; // response received from surl/furl js interface
+    private Boolean isSuccessTransaction; // status of the transaction should be set from payu's js interface functions.
+    private ProgressDialog mProgressDialog;
+
+    @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**
@@ -56,41 +74,33 @@ public class PaymentsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_payments);
         mWebView = (WebView) findViewById(R.id.webview);
 
+        mPayuUtils = new PayuUtils();
+
         //region Replace the whole code by the commented code if you are NOT using custombrowser
         // Replace the whole code by the commented code if you are NOT using custombrowser.
 
-        /*bundle = getIntent().getExtras();
-        payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-
-        mWebView = (WebView) findViewById(R.id.webview);
-
-        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
-
-        byte[] encodedData = EncodingUtils.getBytes(payuConfig.getData(), "base64");
-        mWebView.postUrl(url, encodedData);
-
-
-        mWebView.getSettings().setSupportMultipleWindows(true);
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.setWebChromeClient(new WebChromeClient() {});
-        mWebView.setWebViewClient(new WebViewClient() {});*/
-        //endregion
-
         bundle = getIntent().getExtras();
         payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
+        storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
+        mWebView = (WebView) findViewById(R.id.webview);
 
-        // mWebView = (WebView) findViewById(R.id.webview);
-        // mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }*/
+        switch (payuConfig.getEnvironment()) {
+            case PayuConstants.PRODUCTION_ENV:
+                url = PayuConstants.PRODUCTION_PAYMENT_URL;
+                break;
+            case PayuConstants.MOBILE_STAGING_ENV:
+                url = PayuConstants.MOBILE_TEST_PAYMENT_URL;
+                break;
+            case PayuConstants.STAGING_ENV:
+                url = PayuConstants.TEST_PAYMENT_URL;
+                break;
+            default:
+                url = PayuConstants.PRODUCTION_PAYMENT_URL;
+                break;
+        }
 
         String [] list =  payuConfig.getData().split("&");
-        String txnId = null;
+
         String merchantKey = null;
         for (String item : list) {
             String[] items = item.split("=");
@@ -108,71 +118,11 @@ public class PaymentsActivity extends AppCompatActivity{
                             viewPortWide = true;
                         }
                         break;
+
                 }
             }
         }
 
-        try {
-            Class.forName("com.payu.custombrowser.Bank");
-            final Bank bank = new Bank() {
-                @Override
-                public void registerBroadcast(BroadcastReceiver broadcastReceiver, IntentFilter filter) {
-                    mReceiver = broadcastReceiver;
-                    registerReceiver(broadcastReceiver, filter);
-                }
-
-                @Override
-                public void unregisterBroadcast(BroadcastReceiver broadcastReceiver) {
-                    if(mReceiver != null){
-                        unregisterReceiver(mReceiver);
-                        mReceiver = null;
-                    }
-                }
-
-                @Override
-                public void onHelpUnavailable() {
-                    findViewById(R.id.parent).setVisibility(View.GONE);
-                    findViewById(R.id.trans_overlay).setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onBankError() {
-                    findViewById(R.id.parent).setVisibility(View.GONE);
-                    findViewById(R.id.trans_overlay).setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onHelpAvailable() {
-                    findViewById(R.id.parent).setVisibility(View.VISIBLE);
-                }
-            };
-            Bundle args = new Bundle();
-            args.putInt(Bank.WEBVIEW, R.id.webview);
-            args.putInt(Bank.TRANS_LAYOUT, R.id.trans_overlay);
-            args.putInt(Bank.MAIN_LAYOUT, R.id.r_layout);
-            args.putBoolean(Bank.VIEWPORTWIDE, viewPortWide);
-
-            args.putString(Bank.TXN_ID, txnId == null ? String.valueOf(System.currentTimeMillis()) : txnId);
-            args.putString(Bank.MERCHANT_KEY, null != merchantKey ? merchantKey : "could not find");
-            PayUSdkDetails payUSdkDetails = new PayUSdkDetails();
-            args.putString(Bank.SDK_DETAILS, payUSdkDetails.getSdkVersionName());
-            if(getIntent().getExtras().containsKey("showCustom")) {
-                args.putBoolean(Bank.SHOW_CUSTOMROWSER, getIntent().getBooleanExtra("showCustom", false));
-            }
-            args.putBoolean(Bank.SHOW_CUSTOMROWSER, true);
-            bank.setArguments(args);
-            findViewById(R.id.parent).bringToFront();
-            try {
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.cb_face_out).add(R.id.parent, bank).commit();
-            }catch(Exception e)
-            {
-                e.printStackTrace();
-                finish();
-            }
-            mWebView.setWebChromeClient(new PayUWebChromeClient(bank));
-            mWebView.setWebViewClient(new PayUWebViewClient(bank));
-            mWebView.postUrl(url, payuConfig.getData().getBytes());
-        } catch (ClassNotFoundException e) {
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.getSettings().setSupportMultipleWindows(true);
             mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -185,55 +135,145 @@ public class PaymentsActivity extends AppCompatActivity{
             transOverlay.setVisibility(View.GONE);
 
             mWebView.addJavascriptInterface(new Object() {
+
+                /**
+                 * Call back from surl - sucess transaction
+                 * with no argument.
+                 * just send empty string back to calling activity
+                 */
                 @JavascriptInterface
                 public void onSuccess() {
                     onSuccess("");
                 }
 
+                /**
+                 * call back function from surl - success transaction.
+                 * keep the data in {@link PaymentsActivity#merchantResponse}
+                 * @param result
+                 */
                 @JavascriptInterface
                 public void onSuccess(final String result) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent();
-                            intent.putExtra("result", result);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-//                }
-                    });
+                    merchantResponse = result;
                 }
 
+                /**
+                 * Attempt to deprecate surl.
+                 * Javascript interface call from payu server.
+                 * Lets keep the data in local variable and pass it to main activity.
+                 * @param result json data of post param.
+                 */
+
+                @JavascriptInterface
+                public void onPayuSuccess(final String result) {
+
+                    isSuccessTransaction = true;
+                    payuReponse = result;
+
+                    if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE) { // store it only if i need to store it
+                        try {
+                            JSONObject hashObject = new JSONObject(payuReponse);
+                            // store the cvv in shared preferences.
+                            new PayuUtils().storeInSharedPreferences(PaymentsActivity.this, hashObject.getString(PayuConstants.CARD_TOKEN), hashObject.getString(PayuConstants.MERCHANT_HASH));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                    callTimer();
+                }
+
+                /**
+                 * Call back from furl - failure transaction
+                 * with no argument.
+                 * just send empty string back to calling activity
+                 */
                 @JavascriptInterface
                 public void onFailure() {
                     onFailure("");
                 }
 
+
+                /**
+                 * call back function from furl - failure transaction.
+                 * keep the value in {@link PaymentsActivity#merchantResponse}
+                 * @param result
+                 */
                 @JavascriptInterface
                 public void onFailure(final String result) {
+                    merchantResponse = result;
+                }
+
+                /**
+                 * Attempt to deprecate furl.
+                 * Javascript call from payu server.
+                 * Lets keep the data in local variable and pass it to calling activity.
+                 * @param result
+                 */
+                @JavascriptInterface
+                public void onPayuFailure(final String result) {
+                    isSuccessTransaction = false;
+                    payuReponse = result;
+                    callTimer();
+                }
+
+                @JavascriptInterface
+                @Deprecated
+                public void onMerchantHashReceived(final String result) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent();
-                            intent.putExtra("result", result);
-                            setResult(RESULT_CANCELED, intent);
-                            finish();
+                            switch (storeOneClickHash) {
+                                case PayuConstants.STORE_ONE_CLICK_HASH_MOBILE:
+                                    try {
+                                        JSONObject hashObject = new JSONObject(result);
+                                        // store the cvv in shared preferences.
+                                        new PayuUtils().storeInSharedPreferences(PaymentsActivity.this, hashObject.getString(PayuConstants.CARD_TOKEN), hashObject.getString(PayuConstants.MERCHANT_HASH));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+
+                                    }
+                                    break;
+                                case PayuConstants.STORE_ONE_CLICK_HASH_SERVER:
+                                    merchantHash = result;
+                                    break;
+                                case PayuConstants.STORE_ONE_CLICK_HASH_NONE:
+                                    break;
+                            }
                         }
                     });
                 }
             }, "PayU");
 
+
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading...");
             mWebView.setWebChromeClient(new WebChromeClient() );
-            mWebView.setWebViewClient(new WebViewClient());
+            mWebView.setWebViewClient(new WebViewClient() {
+                // flag to tell whether surl or furl loaded.
+                private boolean isMerchantUrlStarted;
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    mProgressDialog.show();
+                    if(isPayuResponseReceived()) // loading either surl or furl.
+                        isMerchantUrlStarted = true;
+
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    mProgressDialog.dismiss();
+                    if(isMerchantUrlStarted){ // finishing surl or furl
+                        // finish the activity.
+                        onMerchantUrlFinished();
+                    }
+                }
+            });
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDomStorageEnabled(true);
             mWebView.postUrl(url, payuConfig.getData().getBytes());
-        }
-
-        /*mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        // url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
-        mWebView.postUrl(url, EncodingUtils.getBytes(payuConfig.getData(), "base64"));*/
     }
 
     @Override
@@ -292,7 +332,68 @@ public class PaymentsActivity extends AppCompatActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
-        // Log.v("#### PAYU", "PAYMENTSACTIVITY: ondestroy");
-        /*Debug.stopMethodTracing();*/
+    }
+
+    /**
+     * Helper function return the availablity of payu response given by nPayuSuccess(String)
+     * @return true or false.
+     */
+    boolean isPayuResponseReceived(){
+        if(null != payuReponse) return true;
+        return false;
+    }
+
+
+    /**
+     * Just to make sure we finish activity even if the merchant's url got into trouble,
+     * should be called from onPayuSuccess(String) or onPayuFailure(String)
+     */
+    void callTimer(){
+        new CountDownTimer(5000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                // tick tick tick tick....
+            }
+
+            public void onFinish() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isFinishing()) {
+                            onMerchantUrlFinished();
+                        }
+                    }
+                });
+
+            }
+        }.start();
+    }
+
+    /**
+     * This function takes care of sending the data back to calling activity with the status, merchantResponse, payuresponse.
+     */
+    public void onMerchantUrlFinished(){
+        // finish the activity.
+        // finish the activity.
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!isFinishing()) {
+                    Intent intent = new Intent();
+                    intent.putExtra("result", merchantResponse);
+                    intent.putExtra("payu_response", payuReponse);
+                    if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && null != merchantHash) {
+                        intent.putExtra(PayuConstants.MERCHANT_HASH, merchantHash);
+                    }
+                    if (isSuccessTransaction)
+                        setResult(Activity.RESULT_OK, intent);
+                    else
+                        setResult(Activity.RESULT_CANCELED, intent);
+
+
+                    finish();
+                }
+            }
+        });
     }
 }
