@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,16 +18,18 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.payu.india.CallBackHandler.OnetapCallback;
 import com.payu.india.Extras.PayUSdkDetails;
 import com.payu.india.Interfaces.OneClickPaymentListener;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
+import com.payu.india.Payu.Payu;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Extras.PayUChecksum;
-import com.payu.payuui.PayUBaseActivity;
+import com.payu.payuui.Activity.PayUBaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,15 +48,14 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, OneClickPaymentListener {
 
-
     int merchantIndex = 0;
-        int env = PayuConstants.MOBILE_STAGING_ENV;
+//        int env = PayuConstants.MOBILE_STAGING_ENV;
 //    int env = PayuConstants.MOBILE_DEV_ENV;
 //     in case of production make sure that merchantIndex is fixed as 0 (0MQaQP) for other key's payu server cant generate hash
-//    int env = PayuConstants.PRODUCTION_ENV;
+    int env = PayuConstants.PRODUCTION_ENV;
 
-    String merchantTestKeys[] = {"gtKFFx","DXOF8m","obScKz", "smsplus"};
-//    String merchantTestSalts[] = {,"eCwWELxi","2Hl5U0En", Ml7XBCdR", "350" };
+    String merchantTestKeys[] = {"gtKFFx", "DXOF8m","obScKz", "smsplus"};
+//    String merchantTestSalts[] = {"eCwWELxi","2Hl5U0En", "Ml7XBCdR", "350" };
 
     Boolean smsPermission = true;
 
@@ -97,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        OnetapCallback.setOneTapCallback(this);
 
-//        OnetapCallback.setOneTapCallback(this);
+        Payu.setInstance(this);
 
         // lets set up the tool bar;
         toolBar = (Toolbar) findViewById(R.id.app_bar);
@@ -171,32 +175,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (data != null) {
 
 
-                String jsonString;
-
-                if (data.getStringExtra(PayuConstants.MERCHANT_HASH) != null) {
-                    jsonString = data.getStringExtra(PayuConstants.MERCHANT_HASH);
-                }else {
-                    jsonString = data.getStringExtra(PayuConstants.PAYU_RESPONSE);
-                }
-
-                if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsonString);
-
-
-                        if (jsonObject.has(PayuConstants.CARD_TOKEN) && jsonObject.has(PayuConstants.MERCHANT_HASH)) { // we have merchant hash, lets store it merchant server. card_merchant_param && cardToken
-                            storeMerchantHash(jsonObject.getString(PayuConstants.CARD_TOKEN), jsonObject.getString(PayuConstants.MERCHANT_HASH));
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-
-                    }
-                }
+//                String jsonString;
+//
+//                if (data.getStringExtra(PayuConstants.MERCHANT_HASH) != null) {
+//                    jsonString = data.getStringExtra(PayuConstants.MERCHANT_HASH);
+//                }else {
+//                    jsonString = data.getStringExtra(PayuConstants.PAYU_RESPONSE);
+//                }
+//
+//                if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(jsonString);
+//
+//
+//                        if (jsonObject.has(PayuConstants.CARD_TOKEN) && jsonObject.has(PayuConstants.MERCHANT_HASH)) { // we have merchant hash, lets store it merchant server. card_merchant_param && cardToken
+//                            storeMerchantHash(jsonObject.getString(PayuConstants.CARD_TOKEN), jsonObject.getString(PayuConstants.MERCHANT_HASH));
+//                        }
+//
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//
+//
+//                    }
+//                }
 
 
                 new AlertDialog.Builder(this)
@@ -677,6 +681,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }.execute();
     }
 
+
+
+
     private void fetchMerchantHashes(final Intent intent){
         // now make the api call.
         final String postParams = "merchant_key=" + key + "&user_credentials=" + var1 ;
@@ -744,9 +751,137 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void getAllOneClickHash(String merchantKey, String userCredentials) {
 
+    private void deleteMerchantHash(String cardToken){
+
+        final String postParams = "card_token="+cardToken;
+
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    //  https://mobiledev.payu.in/admin/wis.php?action=add&uid=124&mid=457&token=74588&cvvhash=0123456789031
+
+                    URL url = new URL("https://payu.herokuapp.com/delete_merchant_hash");
+
+                    byte[] postParamsByte = postParams.getBytes("UTF-8");
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("Content-Length", String.valueOf(postParamsByte.length));
+                    conn.setDoOutput(true);
+                    conn.getOutputStream().write(postParamsByte);
+
+                    InputStream responseInputStream = conn.getInputStream();
+//                    StringBuffer responseStringBuffer = new StringBuffer();
+//                    byte[] byteContainer = new byte[1024];
+//                    for (int i; (i = responseInputStream.read(byteContainer)) != -1; ) {
+//                        responseStringBuffer.append(new String(byteContainer, 0, i));
+//                    }
+//
+//                    JSONObject response = new JSONObject(responseStringBuffer.toString());
+
+
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                this.cancel(true);
+            }
+        }.execute();
+    }
+
+
+    public HashMap<String, String > getAllOneClickHashHelper(String merchantKey, String userCredentials) {
+
+        // now make the api call.
+        final String postParams = "merchant_key=" + merchantKey + "&user_credentials=" + userCredentials ;
+        final Intent baseActivityIntent = intent;
+        HashMap<String, String> cardTokens  = new HashMap<String, String>();;
+
+        try {
+            //  https://mobiled ev.payu.in/admin/wis.php?action=add&uid=124&mid=457&token=74588&cvvhash=0123456789031
+
+            URL url = new URL("https://payu.herokuapp.com/get_merchant_hashes");
+
+            byte[] postParamsByte = postParams.getBytes("UTF-8");
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Length", String.valueOf(postParamsByte.length));
+            conn.setDoOutput(true);
+            conn.getOutputStream().write(postParamsByte);
+
+            InputStream responseInputStream = conn.getInputStream();
+            StringBuffer responseStringBuffer = new StringBuffer();
+            byte[] byteContainer = new byte[1024];
+            for (int i; (i = responseInputStream.read(byteContainer)) != -1; ) {
+                responseStringBuffer.append(new String(byteContainer, 0, i));
+            }
+
+            JSONObject response = new JSONObject(responseStringBuffer.toString());
+
+            JSONArray oneClickCardsArray = response.getJSONArray("data");
+            int arrayLength;
+            if((arrayLength = oneClickCardsArray.length()) >= 1) {
+                for (int i = 0; i < arrayLength; i++) {
+                    cardTokens.put(oneClickCardsArray.getJSONArray(i).getString(0), oneClickCardsArray.getJSONArray(i).getString(1));
+                }
+
+            }
+            // pass these to next activity
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return cardTokens;
+    }
+
+
+
+
+    /**
+     * Returns a HashMap object of cardToken and one click hash from merchant server.
+     *
+     * This method will be called as a async task, regardless of merchant implementation.
+     * Hence, not to call this function as async task.
+     * The function should return a cardToken and corresponding one click hash as a hashMap.
+     *
+     *@param userCreds   a string giving the user credentials of user.
+     *@return            the Hash Map of cardToken and one Click hash.
+     **/
+
+    @Override
+    public HashMap<String, String > getAllOneClickHash(String userCreds){
+        // 1. GET http request from your server
+        // GET params - merchant_key, user_credentials.
+        // 2. In response we get a
+        // this is a sample code for fetching one click hash from merchant server.
+        return getAllOneClickHashHelper(key, userCreds);
     }
 
     @Override
@@ -754,15 +889,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     *
+     * This method will be called as a async task, regardless of merchant implementation.
+     * Hence, not to call this function as async task.
+     * This function save the oneClickHash corresponding to its cardToken
+     *
+     *@param cardToken     a string containing the card token
+     *@param oneClickHash  a string containing the one click hash.
+     **/
+
     @Override
-    public void saveOneClickHash(String merchantKey, String userCredentials, String cardToken, String oneClickHash) {
+    public void saveOneClickHash(String cardToken, String oneClickHash) {
+        // 1. POST http request to your server
+        // POST params - merchant_key, user_credentials,card_token,merchant_hash.
+        // 2. In this POST method the oneclickhash is stored corresponding to card token in merchant server.
+        // this is a sample code for storing one click hash on merchant server.
+
+        storeMerchantHash(cardToken, oneClickHash);
 
     }
 
+    /**
+     *
+     * This method will be called as a async task, regardless of merchant implementation.
+     * Hence, not to call this function as async task.
+     * This function delete’s the oneClickHash from the merchant server
+     *
+     *@param cardToken     a string containing the card token
+     *@param userCredentials  a string containing the user credentials.
+     **/
+
     @Override
-    public void deleteOneClickHash(String cardToken, String merchantKey, String userCredentials) {
+    public void deleteOneClickHash(String cardToken,  String userCredentials) {
+
+        // 1. POST http request to your server
+        // POST params  - merchant_hash.
+        // 2. In this POST method the oneclickhash is deleted in merchant server.
+        // this is a sample code for deleting one click hash from merchant server.
+
+        deleteMerchantHash(cardToken);
 
     }
+
 }
 
 
