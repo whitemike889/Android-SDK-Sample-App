@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
 
@@ -20,6 +20,7 @@
     <item name="k_env" type="id"/>
     <item name="k_offer_key" type="id"/>
     <item name="k_store_one_click_payment" type="id"/>
+    <item name="k_sms_permission" type="id" />
 
 
     <item name="v_merchant_key" type="id"/>
@@ -40,6 +41,7 @@
     <item name="v_env" type="id"/>
     <item name="v_offer_key" type="id"/>
     <item name="v_store_one_click_payment" type="id"/>
+    <item name="v_sms_permission" type="id" />
 
 
 </resources>

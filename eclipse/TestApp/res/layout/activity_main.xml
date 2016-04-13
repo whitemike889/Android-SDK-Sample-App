@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
-
     <ScrollView
         android:id="@+id/scroll_view_main"
         android:layout_width="match_parent"
@@ -53,4 +49,3 @@
 
     </LinearLayout>
 </RelativeLayout>
-
