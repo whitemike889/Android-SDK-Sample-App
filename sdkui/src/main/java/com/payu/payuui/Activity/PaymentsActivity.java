@@ -43,7 +43,7 @@ public class PaymentsActivity extends FragmentActivity {
             bundle = getIntent().getExtras();
             payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
             storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
-            url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL;
+            url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
             String[] list = payuConfig.getData().split("&");
 
             for (String item : list) {

@@ -49,10 +49,11 @@ import java.util.Iterator;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, OneClickPaymentListener {
 
     int merchantIndex = 0;
-//        int env = PayuConstants.MOBILE_STAGING_ENV;
-//    int env = PayuConstants.MOBILE_DEV_ENV;
-//     in case of production make sure that merchantIndex is fixed as 0 (0MQaQP) for other key's payu server cant generate hash
-    int env = PayuConstants.PRODUCTION_ENV;
+
+//    int env = PayuConstants.MOBILE_STAGING_ENV;
+    // in case of production make sure that merchantIndex is fixed as 0 (0MQaQP) for other key's payu server cant generate hash
+  //  int env = PayuConstants.PRODUCTION_ENV;
+    int env = PayuConstants.STAGING_ENV;
 
     String merchantTestKeys[] = {"gtKFFx", "DXOF8m","obScKz", "smsplus"};
 //    String merchantTestSalts[] = {"eCwWELxi","2Hl5U0En", "Ml7XBCdR", "350" };
