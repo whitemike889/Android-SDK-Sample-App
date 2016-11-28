@@ -8,4 +8,4 @@
         android:toAlpha="1.0"
         android:interpolator="@android:anim/accelerate_interpolator"
         android:duration="500"/>
-</set><!-- From: file:/Users/franklin/AndroidStudioProjects/Android-SDK-Sample-App/sdkui/src/main/res/anim/fade_in.xml -->
+</set><!-- From: file:/Users/rahul.hooda/Rahul-Data/Temp-Android-Sample-App-SDK4.4.0CB6.1/sdkui/src/main/res/anim/fade_in.xml -->
