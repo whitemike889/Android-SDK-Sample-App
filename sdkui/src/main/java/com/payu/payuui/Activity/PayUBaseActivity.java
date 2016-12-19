@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,107 +44,95 @@ import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-
-public class PayUBaseActivity extends FragmentActivity implements  PaymentRelatedDetailsListener,ValueAddedServiceApiListener, View.OnClickListener {
+/**
+ * This activity is where you get the payment options.
+ */
+public class PayUBaseActivity extends FragmentActivity implements PaymentRelatedDetailsListener, ValueAddedServiceApiListener, View.OnClickListener {
 
     public Bundle bundle;
-    ArrayList<String> paymentOptionsList = new ArrayList<String>();
-    ArrayList<String> paymentOptionsSet = new ArrayList<String>();
-    PayuConfig payuConfig;
-    PaymentParams mPaymentParams;
-    PayuHashes mPayUHashes;
-    PayuResponse mPayuResponse;
-    PayuUtils mPayuUtils;
-    PayuResponse valueAddedResponse;
-    private int mTabCount;
-    public PagerAdapter pagerAdapter;
+    private ArrayList<String> paymentOptionsList = new ArrayList<String>();
+    private PayuConfig payuConfig;
+    private PaymentParams mPaymentParams;
+    private PayuHashes mPayUHashes;
+    private PayuResponse mPayuResponse;
+    private PayuUtils mPayuUtils;
+    private PayuResponse valueAddedResponse;
+    private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
-    private TextView amountTextView;
-    private TextView transactionIdTextView;
     private Button payNowButton;
     private Spinner spinnerNetbanking;
     private String bankCode;
-    private ArrayList<PaymentDetails> netBankingList;
     private PostData postData;
     private ValueAddedServiceTask valueAddedServiceTask;
     private ArrayList<StoredCard> savedCards;
 
-    private Boolean smsPermission;
-
-
     private PostData mPostData;
 
-    HashMap<String, String> oneClickCardTokens;
-
-    private int storeOneClickHash;
-
-
-
+    private HashMap<String, String> oneClickCardTokens;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payu_base);
 
-
         (payNowButton = (Button) findViewById(R.id.button_pay_now)).setOnClickListener(this);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
         bundle = getIntent().getExtras();
 
-        payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-        payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
+        if (bundle != null) {
+            payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
+            payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
 
-        mPayuUtils = new PayuUtils();
+            mPayuUtils = new PayuUtils();
 
+            mPaymentParams = bundle.getParcelable(PayuConstants.PAYMENT_PARAMS);
+            mPayUHashes = bundle.getParcelable(PayuConstants.PAYU_HASHES);
 
-        // TODO add null pointer check here
-//        mPaymentDefaultParams = bundle.getParcelable(PayuConstants.PAYMENT_DEFAULT_PARAMS);
-        mPaymentParams = bundle.getParcelable(PayuConstants.PAYMENT_PARAMS); // Todo change the name to PAYMENT_PARAMS
-        mPayUHashes = bundle.getParcelable(PayuConstants.PAYU_HASHES);
-
-        storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
-        smsPermission = bundle.getBoolean(PayuConstants.SMS_PERMISSION);
-
-        oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
+            oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
 
 
-        (amountTextView = (TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
-        (transactionIdTextView = (TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
+            ((TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
+            ((TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
 
+            if (mPaymentParams != null && mPayUHashes != null && payuConfig != null) {
+                /**
+                 * Below merchant webservice is used to get all the payment options enabled on the merchant key.
+                 */
+                MerchantWebService merchantWebService = new MerchantWebService();
+                merchantWebService.setKey(mPaymentParams.getKey());
+                merchantWebService.setCommand(PayuConstants.PAYMENT_RELATED_DETAILS_FOR_MOBILE_SDK);
+                merchantWebService.setVar1(mPaymentParams.getUserCredentials() == null ? "default" : mPaymentParams.getUserCredentials());
 
-        MerchantWebService merchantWebService = new MerchantWebService();
-        merchantWebService.setKey(mPaymentParams.getKey());
-        merchantWebService.setCommand(PayuConstants.PAYMENT_RELATED_DETAILS_FOR_MOBILE_SDK);
-        merchantWebService.setVar1(mPaymentParams.getUserCredentials() == null ? "default" : mPaymentParams.getUserCredentials());
+                merchantWebService.setHash(mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash());
 
+                // fetching for the first time.
+                if (null == savedInstanceState) { // dont fetch the data if its been called from payment activity.
+                    PostData postData = new MerchantWebServicePostParams(merchantWebService).getMerchantWebServicePostParams();
+                    if (postData.getCode() == PayuErrors.NO_ERROR) {
+                        // ok we got the post params, let make an api call to payu to fetch the payment related details
+                        payuConfig.setData(postData.getResult());
 
-        merchantWebService.setHash(mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash());
+                        // lets set the visibility of progress bar
+                        mProgressBar.setVisibility(View.VISIBLE);
 
-        // Dont fetch the data if calling activity is PaymentActivity
-
-        // fetching for the first time.
-        if (null == savedInstanceState) { // dont fetch the data if its been called from payment activity.
-            PostData postData = new MerchantWebServicePostParams(merchantWebService).getMerchantWebServicePostParams();
-            if (postData.getCode() == PayuErrors.NO_ERROR) {
-                // ok we got the post params, let make an api call to payu to fetch the payment related details
-                payuConfig.setData(postData.getResult());
-
-//                 lets set the visibility of progress bar
-                findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
-                GetPaymentRelatedDetailsTask paymentRelatedDetailsForMobileSdkTask = new GetPaymentRelatedDetailsTask(this);
-                paymentRelatedDetailsForMobileSdkTask.execute(payuConfig);
-            } else {
-                Toast.makeText(this, postData.getResult(), Toast.LENGTH_LONG).show();
+                        GetPaymentRelatedDetailsTask paymentRelatedDetailsForMobileSdkTask = new GetPaymentRelatedDetailsTask(this);
+                        paymentRelatedDetailsForMobileSdkTask.execute(payuConfig);
+                    } else {
+                        Toast.makeText(this, postData.getResult(), Toast.LENGTH_LONG).show();
 //                 close the progress bar
-                findViewById(R.id.progress_bar).setVisibility(View.GONE);
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                }
             }
+        } else {
+            Toast.makeText(this, getString(R.string.could_not_receive_data), Toast.LENGTH_SHORT).show();
         }
-
-
-
-
-
     }
 
     @Override
@@ -171,16 +160,24 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
     @Override
     public void onValueAddedServiceApiResponse(PayuResponse payuResponse) {
         valueAddedResponse = payuResponse;
-        if(mPayuResponse != null)
-            setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
 
+        if (mPayuResponse != null) {
+            if (mPayuResponse.isCreditCardAvailable() && mPayuResponse.isDebitCardAvailable()) {
+                //Disable the pay button initially for CC/DC
+                payNowButton.setEnabled(false);
+            } else {
+                //Enable the pay button for all other options
+                payNowButton.setEnabled(true);
+            }
+            setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
+        }
     }
 
     @Override
     public void onPaymentRelatedDetailsResponse(PayuResponse payuResponse) {
         mPayuResponse = payuResponse;
 
-        if(valueAddedResponse != null)
+        if (valueAddedResponse != null)
             setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
 
         MerchantWebService valueAddedWebService = new MerchantWebService();
@@ -191,19 +188,22 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
         valueAddedWebService.setVar2(PayuConstants.DEFAULT);
         valueAddedWebService.setVar3(PayuConstants.DEFAULT);
 
-        if((postData = new MerchantWebServicePostParams(valueAddedWebService).getMerchantWebServicePostParams()) != null&& postData.getCode() == PayuErrors.NO_ERROR ){
+        if ((postData = new MerchantWebServicePostParams(valueAddedWebService).getMerchantWebServicePostParams()) != null && postData.getCode() == PayuErrors.NO_ERROR) {
             payuConfig.setData(postData.getResult());
             valueAddedServiceTask = new ValueAddedServiceTask(this);
             valueAddedServiceTask.execute(payuConfig);
-        }else{
-            Toast.makeText(this, postData.getResult(), Toast.LENGTH_LONG).show();
+        } else {
+            if (postData != null)
+                Toast.makeText(this, postData.getResult(), Toast.LENGTH_LONG).show();
         }
-
-
     }
 
-
-
+    /**
+     * This method sets us the view pager with payment options.
+     *
+     * @param payuResponse       contains the payment options available on the merchant key
+     * @param valueAddedResponse contains the bank down status for various banks
+     */
     private void setupViewPagerAdapter(final PayuResponse payuResponse, PayuResponse valueAddedResponse) {
 
         if (payuResponse.isResponseAvailable() && payuResponse.getResponseStatus().getCode() == PayuErrors.NO_ERROR) { // ok we are good to go
@@ -222,6 +222,10 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
                 paymentOptionsList.add(SdkUIConstants.NET_BANKING);
             }
 
+            if(payuResponse.isUpiAvailable()){ // adding UPI
+                paymentOptionsList.add(SdkUIConstants.UPI);
+            }
+
             if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
                 paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
             }
@@ -230,7 +234,7 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
             Toast.makeText(this, "Something went wrong : " + payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
         }
 
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList, payuResponse, valueAddedResponse, storeOneClickHash, oneClickCardTokens);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList, payuResponse, valueAddedResponse, oneClickCardTokens);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
@@ -261,45 +265,45 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
                     case SdkUIConstants.SAVED_CARDS:
                         ViewPager myViewPager = (ViewPager) findViewById(R.id.pager_saved_card);
                         int currentPosition = ((ViewPager) findViewById(R.id.pager_saved_card)).getCurrentItem();
-                        savedCards = payuResponse.getStoredCards();
-                        if (savedCards.size() == 0) {
-                            payNowButton.setEnabled(false);
-                            break;
-                        }
-//                        if (savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && !mPayuUtils.getFromSharedPreferences(PayUBaseActivity.this, savedCards.get(currentPosition).getCardToken()).contentEquals(PayuConstants.DEFAULT)) {
-//                            payNowButton.setEnabled(true);
-                        /*if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE && savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && !mPayuUtils.getFromSharedPreferences(PayUBaseActivity.this, savedCards.get(currentPosition).getCardToken()).contentEquals(PayuConstants.DEFAULT)) {
-                            payNowButton.setEnabled(true);
-                        } else*/ if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && savedCards.get(currentPosition).getOneTapCard() == 1) {
-                            payNowButton.setEnabled(true);
-                        } else if (savedCards.get(currentPosition).getCardType().equals("SMAE")) {
-                            payNowButton.setEnabled(true);
-                        } else {
-                            SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) myViewPager.getAdapter();
-                            SavedCardItemFragment mSaveFragment = mSaveAdapter.getFragment(currentPosition);
-
-                            if (mSaveFragment != null && mSaveFragment.cvvValidation()) {
-                                payNowButton.setEnabled(true);
-                            } else if (mSaveFragment == null) {
-
-
-                            } else {
+                        savedCards = payuResponse!=null ? payuResponse.getStoredCards() : null;
+                        if (savedCards != null) {
+                            if (savedCards.size() == 0) {
                                 payNowButton.setEnabled(false);
+                                break;
+                            }
+                            if (savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && savedCards.get(currentPosition).getOneTapCard() == 1) {
+                                payNowButton.setEnabled(true);
+                            } else if (savedCards.get(currentPosition).getCardType().equals("SMAE")) {
+                                payNowButton.setEnabled(true);
+                            } else {
+                                SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) myViewPager.getAdapter();
+                                SavedCardItemFragment mSaveFragment = mSaveAdapter.getFragment(currentPosition) instanceof SavedCardItemFragment ? mSaveAdapter.getFragment(currentPosition) : null;
+
+                                if (mSaveFragment != null && mSaveFragment.cvvValidation()) {
+                                    payNowButton.setEnabled(true);
+                                } else {
+                                    payNowButton.setEnabled(false);
+                                }
                             }
                         }
                         break;
                     case SdkUIConstants.CREDIT_DEBIT_CARDS:
                         PagerAdapter mPagerAdapter = (PagerAdapter) viewPager.getAdapter();
-                        CreditDebitFragment tempCreditDebitFragment = (CreditDebitFragment) mPagerAdapter.getFragment(position);
-                        tempCreditDebitFragment.checkData();
+                        CreditDebitFragment tempCreditDebitFragment = mPagerAdapter.getFragment(position) instanceof CreditDebitFragment ? (CreditDebitFragment) mPagerAdapter.getFragment(position) : null;
+                        if(tempCreditDebitFragment != null)
+                            tempCreditDebitFragment.checkData();
                         break;
                     case SdkUIConstants.NET_BANKING:
                         payNowButton.setEnabled(true);
-                        hide_keyboard();
+                        hideKeyboard();
                         break;
                     case SdkUIConstants.PAYU_MONEY:
                         payNowButton.setEnabled(true);
-                        hide_keyboard();
+                        hideKeyboard();
+                        break;
+                    case SdkUIConstants.UPI:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
                         break;
                 }
 
@@ -311,11 +315,9 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
             }
         });
 
-        findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
 
     }
-
-
 
     @Override
     public void onClick(View view) {
@@ -324,45 +326,45 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
 
             mPostData = null;
 
-            mPaymentParams.setHash(mPayUHashes.getPaymentHash());
+            if (mPayUHashes != null)
+                mPaymentParams.setHash(mPayUHashes.getPaymentHash());
 
-
-            switch (paymentOptionsList.get(viewPager.getCurrentItem())) {
-                case SdkUIConstants.SAVED_CARDS:
-                    makePaymentByStoredCard();
-                    break;
-                case SdkUIConstants.CREDIT_DEBIT_CARDS:
-                    makePaymentByCreditCard();
-                    break;
-                case SdkUIConstants.NET_BANKING:
-                    makePaymentByNB();
-                    break;
-                case SdkUIConstants.CASH_CARDS:
-                    break;
-                case SdkUIConstants.EMI:
-                    break;
-                case SdkUIConstants.PAYU_MONEY:
-                    makePaymentByPayUMoney();
-                    break;
+            if (paymentOptionsList!=null && paymentOptionsList.size() > 0) {
+                switch (paymentOptionsList.get(viewPager.getCurrentItem())) {
+                    case SdkUIConstants.SAVED_CARDS:
+                        makePaymentByStoredCard();
+                        break;
+                    case SdkUIConstants.CREDIT_DEBIT_CARDS:
+                        makePaymentByCreditCard();
+                        break;
+                    case SdkUIConstants.NET_BANKING:
+                        makePaymentByNB();
+                        break;
+                    case SdkUIConstants.CASH_CARDS:
+                        break;
+                    case SdkUIConstants.EMI:
+                        break;
+                    case SdkUIConstants.PAYU_MONEY:
+                        makePaymentByPayUMoney();
+                        break;
+                    case SdkUIConstants.UPI:
+                        makePaymentByUPI();
+                        break;
+                }
             }
 
-
-
-            if (mPostData.getCode() == PayuErrors.NO_ERROR) {
+            if (mPostData!=null && mPostData.getCode() == PayuErrors.NO_ERROR) {
                 payuConfig.setData(mPostData.getResult());
 
-                Intent intent = new Intent(this, PaymentsActivity.class);
+                Intent intent = new Intent(this, OldPaymentActivity.class);
                 intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-                intent.putExtra(PayuConstants.STORE_ONE_CLICK_HASH, storeOneClickHash);
-                intent.putExtra(PayuConstants.SMS_PERMISSION, smsPermission);
                 startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
             } else {
+                if(mPostData != null)
                 Toast.makeText(this, mPostData.getResult(), Toast.LENGTH_LONG).show();
 
             }
         }
-
-
     }
 
     private void makePaymentByPayUMoney() {
@@ -384,8 +386,8 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
             mPaymentParams.setStoreCard(0);
         }
 
-        if (storeOneClickHash == 1 && enableOneClickPaymentCheckBox.isChecked()) {
-            mPaymentParams.setEnableOneClickPayment(1);// TODO set flag for One Tap Payments
+        if (enableOneClickPaymentCheckBox.isChecked()) {
+            mPaymentParams.setEnableOneClickPayment(1);// TODO set flag for one tap payment
         } else {
             mPaymentParams.setEnableOneClickPayment(0);
         }
@@ -398,9 +400,9 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
         mPaymentParams.setExpiryYear(((EditText) findViewById(R.id.edit_text_expiry_year)).getText().toString());
         mPaymentParams.setCvv(((EditText) findViewById(R.id.edit_text_card_cvv)).getText().toString());
 
-        if (mPaymentParams.getStoreCard() == 1 && !((EditText) findViewById(R.id.edit_text_card_label)).getText().toString().equals(""))
+        if (mPaymentParams.getStoreCard() == 1 && !((EditText) findViewById(R.id.edit_text_card_label)).getText().toString().isEmpty())
             mPaymentParams.setCardName(((EditText) findViewById(R.id.edit_text_card_label)).getText().toString());
-        else if(mPaymentParams.getStoreCard() == 1 && ((EditText) findViewById(R.id.edit_text_card_label)).getText().toString().equals(""))
+        else if (mPaymentParams.getStoreCard() == 1 && ((EditText) findViewById(R.id.edit_text_card_label)).getText().toString().isEmpty())
             mPaymentParams.setCardName(((EditText) findViewById(R.id.edit_text_name_on_card)).getText().toString());
 
         try {
@@ -415,10 +417,11 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
     private void makePaymentByNB() {
 
         spinnerNetbanking = (Spinner) findViewById(R.id.spinner);
+        ArrayList<PaymentDetails> netBankingList = null;
+        if(mPayuResponse!=null)
+        netBankingList = mPayuResponse.getNetBanks();
 
-        ArrayList<PaymentDetails> netBankingList = mPayuResponse.getNetBanks();
-
-
+        if(netBankingList!=null && netBankingList.get(spinnerNetbanking.getSelectedItemPosition()) !=null)
         bankCode = netBankingList.get(spinnerNetbanking.getSelectedItemPosition()).getBankCode();
 
         mPaymentParams.setBankCode(bankCode);
@@ -436,8 +439,8 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager_saved_card);
         StoredCard selectedStoredCard = mPayuResponse.getStoredCards().get(viewPager.getCurrentItem());
         SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) viewPager.getAdapter();
-        SavedCardItemFragment mSaveFragment = mSaveAdapter.getFragment(viewPager.getCurrentItem());
-        String cvv = mSaveFragment.getCvv();
+        SavedCardItemFragment mSaveFragment = mSaveAdapter.getFragment(viewPager.getCurrentItem()) instanceof SavedCardItemFragment ? mSaveAdapter.getFragment(viewPager.getCurrentItem()) : null;
+        String cvv = mSaveFragment !=null ? mSaveFragment.getCvv() : null;
 
         // lets try to get the post params
         selectedStoredCard.setCvv(cvv); // make sure that you set the cvv also
@@ -450,23 +453,19 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
         mPaymentParams.setExpiryYear(selectedStoredCard.getExpiryYear());
 
         String merchantHash;
-        if(storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && selectedStoredCard.getOneTapCard() == 1 ) {
+        if (selectedStoredCard.getOneTapCard() == 1) {
             merchantHash = oneClickCardTokens.get(selectedStoredCard.getCardToken());
-        }
-        /*else if(storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE) {
-            merchantHash = mPayuUtils.getFromSharedPreferences(PayUBaseActivity.this, selectedStoredCard.getCardToken());
-        }*/
-        else {
+        } else {
             merchantHash = PayuConstants.DEFAULT;
         }
 
-        if(selectedStoredCard.getEnableOneClickPayment() == 1 && !merchantHash.contentEquals(PayuConstants.DEFAULT)){
+        if (selectedStoredCard.getEnableOneClickPayment() == 1 && !merchantHash.contentEquals(PayuConstants.DEFAULT)) {
             mPaymentParams.setCardCvvMerchant(merchantHash);
-        }else{
+        } else {
             mPaymentParams.setCvv(cvv);
         }
 
-        if(mSaveFragment.isEnableOneClickPaymentChecked()){
+        if (mSaveFragment !=null && mSaveFragment.isEnableOneClickPaymentChecked()) {
             mPaymentParams.setEnableOneClickPayment(1);
         }
 
@@ -475,26 +474,66 @@ public class PayUBaseActivity extends FragmentActivity implements  PaymentRelate
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Validate VPA and Calculate post data
+     */
+    private void makePaymentByUPI() {
+
+        EditText etVirtualAddress = (EditText) findViewById(R.id.et_virtual_address);
+        // Virtual address Check (vpa check)
+        // 1)Vpa length should be less than or equal to 50
+        // 2)It can be alphanumeric and can contain a dot(.).
+        // 3)It should contain a @
+        if(etVirtualAddress.getText()!=null && etVirtualAddress.getText().toString().trim().length()==0){
+            etVirtualAddress.requestFocus();
+            etVirtualAddress.setError(getBaseContext().getText(R.string.error_fill_vpa));
+
+        }else {
+            if(etVirtualAddress.getText().toString().trim().length()> PayuConstants.MAX_VPA_SIZE){
+                etVirtualAddress.setError(getBaseContext().getText(R.string.error_invalid_vpa));
+            }else if(!etVirtualAddress.getText().toString().trim().contains("@")){
+                etVirtualAddress.setError(getBaseContext().getText(R.string.error_invalid_vpa));
+            }else{
+                String userVirtualAddress= etVirtualAddress.getText().toString().trim();
+                Pattern pattern = Pattern.compile("^([A-Za-z0-9\\.])+\\@[A-Za-z0-9]+$");
+                Matcher matcher = pattern.matcher(userVirtualAddress);
+                if (matcher.matches()) {
+                    mPaymentParams.setVpa(userVirtualAddress);
+                    try {
+                        mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.UPI).getPaymentPostParams();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    etVirtualAddress.setError(getBaseContext().getText(R.string.error_invalid_vpa));
+                }
+
+
+            }
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+            //Lets pass the result back to previous activity
             setResult(resultCode, data);
             finish();
         }
-
     }
 
-    public void hide_keyboard() {
+    public void hideKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = this.getCurrentFocus();
         //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if(view == null) {
+        if (view == null) {
             view = new View(this);
         }
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

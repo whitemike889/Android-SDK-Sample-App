@@ -43,8 +43,6 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
     private Bundle mBundle;
     private ArrayList<PaymentDetails> netBankingList;
     private Spinner spinnerNetbanking;
-    private String[] netBanksNamesArray;
-    private String[] netBanksCodesArray;
     private PaymentParams mPaymentParams;
     private PayuHashes payuHashes;
     private ArrayAdapter<String> mAdapter;
@@ -62,10 +60,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
 
     public NetBankingFragment() {
         // Required empty public constructor
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

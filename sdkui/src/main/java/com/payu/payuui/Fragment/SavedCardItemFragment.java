@@ -43,9 +43,7 @@ public final class SavedCardItemFragment extends Fragment {
     private ViewPager mViewPager;
     private CheckBox enableOneClickPayment;
     private int position;
-    private int storeOneClickHash;
     private Boolean isCvvValid = false;
-
 
     HashMap<String, String> oneClickCardTokens;
 
@@ -61,9 +59,7 @@ public final class SavedCardItemFragment extends Fragment {
         issuingBankStatus = bundle.getString(SdkUIConstants.ISSUING_BANK_STATUS);
         oneClickPayment = bundle.getBoolean(PayuConstants.ONE_CLICK_PAYMENT);
         position = bundle.getInt(SdkUIConstants.POSITION);
-        storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
         oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
-
 
     }
 
@@ -87,21 +83,14 @@ public final class SavedCardItemFragment extends Fragment {
             cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
         }
 
-        if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && mStoredCard.getEnableOneClickPayment() == 1 && mStoredCard.getOneTapCard() == 1 ) {
+        if (mStoredCard.getEnableOneClickPayment() == 1 && mStoredCard.getOneTapCard() == 1 ) {
 
             cvvEditText.setVisibility(View.GONE);
             enableOneClickPayment.setVisibility(View.GONE);
             cvvTextView.setText("Click Pay Now to Pay through this card");
-        }/*else if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE && mStoredCard.getEnableOneClickPayment() == 1 && !mPayuUtils.getFromSharedPreferences(getActivity(), mStoredCard.getCardToken()).contentEquals(PayuConstants.DEFAULT) ) {
-
-            cvvEditText.setVisibility(View.GONE);
-            enableOneClickPayment.setVisibility(View.GONE);
-            cvvTextView.setText("Click Pay Now to Pay through this card");
-        }*/else if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER /*|| storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE*/) {
+        }else {
             enableOneClickPayment.setVisibility(View.VISIBLE);
 
-        } else /*if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_NONE) */{
-            enableOneClickPayment.setVisibility(View.GONE);
         }
 
         if (mStoredCard.getMaskedCardNumber().length() == 19 && mStoredCard.getCardBrand() == "SMAE") {
@@ -175,63 +164,6 @@ public final class SavedCardItemFragment extends Fragment {
         else
             return resID;
 
-
-//        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-//            switch (issuingBank) {
-//                case PayuConstants.HDFC:
-//                    return R.drawable.hdfc;
-//                case PayuConstants.ICICI:
-//                    return R.drawable.icici;
-//                case PayuConstants.CITI:
-//                    return R.drawable.citi;
-//                case PayuConstants.HSBC:
-//                    return R.drawable.hsbc;
-//                case PayuConstants.IDBI:
-//                    return R.drawable.idbi;
-//                case PayuConstants.INDUSIND:
-//                    return R.drawable.indusind;
-//                case PayuConstants.INGV:
-//                    return R.drawable.ingv;
-//                case PayuConstants.KOTAK:
-//                    return R.drawable.kotak;
-//                case PayuConstants.SBIDC:
-//                    return R.drawable.sbi;
-//                case PayuConstants.S:
-//                    return R.drawable.scblogo;
-//                case PayuConstants.YES:
-//                    return R.drawable.yesbank_logo;
-//
-//            }
-//            return 0;
-//        } else {
-//
-//            switch (issuingBank) {
-//                case PayuConstants.HDFC:
-//                    return R.drawable.hdfc;
-//                case PayuConstants.ICICI:
-//                    return R.drawable.icici;
-//                case PayuConstants.CITI:
-//                    return R.drawable.citi;
-//                case PayuConstants.HSBC:
-//                    return R.drawable.hsbc;
-//                case PayuConstants.IDBI:
-//                    return R.drawable.idbi;
-//                case PayuConstants.INDUSIND:
-//                    return R.drawable.induslogo;
-//                case PayuConstants.ING:
-//                    return R.drawable.ing_logo;
-//                case PayuConstants.KOTAK:
-//                    return R.drawable.kotak;
-//                case PayuConstants.SBIDC:
-//                    return R.drawable.sbi;
-//                case PayuConstants.SC:
-//                    return R.drawable.scblogo;
-//                case PayuConstants.YES:
-//                    return R.drawable.yesbank_logo;
-//            }
-//            return 0;
-//        }
-
     }
 
     private int getIssuerImage(String issuer) {
@@ -258,7 +190,6 @@ public final class SavedCardItemFragment extends Fragment {
                     return R.drawable.maestro;
                 case PayuConstants.RUPAY:
                     return R.drawable.rupay;
-//                TODO ask Franklin for rupay regex
             }
             return 0;
         } else {
@@ -284,7 +215,6 @@ public final class SavedCardItemFragment extends Fragment {
                     return R.drawable.maestro;
                 case PayuConstants.RUPAY:
                     return R.drawable.rupay;
-                //TODO ask Franklin
             }
             return 0;
         }

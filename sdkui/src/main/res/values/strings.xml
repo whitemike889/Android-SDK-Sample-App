@@ -48,7 +48,7 @@
 
     <string name="text_enter_cvv">Please enter your CVV</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cardType_prompt">Select Card Type</string>
     <string-array name="card_types">
@@ -60,4 +60,24 @@
     <string name="title_activity_temp">TempActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_payments">PaymentsActivity</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="vpa_text_more">VPA is your Virtual Payment Address in the format yourname@bankname.\n\n You can create your VPA from any UPI enabled Bank application or third party application. You need the Bank application installed in your phone to complete this transaction.</string>
+    <string name="vpa_text_less">VPA is your Virtual Payment Address in the format yourname@bankname.</string>
+    <string name="show_less">Show Less</string>
+    <string name="show_more">Show More</string>
+
+    <string name="enter_vpa">Enter VPA</string>
+    <string name="vpa_text">yourname@bankname</string>
+    <string name="learn_upi">Learn how UPI works</string>
+
+   <!-- <string name="error_vpa_length">Please enter a valid VPA Maximum length allowed is 50 characters</string>-->
+    <string name="error_invalid_vpa">Invalid VPA</string>
+    <string name="error_fill_vpa">Please fill VPA</string>
+
+
+    <string name="close_image">Close helper</string>
+    <string name="helper_image">UPI Helper Image</string>
+
+    <string name="could_not_receive_data">Could not receive data</string>
 </resources>

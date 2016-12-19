@@ -63,21 +63,11 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
     private boolean isExpiryYearValid = false;
     private boolean isCardNumberValid = false;
 
-    private String nameOnCard;
-    private String cardNumber;
     private String cvv;
-    private String expiryMonth;
-    private String expiryYear="20";
-    private String cardName;
     private Bundle fragmentBundle;
     private Bundle activityBundle;
     private String issuer;
     private HashMap<String, CardStatus> valueAddedHashMap;
-
-    private int amexLength = 4;
-
-
-
     private EditText nameOnCardEditText;
     private EditText cardNumberEditText;
     private EditText cardCvvEditText;
@@ -88,20 +78,13 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
     private CheckBox enableOneClickPaymentCheckBox;
     private ImageView cardImage;
     private ImageView cvvImage;
-    private ImageButton myTestImageButton;
     private DatePickerDialog.OnDateSetListener datePickerListener;
     private LinearLayout mLinearLayout;
     private TextView amountText;
     private TextView issuingBankDown;
     private ViewPager viewpager;
     private int fragmentPosition;
-    private Boolean cardNumberCheck = false;
     private View view;
-
-    int storeOneClickHash;
-    int cardNumberPosition = 0;
-    int globalSpacesAdded = 0;
-    int flag = 0;
 
     public CreditDebitFragment() {
         // Required empty public constructor
@@ -114,10 +97,7 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
         fragmentBundle = getArguments();
         valueAddedHashMap = (HashMap<String, CardStatus>) fragmentBundle.getSerializable(SdkUIConstants.VALUE_ADDED);
         fragmentPosition = fragmentBundle.getInt(SdkUIConstants.POSITION);
-        storeOneClickHash = fragmentBundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,9 +123,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
         issuingBankDown = (TextView) view.findViewById(R.id.text_view_issuing_bank_down_error);
 
         amountText = (TextView) getActivity().findViewById(R.id.textview_amount);
-
-
-
 
         if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             cardExpiryMonthEditText.setOnClickListener(new View.OnClickListener() {
@@ -236,7 +213,7 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                 if (compoundButton.isChecked()) {
-                    if(storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && null != mPaymentParams.getUserCredentials()) {
+                    if(null != mPaymentParams.getUserCredentials()) {
                         enableOneClickPaymentCheckBox.setVisibility(View.VISIBLE);
                     }
                     cardNameEditText.setVisibility(View.VISIBLE);
@@ -302,12 +279,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
                         image = getIssuerImage(issuer);
                         cardImage.setImageResource(image);
 
-//                        if(issuer == "SMAE"){
-//                            ((LinearLayout)view.findViewById(R.id.layout_expiry_cvv)).setVisibility(View.GONE);
-//                        }else {
-//                            ((LinearLayout)view.findViewById(R.id.layout_expiry_cvv)).setVisibility(View.VISIBLE);
-//                        }
-
                         if(issuer == "AMEX")
                             cardCvvEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(4)});
                         else
@@ -337,27 +308,26 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
                 }
 
                 if(charSequence.length() == 7){
-                    if(valueAddedHashMap.get(charSequence.toString().replace(" ","")) != null) {
-                        int statusCode = valueAddedHashMap.get(charSequence.toString().replace(" ", "")).getStatusCode();
 
-                        if(statusCode == 0){
-                            issuingBankDown.setVisibility(View.VISIBLE);
-                            issuingBankDown.setText(valueAddedHashMap.get(charSequence.toString().replace(" ", "")).getBankName()+" is temporarily down");
-                        }
-                        else{
+                    //lets do a null check on valueAddedHashMap
+                    if(null != valueAddedHashMap) {
+                        if (valueAddedHashMap.get(charSequence.toString().replace(" ", "")) != null) {
+                            int statusCode = valueAddedHashMap.get(charSequence.toString().replace(" ", "")).getStatusCode();
+
+                            if (statusCode == 0) {
+                                issuingBankDown.setVisibility(View.VISIBLE);
+                                issuingBankDown.setText(valueAddedHashMap.get(charSequence.toString().replace(" ", "")).getBankName() + " is temporarily down");
+                            } else {
+                                issuingBankDown.setVisibility(View.GONE);
+                            }
+
+                        } else {
                             issuingBankDown.setVisibility(View.GONE);
                         }
-
-
-                    }else{
-                        issuingBankDown.setVisibility(View.GONE);
                     }
-
                 }else if(charSequence.length() < 7 ){
                     issuingBankDown.setVisibility(View.GONE);
                 }
-
-
             }
 
             @Override
@@ -407,8 +377,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
 
         });
 
-
-
         cardNumberEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -454,9 +422,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
         return view;
     }
 
-
-
-
     private int getIssuerImage(String issuer) {
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -481,7 +446,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
                     return R.drawable.maestro;
                 case PayuConstants.RUPAY:
                     return R.drawable.rupay;
-//                TODO ask Franklin for rupay regex
             }
             return 0;
         } else {
@@ -507,7 +471,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
                     return R.drawable.maestro;
                 case PayuConstants.RUPAY:
                     return R.drawable.rupay;
-                //TODO ask Franklin
             }
             return 0;
         }
@@ -566,7 +529,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
         }else{
             Toast.makeText(getActivity(), postData.getResult(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void uiValidation(){

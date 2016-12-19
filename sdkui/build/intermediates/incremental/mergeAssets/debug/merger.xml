@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/rahul.hooda/Rahul-Data/Temp-Android-Sample-App-SDK4.4.0CB6.1/sdkui/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/rahul.hooda/Rahul-Data/Temp-Android-Sample-App-SDK4.4.0CB6.1/sdkui/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/rahul.hooda/projects/android-sdk-test-project/sdkui/src/main/assets"><file name="helvetica_neue_bold.ttf" path="/Users/rahul.hooda/projects/android-sdk-test-project/sdkui/src/main/assets/helvetica_neue_bold.ttf"/></source></dataSet><dataSet config="debug"><source path="/Users/rahul.hooda/projects/android-sdk-test-project/sdkui/src/debug/assets"/></dataSet></merger>

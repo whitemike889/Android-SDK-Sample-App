@@ -47,7 +47,6 @@ import java.util.HashMap;
  */
 public class SavedCardsFragment extends Fragment implements View.OnClickListener, DeleteCardApiListener {
 
-
     private SavedCardItemFragmentAdapter mAdapter;
     private ViewPager mPager;
     private ArrayList<StoredCard> mStoreCards;
@@ -61,7 +60,6 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
     private PayuConfig payuConfig;
     private Bundle mBundle;
     private HashMap<String, CardStatus> valueAddedHashMap;
-    private int storeOneClickHash;
     private PayuUtils payuUtils;
     private HashMap<String, String> oneClickCardTokens;
 
@@ -76,7 +74,6 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
         Bundle fragmentBundle = getArguments();
         mStoreCards = fragmentBundle.getParcelableArrayList(PayuConstants.STORED_CARD);
         valueAddedHashMap = (HashMap<String, CardStatus>) fragmentBundle.getSerializable(SdkUIConstants.VALUE_ADDED);
-        storeOneClickHash = fragmentBundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
         oneClickCardTokens = (HashMap<String, String>) fragmentBundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
 
     }
@@ -100,7 +97,7 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
 
 
 
-        mAdapter = new SavedCardItemFragmentAdapter(getChildFragmentManager(), mStoreCards, valueAddedHashMap, storeOneClickHash, oneClickCardTokens);
+        mAdapter = new SavedCardItemFragmentAdapter(getChildFragmentManager(), mStoreCards, valueAddedHashMap, oneClickCardTokens);
         mPager = (ViewPager) mView.findViewById(R.id.pager_saved_card);
         mPager.setAdapter(mAdapter);
         mPager.setClipToPadding(false);
@@ -138,10 +135,7 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
                 PagerAdapter activityAdapter = (PagerAdapter) activityViewPager.getAdapter();
                 if(activityAdapter != null && activityAdapter.getPageTitle(activityViewPager.getCurrentItem()).toString().equals(SdkUIConstants.SAVED_CARDS)) {
 
-                    if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE && mStoreCards.get(position).getEnableOneClickPayment() == 1 && !payuUtils.getFromSharedPreferences(getActivity(), mStoreCards.get(position).getCardToken()).contentEquals(PayuConstants.DEFAULT) ) {
-
-                        getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-                    }else if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && mStoreCards.get(position).getEnableOneClickPayment() == 1 && mStoreCards.get(position).getOneTapCard() == 1) {
+              if (mStoreCards.get(position).getEnableOneClickPayment() == 1 && mStoreCards.get(position).getOneTapCard() == 1) {
 
                         getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
                     } else if (mStoreCards.get(position).getCardType().equals("SMAE")) {
@@ -184,16 +178,10 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
             if (mStoreCards.size() != 0 && mStoreCards.get(0).getCardType().equals("SMAE")) {
                 getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
             }
-//            if (mStoreCards != null && mStoreCards.size() != 0 && mStoreCards.get(0).getEnableOneClickPayment() == 1 && (!payuUtils.getFromSharedPreferences(getActivity(), mStoreCards.get(0).getCardToken()).contentEquals(PayuConstants.DEFAULT) ||  ( oneClickCardTokens != null &&  null != oneClickCardTokens.get(mStoreCards.get(0).getCardToken()))) ) {
-//                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-//            }
-            if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_SERVER && mStoreCards != null && mStoreCards.size() != 0 && mStoreCards.get(0).getEnableOneClickPayment() == 1  && mStoreCards.get(0).getOneTapCard() == 1 ) {
-                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-            }
-            if (storeOneClickHash == PayuConstants.STORE_ONE_CLICK_HASH_MOBILE && mStoreCards != null && mStoreCards.size() != 0 && mStoreCards.get(0).getEnableOneClickPayment() == 1 && !payuUtils.getFromSharedPreferences(getActivity(), mStoreCards.get(0).getCardToken()).contentEquals(PayuConstants.DEFAULT) ) {
-                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-            }
 
+            if (mStoreCards != null && mStoreCards.size() != 0 && mStoreCards.get(0).getEnableOneClickPayment() == 1  && mStoreCards.get(0).getOneTapCard() == 1 ) {
+                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
+            }
         }
 
         return mView;
@@ -261,8 +249,6 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
         }
         if (payuResponse.getResponseStatus().getCode() == PayuErrors.NO_ERROR) {
             // there is no error, lets fetch te cards list.
-
-
 
             ((EditText)mView.findViewById(R.id.edit_text_cvv)).getText().clear();
             ((CheckBox)mView.findViewById(R.id.check_box_save_card_enable_one_click_payment)).setChecked(false );

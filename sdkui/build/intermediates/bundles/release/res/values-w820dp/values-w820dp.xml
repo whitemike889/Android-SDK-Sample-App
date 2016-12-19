@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/rahul.hooda/Rahul-Data/Temp-Android-Sample-App-SDK4.4.0CB6.1/sdkui/src/main/res/values-w820dp/dimens.xml -->
+    <!-- From: file:/Users/rahul.hooda/projects/android-sdk-test-project/sdkui/src/main/res/values-w820dp/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">64dp</dimen>
 </resources>

@@ -25,4 +25,15 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="test">Test</string>
+    <string name="production">Production</string>
+
+    <string-array name="environment_array">
+        <item>@string/test</item>
+        <item>@string/production</item>
+    </string-array>
+
+    <string name="use_live_key_in_production_environment">Please use your live merchant key in production environment</string>
+<string name="could_not_receive_data">Could not receive data</string>
 </resources>

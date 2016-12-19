@@ -33,4 +33,4 @@ android:gravity="center_horizontal">
     android:background="@drawable/background_drawable">
 </LinearLayout>
 </RelativeLayout>
-<!-- From: file:/Users/rahul.hooda/Rahul-Data/Temp-Android-Sample-App-SDK4.4.0CB6.1/sdkui/src/main/res/layout/activity_payments.xml -->
+<!-- From: file:/Users/rahul.hooda/projects/android-sdk-test-project/sdkui/src/main/res/layout/activity_payments.xml -->

@@ -36,9 +36,10 @@ import java.util.Map;
 
 /**
  * Created by Minie on 2/8/16.
+ *
+ * This class is deprecated. It is for CB version before 6.0.0
  */
 
-//This class is for CB version before 6.0.0
 public class OldPaymentActivity  extends AppCompatActivity implements MagicRetryFragment.ActivityCallback{
     Bundle bundle;
     String url;
@@ -76,7 +77,7 @@ public class OldPaymentActivity  extends AppCompatActivity implements MagicRetry
         storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
         mWebView = (WebView) findViewById(R.id.webview);
 
-        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL ;
+        url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV?  PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL ;
 
         String [] list =  payuConfig.getData().split("&");
 

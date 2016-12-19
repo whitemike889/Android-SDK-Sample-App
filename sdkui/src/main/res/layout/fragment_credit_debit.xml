@@ -48,6 +48,41 @@
                 android:orientation="vertical"
                 android:weightSum="3">
 
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_margin="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/edit_text_name_on_card"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:inputType="textPersonName"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:hint="@string/name_on_card"-->
+                    <!--android:background="#00000000"-->
+                    <!-->-->
+                <!--</EditText>-->
+
+
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="#9C9C9C" />-->
+
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/image_cvv"-->
+                <!--android:id="@+id/my_test_button"-->
+                <!--/>-->
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +95,7 @@
                     android:id="@+id/edit_text_card_number"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:maxLength="23"
+                    android:maxLength="19"
                     android:inputType="number"
                     android:background="#00000000"
                     android:digits="01234 56789"
@@ -75,7 +110,9 @@
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_card"/>
-
+                    <!--android:scaleType="fitCenter"/>-->
+                    <!--android:adjustViewBounds="true"-->
+                    <!--/>-->
 
             </LinearLayout>
 

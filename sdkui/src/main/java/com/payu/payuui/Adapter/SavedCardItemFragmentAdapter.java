@@ -35,17 +35,15 @@ public class SavedCardItemFragmentAdapter extends FragmentStatePagerAdapter {
     Bundle mBundle;
     String bankStatus = "";
     FragmentManager mFragmentManager;
-    int mStoreOneClickHash;
     HashMap<String, String> mOneClickCardTokens;
     private static HashMap <Integer, SavedCardItemFragment> mPageReferencce = new HashMap<Integer, SavedCardItemFragment>();
 
-    public SavedCardItemFragmentAdapter(FragmentManager fm , ArrayList<StoredCard> storedCards, HashMap<String, CardStatus> valueAddedHashMap, int storeOneClickHash, HashMap<String, String> oneClickCardTokens) {
+    public SavedCardItemFragmentAdapter(FragmentManager fm , ArrayList<StoredCard> storedCards, HashMap<String, CardStatus> valueAddedHashMap, HashMap<String, String> oneClickCardTokens) {
         super(fm);
         mFragmentManager = fm;
         mStoredCards = null;
         mStoredCards = storedCards;
         mValueAddedHashMap = valueAddedHashMap ;
-        mStoreOneClickHash = storeOneClickHash;
         mOneClickCardTokens = oneClickCardTokens;
 
     }
@@ -60,7 +58,6 @@ public class SavedCardItemFragmentAdapter extends FragmentStatePagerAdapter {
             bankStatus = "";
         }
         mBundle.putString(SdkUIConstants.ISSUING_BANK_STATUS, bankStatus);
-        mBundle.putInt(PayuConstants.STORE_ONE_CLICK_HASH, mStoreOneClickHash);
         mBundle.putInt(SdkUIConstants.POSITION, position);
         mBundle.putSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS, mOneClickCardTokens);
         mSavedCardItemFragment = new SavedCardItemFragment();
