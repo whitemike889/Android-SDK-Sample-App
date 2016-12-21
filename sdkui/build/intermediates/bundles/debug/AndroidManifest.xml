@@ -35,11 +35,6 @@
             android:label="@string/title_activity_payments"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.payu.payuui.Activity.VerifyApiActivity"
-            android:label="@string/title_activity_payments"
-            android:screenOrientation="portrait" >
-        </activity>
     </application>
 
 </manifest>

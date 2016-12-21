@@ -356,7 +356,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             if (mPostData!=null && mPostData.getCode() == PayuErrors.NO_ERROR) {
                 payuConfig.setData(mPostData.getResult());
 
-                Intent intent = new Intent(this, OldPaymentActivity.class);
+                Intent intent = new Intent(this, PaymentsActivity.class);
                 intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
                 startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
             } else {
