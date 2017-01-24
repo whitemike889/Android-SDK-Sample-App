@@ -1,200 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-
-    android:background="@color/white"
-    android:layout_height="match_parent">
-
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-   >
+    tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-       android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_amount"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="Amount">
-        </TextView>
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/t_amount"
         android:layout_height="wrap_content"
-        android:id="@+id/amount"
-        android:textSize="15dp"
-        android:paddingRight="2dp"
-        />
-   </RelativeLayout>
+        android:orientation="vertical">
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="20dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_tid"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="Transaction ID">
-        </TextView>
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_toRightOf="@id/t_tid"
-            android:layout_centerVertical="true"
             android:layout_height="wrap_content"
-            android:hint="Unique transaction ID"
-            android:textSize="15dp"
-            android:textColorHint="#42C0FB"
-            android:id="@+id/tran_id"
-            android:paddingRight="2dp"
-            />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="20dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_cardnum"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="Card Number">
-        </TextView>
-        <EditText
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Amount" />
+
+            <EditText
+                android:id="@+id/editTextAmount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="10" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/t_cardnum"
-            android:textSize="15dp"
             android:layout_height="wrap_content"
-            android:id="@+id/cardnum"
-            android:paddingRight="2dp"
-            />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="20dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_cvv"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="CVV">
-        </TextView>
-        <EditText
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Environment" />
+
+            <Spinner
+                android:id="@+id/spinner_environment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/t_cvv"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:id="@+id/cvv"
-            android:paddingRight="2dp"
-            />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="20dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_month"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="Expiry Month">
-        </TextView>
-        <EditText
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Merchant Key" />
+
+            <EditText
+                android:id="@+id/editTextMerchantKey"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="gtKFFx" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/t_month"
-            android:hint="Range:1-12"
-            android:textColorHint="#42C0FB"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:id="@+id/exp_month"
-            android:paddingRight="2dp"
-            />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="30dp"
-        android:layout_height="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/t_year"
-            android:layout_centerVertical="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/cb_blue_button"
-            android:textSize="18dp"
-            android:text="Expiry Year">
-        </TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/t_year"
-            android:hint="Format(yyyy)"
-            android:textColorHint="#42C0FB"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Email" />
 
-            android:textSize="15dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/exp_year"
-            android:paddingRight="2dp"
-            />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text"
+                android:text="xyz@gmail.com" />
+        </LinearLayout>
 
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="0dp">
+    </LinearLayout>
+
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/btnPayNow"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:id="@+id/clickButton"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@color/cb_blue_button"
-        android:textColor="@color/white"
-        android:text="click"/>
-    </RelativeLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:onClick="navigateToBaseActivity"
+        android:padding="10dp"
+        android:text="Pay Now" />
 
 </LinearLayout>
-    </ScrollView>
-    </LinearLayout>
