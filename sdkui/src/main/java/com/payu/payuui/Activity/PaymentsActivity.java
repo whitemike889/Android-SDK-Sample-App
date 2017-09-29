@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import com.payu.custombrowser.Bank;
 import com.payu.custombrowser.CustomBrowser;
 import com.payu.custombrowser.PayUCustomBrowserCallback;
+import com.payu.custombrowser.PayUSurePayWebViewClient;
 import com.payu.custombrowser.PayUWebChromeClient;
 import com.payu.custombrowser.PayUWebViewClient;
 import com.payu.custombrowser.bean.CustomBrowserConfig;
@@ -39,7 +40,7 @@ public class PaymentsActivity extends FragmentActivity {
 
             if (payuConfig != null) {
                 url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
-
+              //  url="https://mobiletest.payu.in/_payment";
                 String[] list=null;
                 if(payuConfig.getData()!=null)
                 list = payuConfig.getData().split("&");
@@ -118,7 +119,11 @@ public class PaymentsActivity extends FragmentActivity {
                     @Override
                     public void setCBProperties(WebView webview, Bank payUCustomBrowser) {
                         webview.setWebChromeClient(new PayUWebChromeClient(payUCustomBrowser));
-                        webview.setWebViewClient(new PayUWebViewClient(payUCustomBrowser, merchantKey));
+
+                        // The following setting is optional, set WV client only when using your custom WVclient
+                        // Also, custom WV client should inherit PayUSurePayWebViewClient in case of SurePay enabled,
+                        // Otherwise PayUWebViewClient.
+                        // webview.setWebViewClient(new PayUWebViewClient(payUCustomBrowser, merchantKey));
                     }
 
                     @Override
@@ -141,14 +146,15 @@ public class PaymentsActivity extends FragmentActivity {
                         super.onBackButton(alertDialogBuilder);
                     }
 
-                    @Override
+                    //TODO Below code is used only when magicRetry is set to true in customBrowserConfig
+/*                    @Override
                     public void initializeMagicRetry(Bank payUCustomBrowser, WebView webview, MagicRetryFragment magicRetryFragment) {
                         webview.setWebViewClient(new PayUWebViewClient(payUCustomBrowser, magicRetryFragment, merchantKey));
                         Map<String, String> urlList = new HashMap<String, String>();
                         if(payuConfig!=null)
-                        urlList.put(url, payuConfig.getData());
+                            urlList.put(url, payuConfig.getData());
                         payUCustomBrowser.setMagicRetry(urlList);
-                    }
+                    }*/
                 };
 
                 //Sets the configuration of custom browser
@@ -168,8 +174,21 @@ public class PaymentsActivity extends FragmentActivity {
                 //Set it to true to enable run time permission dialog to appear for all Android 6.0 and above devices
                 customBrowserConfig.setMerchantSMSPermission(false);
 
-                //Set it to true to enable Magic retry
-                customBrowserConfig.setmagicRetry(true);
+                //Set it to true to enable Magic retry (If MR is enabled SurePay should be disabled and vice-versa)
+                customBrowserConfig.setmagicRetry(false);
+
+                /**
+                 * Maximum number of times the SurePay dialog box will prompt the user to retry a transaction in case of network failures
+                 * Setting the sure pay count to 0, diables the sure pay dialog
+                 */
+                customBrowserConfig.setEnableSurePay(3);
+
+                /**
+                 * set Merchant activity(Absolute path of activity)
+                 * By the time CB detects good network, if CBWebview is destroyed, we resume the transaction by passing payment post data to,
+                 * this, merchant checkout activity.
+                 * */
+                customBrowserConfig.setMerchantCheckoutActivityPath("com.payu.testapp.MerchantCheckoutActivity");
 
                 //Set the first url to open in WebView
                 customBrowserConfig.setPostURL(url);

@@ -9,11 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.*;
-import android.support.v4.view.PagerAdapter;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
@@ -21,7 +16,6 @@ import com.payu.india.Model.CardStatus;
 import com.payu.india.Model.StoredCard;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.Fragment.SavedCardItemFragment;
-import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 
 import java.util.ArrayList;

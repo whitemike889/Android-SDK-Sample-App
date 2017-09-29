@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
      */
     public void navigateToBaseActivity(View view) {
 
+
+       // merchantKey="";
         merchantKey = ((EditText) findViewById(R.id.editTextMerchantKey)).getText().toString();
         String amount = ((EditText) findViewById(R.id.editTextAmount)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
@@ -181,7 +183,9 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         mPaymentParams.setAmount(amount);
         mPaymentParams.setProductInfo("product_info");
         mPaymentParams.setFirstName("firstname");
-        mPaymentParams.setEmail("xyz@gmail.com");
+        mPaymentParams.setEmail("test@gmail.com");
+        mPaymentParams.setPhone("");
+
 
         /*
         * Transaction Id should be kept unique for each transaction.
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          */
         mPaymentParams.setSurl("https://payu.herokuapp.com/success");
         mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
+        mPaymentParams.setNotifyURL(mPaymentParams.getSurl());  //for lazy pay
 
         /*
          * udf1 to udf5 are options params where you can pass additional information related to transaction.
@@ -219,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         //TODO Sets the payment environment in PayuConfig object
         payuConfig = new PayuConfig();
         payuConfig.setEnvironment(environment);
-
+         //   payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
         //TODO It is recommended to generate hash from server only. Keep your key and salt in server side hash generation code.
         generateHashFromServer(mPaymentParams);
 
@@ -228,8 +233,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-        //String salt = "13p0PXZk";
-        //generateHashFromSDK(mPaymentParams, salt);
+     //   String salt = "";
+      //  generateHashFromSDK(mPaymentParams, salt);
 
     }
 

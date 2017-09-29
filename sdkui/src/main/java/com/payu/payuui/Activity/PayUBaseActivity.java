@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -177,6 +178,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     public void onPaymentRelatedDetailsResponse(PayuResponse payuResponse) {
         mPayuResponse = payuResponse;
 
+
+        boolean lazypay=mPayuResponse.isLazyPayAvailable();
+
         if (valueAddedResponse != null)
             setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
 
@@ -209,6 +213,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         if (payuResponse.isResponseAvailable() && payuResponse.getResponseStatus().getCode() == PayuErrors.NO_ERROR) { // ok we are good to go
             Toast.makeText(this, payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
 
+
+
+
             if (payuResponse.isStoredCardsAvailable()) {
                 paymentOptionsList.add(SdkUIConstants.SAVED_CARDS);
 
@@ -226,9 +233,17 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 paymentOptionsList.add(SdkUIConstants.UPI);
             }
 
+
+
             if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
                 paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
             }
+
+            if(payuResponse.isLazyPayAvailable()){
+                paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
+
+            }
+
 
         } else {
             Toast.makeText(this, "Something went wrong : " + payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
@@ -305,6 +320,12 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
+
+
+                    case SdkUIConstants.LAZY_PAY:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
+                        break;
                 }
 
             }
@@ -350,6 +371,10 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case SdkUIConstants.UPI:
                         makePaymentByUPI();
                         break;
+
+                    case SdkUIConstants.LAZY_PAY:
+                        makePaymentByLazyPay();
+                        break;
                 }
             }
 
@@ -374,6 +399,22 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void makePaymentByLazyPay(){
+
+        try{
+
+            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.LAZYPAY).getPaymentPostParams();
+
+        }
+        catch (Exception e){
+
+      Log.e("error",e+"");
+
+        }
+
     }
 
     private void makePaymentByCreditCard() {

@@ -7,9 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.payu.india.Model.PayuResponse;
 import com.payu.india.Payu.PayuConstants;
-import com.payu.payuui.Fragment.CashCardFragment;
 import com.payu.payuui.Fragment.CreditDebitFragment;
-import com.payu.payuui.Fragment.EmiFragment;
+import com.payu.payuui.Fragment.LazyPayFragment;
 import com.payu.payuui.Fragment.NetBankingFragment;
 import com.payu.payuui.Fragment.PayuMoneyFragment;
 import com.payu.payuui.Fragment.SavedCardsFragment;
@@ -82,6 +81,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case SdkUIConstants.PAYU_MONEY:
                 fragment = new PayuMoneyFragment();
                 bundle.putParcelableArrayList(PayuConstants.PAYU_MONEY, payuResponse.getPaisaWallet());
+                mPageReference.put(i, fragment);
+                return fragment;
+
+            case SdkUIConstants.LAZY_PAY:
+                fragment = new LazyPayFragment();
+                bundle.putParcelableArrayList(PayuConstants.LAZYPAY, payuResponse.getLazyPay());
+
                 mPageReference.put(i, fragment);
                 return fragment;
 

@@ -5,6 +5,8 @@ package com.payu.payuui.SdkuiUtil;
  */
 public interface SdkUIConstants {
 
+    String LAZY_PAY="Lazy Pay";
+
     String SAVED_CARDS = "Saved Cards";
     String CREDIT_DEBIT_CARDS = "Credit/Debit Cards";
     String NET_BANKING = "Net Banking";

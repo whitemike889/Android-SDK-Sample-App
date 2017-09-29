@@ -4,4 +4,3 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
-<!-- From: file:/Users/rahul.hooda/Android-SDK-Sample-App-s4.4.1c6.1.1m1.0.4/sdkui/src/main/res/menu/menu_payments.xml -->

@@ -8,4 +8,4 @@
         android:toAlpha="0.1"
         android:interpolator="@android:anim/accelerate_interpolator"
         android:duration="500"/>
-</set><!-- From: file:/Users/rahul.hooda/Android-SDK-Sample-App-s4.4.1c6.1.1m1.0.4/sdkui/src/main/res/anim/face_out.xml -->
+</set>
