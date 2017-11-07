@@ -106,14 +106,13 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
                 if (environmentSpinner.getSelectedItem().equals("Production")) {
                     Toast.makeText(MainActivity.this, getString(R.string.use_live_key_in_production_environment), Toast.LENGTH_SHORT).show();
 
-                    /* 0MQaQP is test key in PRODUCTION_ENv just for testing purpose in this app. Merchant should use their
-                    * own key in PRODUCTION_ENV
+                    /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
                     */
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("");
                 }
                 else{
                     //set the test key in test environment
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFx");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("");
 
                 }
             }
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         //TODO Below are mandatory params for hash genetation
         mPaymentParams = new PaymentParams();
         /**
-         * For Test Environment, merchantKey = "gtKFFx"
+         * For Test Environment, merchantKey = please contact mobile.integration@payu.in with your app name and registered email id
          * For Production Environment, merchantKey should be your live key or for testing in live you can use "0MQaQP"
          */
         mPaymentParams.setKey(merchantKey);
@@ -385,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
             try {
 
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-                URL url = new URL("https://payu.herokuapp.com/get_hash");
+                URL url = new URL("https://tsd.payu.in/GetHash");
 
                 // get the payuConfig first
                 String postParam = postParams[0];
