@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         mPaymentParams = new PaymentParams();
         /**
          * For Test Environment, merchantKey = please contact mobile.integration@payu.in with your app name and registered email id
-         * For Production Environment, merchantKey should be your live key or for testing in live you can use "0MQaQP"
+       
          */
         mPaymentParams.setKey(merchantKey);
         mPaymentParams.setAmount(amount);
