@@ -384,7 +384,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
             try {
 
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-                URL url = new URL("https://tsd.payu.in/GetHash");
+               // URL url = new URL("https://tsd.payu.in/GetHash");
+                URL url = new URL("https://payu.herokuapp.com/get_hash");
 
                 // get the payuConfig first
                 String postParam = postParams[0];

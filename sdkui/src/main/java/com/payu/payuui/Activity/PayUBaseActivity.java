@@ -229,8 +229,13 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 paymentOptionsList.add(SdkUIConstants.NET_BANKING);
             }
 
+
             if(payuResponse.isUpiAvailable()){ // adding UPI
                 paymentOptionsList.add(SdkUIConstants.UPI);
+            }
+
+            if(payuResponse.isGoogleTezAvailable()){ // adding TEZ
+                paymentOptionsList.add(SdkUIConstants.TEZ);
             }
 
 
@@ -320,7 +325,10 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
-
+                    case SdkUIConstants.TEZ:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();;
+                        break;
 
                     case SdkUIConstants.LAZY_PAY:
                         payNowButton.setEnabled(true);
@@ -371,6 +379,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case SdkUIConstants.UPI:
                         makePaymentByUPI();
                         break;
+                    case SdkUIConstants.TEZ:
+                        makePaymentByTEZ();
+                        break;
 
                     case SdkUIConstants.LAZY_PAY:
                         makePaymentByLazyPay();
@@ -396,6 +407,14 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
         try {
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.PAYU_MONEY).getPaymentPostParams();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void makePaymentByTEZ(){
+        try {
+            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.TEZ).getPaymentPostParams();
         } catch (Exception e) {
             e.printStackTrace();
         }

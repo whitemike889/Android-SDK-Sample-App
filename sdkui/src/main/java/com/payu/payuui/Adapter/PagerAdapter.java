@@ -12,6 +12,7 @@ import com.payu.payuui.Fragment.LazyPayFragment;
 import com.payu.payuui.Fragment.NetBankingFragment;
 import com.payu.payuui.Fragment.PayuMoneyFragment;
 import com.payu.payuui.Fragment.SavedCardsFragment;
+import com.payu.payuui.Fragment.TEZFragment;
 import com.payu.payuui.Fragment.UPIFragment;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 
@@ -78,6 +79,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 mPageReference.put(i, fragment);
                 return fragment;
 
+            case SdkUIConstants.TEZ:
+                fragment = new TEZFragment();
+                mPageReference.put(i, fragment);
+                return fragment;
+
             case SdkUIConstants.PAYU_MONEY:
                 fragment = new PayuMoneyFragment();
                 bundle.putParcelableArrayList(PayuConstants.PAYU_MONEY, payuResponse.getPaisaWallet());
@@ -87,7 +93,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case SdkUIConstants.LAZY_PAY:
                 fragment = new LazyPayFragment();
                 bundle.putParcelableArrayList(PayuConstants.LAZYPAY, payuResponse.getLazyPay());
-
                 mPageReference.put(i, fragment);
                 return fragment;
 
