@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
 
                     /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
                     */
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
                 }
                 else{
                     //set the test key in test environment
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFX");
 
                 }
             }
@@ -232,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-     //   String salt = "";
-      //  generateHashFromSDK(mPaymentParams, salt);
+        //String salt = "eCwWELxi";
+     //   generateHashFromSDK(mPaymentParams, salt);
 
     }
 
