@@ -18,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.payu.custombrowser.CustomBrowser;
+import com.payu.custombrowser.PayUCustomBrowserCallback;
+import com.payu.custombrowser.bean.CustomBrowserResultData;
+import com.payu.custombrowser.util.PaymentOption;
 import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
 import com.payu.india.Interfaces.ValueAddedServiceApiListener;
 import com.payu.india.Model.MerchantWebService;
@@ -42,11 +46,17 @@ import com.payu.payuui.Fragment.SavedCardItemFragment;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
+import com.payu.samsungpay.PayUSUPIPostData;
+import com.payu.samsungpay.PayUSamsungPay;
+import com.payu.samsungpay.PayUSamsungPayCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.R.attr.description;
+import static android.R.attr.key;
 
 /**
  * This activity is where you get the payment options.
@@ -57,6 +67,8 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private ArrayList<String> paymentOptionsList = new ArrayList<String>();
     private PayuConfig payuConfig;
     private PaymentParams mPaymentParams;
+    private String merchantKey;
+    private String userCredentials;
     private PayuHashes mPayUHashes;
     private PayuResponse mPayuResponse;
     private PayuUtils mPayuUtils;
@@ -65,16 +77,19 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
     private Button payNowButton;
+    private PaymentOption paymentOption;
     private Spinner spinnerNetbanking;
     private String bankCode;
     private PostData postData;
+    private String samPayPostData;
     private ValueAddedServiceTask valueAddedServiceTask;
     private ArrayList<StoredCard> savedCards;
 
     private PostData mPostData;
-
+    private PayUSamsungPay payUSamsungPay;
     private HashMap<String, String> oneClickCardTokens;
     private ProgressBar mProgressBar;
+    private boolean isSamsungPayAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +101,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
         bundle = getIntent().getExtras();
 
+
         if (bundle != null) {
             payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
             payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
@@ -94,9 +110,31 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
             mPaymentParams = bundle.getParcelable(PayuConstants.PAYMENT_PARAMS);
             mPayUHashes = bundle.getParcelable(PayuConstants.PAYU_HASHES);
+            merchantKey = mPaymentParams.getKey();
+            userCredentials = mPaymentParams.getUserCredentials();
 
             oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
 
+         // Call back method of PayU custom browser to check availability of Samsung Pay
+
+            PayUCustomBrowserCallback payUCustomBrowserCallback = new PayUCustomBrowserCallback() {
+
+                @Override
+                public void onCBErrorReceived(int code, String errormsg) {
+                    super.onCBErrorReceived(code, errormsg);
+                }
+
+                @Override
+                public void isPaymentOptionAvailable(CustomBrowserResultData resultData) {
+                    isSamsungPayAvailable = true;
+                    if(pagerAdapter!=null)
+                        pagerAdapter.notifyDataSetChanged();
+                }
+            };
+
+            //In this method we check the availability of Samsung Pay as Payment option on device being used
+
+            new CustomBrowser().checkForPaymentAvailability(this, paymentOption.SAMSUNGPAY, payUCustomBrowserCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), merchantKey, userCredentials);
 
             ((TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
             ((TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
@@ -179,7 +217,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         mPayuResponse = payuResponse;
 
 
-        boolean lazypay=mPayuResponse.isLazyPayAvailable();
+        boolean lazypay = mPayuResponse.isLazyPayAvailable();
 
         if (valueAddedResponse != null)
             setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
@@ -214,8 +252,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             Toast.makeText(this, payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
 
 
-
-
             if (payuResponse.isStoredCardsAvailable()) {
                 paymentOptionsList.add(SdkUIConstants.SAVED_CARDS);
 
@@ -230,24 +266,25 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             }
 
 
-            if(payuResponse.isUpiAvailable()){ // adding UPI
+            if (payuResponse.isUpiAvailable()) { // adding UPI
                 paymentOptionsList.add(SdkUIConstants.UPI);
             }
 
-            if(payuResponse.isGoogleTezAvailable()){ // adding TEZ
+            if (payuResponse.isGoogleTezAvailable()) { // adding TEZ
                 paymentOptionsList.add(SdkUIConstants.TEZ);
             }
-
 
 
             if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
                 paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
             }
 
-            if(payuResponse.isLazyPayAvailable()){
+            if (payuResponse.isLazyPayAvailable()) {
                 paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
 
             }
+            if (isSamsungPayAvailable==true)
+                paymentOptionsList.add("SAMPAY");
 
 
         } else {
@@ -285,7 +322,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case SdkUIConstants.SAVED_CARDS:
                         ViewPager myViewPager = (ViewPager) findViewById(R.id.pager_saved_card);
                         int currentPosition = ((ViewPager) findViewById(R.id.pager_saved_card)).getCurrentItem();
-                        savedCards = payuResponse!=null ? payuResponse.getStoredCards() : null;
+                        savedCards = payuResponse != null ? payuResponse.getStoredCards() : null;
                         if (savedCards != null) {
                             if (savedCards.size() == 0) {
                                 payNowButton.setEnabled(false);
@@ -310,7 +347,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case SdkUIConstants.CREDIT_DEBIT_CARDS:
                         PagerAdapter mPagerAdapter = (PagerAdapter) viewPager.getAdapter();
                         CreditDebitFragment tempCreditDebitFragment = mPagerAdapter.getFragment(position) instanceof CreditDebitFragment ? (CreditDebitFragment) mPagerAdapter.getFragment(position) : null;
-                        if(tempCreditDebitFragment != null)
+                        if (tempCreditDebitFragment != null)
                             tempCreditDebitFragment.checkData();
                         break;
                     case SdkUIConstants.NET_BANKING:
@@ -327,13 +364,19 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         break;
                     case SdkUIConstants.TEZ:
                         payNowButton.setEnabled(true);
-                        hideKeyboard();;
+                        hideKeyboard();
+                        ;
                         break;
 
                     case SdkUIConstants.LAZY_PAY:
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
+                    case "SAMPAY":
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
+                        break;
+
                 }
 
             }
@@ -358,7 +401,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             if (mPayUHashes != null)
                 mPaymentParams.setHash(mPayUHashes.getPaymentHash());
 
-            if (paymentOptionsList!=null && paymentOptionsList.size() > 0) {
+            if (paymentOptionsList != null && paymentOptionsList.size() > 0) {
                 switch (paymentOptionsList.get(viewPager.getCurrentItem())) {
                     case SdkUIConstants.SAVED_CARDS:
                         makePaymentByStoredCard();
@@ -386,22 +429,35 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case SdkUIConstants.LAZY_PAY:
                         makePaymentByLazyPay();
                         break;
+                    case "SAMPAY":
+                        makePaymentBySamPay();
+                        break;
                 }
             }
 
-            if (mPostData!=null && mPostData.getCode() == PayuErrors.NO_ERROR) {
+            if (mPostData != null && mPostData.getCode() == PayuErrors.NO_ERROR) {
                 payuConfig.setData(mPostData.getResult());
 
-                Intent intent = new Intent(this, PaymentsActivity.class);
-                intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-                startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
-            } else {
-                if(mPostData != null)
+            }
+//            else if (paymentOptionsList.get(viewPager.getCurrentItem()).equalsIgnoreCase("SAMPAY")) {
+//                        payuConfig.setData(samPayPostData);
+//
+//            }
+
+
+            Intent intent = new Intent(this, PaymentsActivity.class);
+            intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+            startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
+        } else {
+            if (mPostData != null)
                 Toast.makeText(this, mPostData.getResult(), Toast.LENGTH_LONG).show();
 
-            }
         }
     }
+
+
+
+
 
     private void makePaymentByPayUMoney() {
 
@@ -426,6 +482,20 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         try{
 
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.LAZYPAY).getPaymentPostParams();
+
+        }
+        catch (Exception e){
+
+      Log.e("error",e+"");
+
+        }
+
+    }
+    private void makePaymentBySamPay(){
+
+        try{
+
+            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.SAMSUNG_PAY).getPaymentPostParams();
 
         }
         catch (Exception e){
@@ -535,6 +605,27 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             e.printStackTrace();
         }
     }
+
+//    private void makePaymentBySamPay() {
+//        // Here we are generating the Post Data for payment through samsung pay
+//         samPayPostData ="txnid=" + mPaymentParams.getTxnId() +
+//                 "&productinfo=" + mPaymentParams.getProductInfo() +
+//                 "&user_credentials=" + userCredentials +
+//                 "&key=" + mPaymentParams.getKey() +
+//                 "&surl="+ mPaymentParams.getSurl()+
+//                 "&furl=" + mPaymentParams.getFurl() +
+//                 "&firstname=" + mPaymentParams.getFirstName() +
+//                 "&email=" + mPaymentParams.getEmail() +
+//                 "&amount=" +mPaymentParams.getAmount() +
+//                 "&udf1=" + mPaymentParams.getUdf1() +
+//                 "&udf2=" + mPaymentParams.getUdf2() +
+//                 "&udf3=" + mPaymentParams.getUdf3() +
+//                 "&udf4=" + mPaymentParams.getUdf4() +
+//                 "&udf5=" + mPaymentParams.getUdf5() +
+//                 "&pg=" + "SAMPAY" +
+//                 "&bankcode=" + "SAMPAY" +
+//                 "&hash=" + mPayUHashes.getPaymentHash();
+//    }
 
     /**
      * Validate VPA and Calculate post data

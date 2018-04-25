@@ -20,10 +20,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.payu.custombrowser:payu-custom-browser:7.1.1'
-    compile 'com.payu.india:payu-sdk:4.4.3'
-    compile 'com.payu.magicretry:magicretry:1.0.5'
+
+    compile 'com.payu.custombrowser:payu-custom-browser:7.1.3'
+    compile 'com.payu.india:payu-sdk:4.4.4'
+    compile 'com.payu.samsungpay:samsungpay:1.0'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
-
 }

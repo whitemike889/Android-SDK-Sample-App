@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         payuConfig.setEnvironment(environment);
          //   payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
         //TODO It is recommended to generate hash from server only. Keep your key and salt in server side hash generation code.
-        generateHashFromServer(mPaymentParams);
+      //  generateHashFromServer(mPaymentParams);
 
         /**
          * Below approach for generating hash is not recommended. However, this approach can be used to test in PRODUCTION_ENV
@@ -233,7 +233,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * should not be used.
          * */
         //String salt = "eCwWELxi";
-     //   generateHashFromSDK(mPaymentParams, salt);
+        String salt = "13p0PXZk";
+        generateHashFromSDK(mPaymentParams, salt);
 
     }
 
@@ -384,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
             try {
 
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-               // URL url = new URL("https://tsd.payu.in/GetHash");
+             //   URL url = new URL("https://tsd.payu.in/GetHash");
                 URL url = new URL("https://payu.herokuapp.com/get_hash");
 
                 // get the payuConfig first

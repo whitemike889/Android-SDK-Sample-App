@@ -204,6 +204,7 @@ public class PaymentsActivity extends FragmentActivity {
                 if (payuConfig!=null)
                 customBrowserConfig.setPayuPostData(payuConfig.getData());
 
+
                 new CustomBrowser().addCustomBrowser(PaymentsActivity.this, customBrowserConfig, payUCustomBrowserCallback);
             }
         }
