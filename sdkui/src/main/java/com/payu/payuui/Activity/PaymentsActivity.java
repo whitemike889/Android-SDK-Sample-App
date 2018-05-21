@@ -13,7 +13,7 @@ import com.payu.custombrowser.PayUSurePayWebViewClient;
 import com.payu.custombrowser.PayUWebChromeClient;
 import com.payu.custombrowser.PayUWebViewClient;
 import com.payu.custombrowser.bean.CustomBrowserConfig;
-import com.payu.custombrowser.upiintent.Payment;
+//import com.payu.custombrowser.upiintent.Payment;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.magicretry.MagicRetryFragment;
@@ -179,13 +179,18 @@ public class PaymentsActivity extends FragmentActivity {
                 customBrowserConfig.setmagicRetry(false);
 
                 //Set it to false if you do not want the transaction with web-collect flow
-                customBrowserConfig.setEnableWebFlow(Payment.TEZ,true);
+                //customBrowserConfig.setEnableWebFlow(Payment.TEZ,true);
+
+
 
                 /**
                  * Maximum number of times the SurePay dialog box will prompt the user to retry a transaction in case of network failures
                  * Setting the sure pay count to 0, diables the sure pay dialog
                  */
                 customBrowserConfig.setEnableSurePay(3);
+
+                customBrowserConfig.setGmsProviderUpdatedStatus(customBrowserConfig.FALSE);
+
 
 
                 /**

@@ -195,8 +195,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * Surl --> Success url is where the transaction response is posted by PayU on successful transaction
          * Furl --> Failre url is where the transaction response is posted by PayU on failed transaction
          */
-        mPaymentParams.setSurl("https://payu.herokuapp.com/success");
-        mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
+        mPaymentParams.setSurl(" https://payuresponse.firebaseapp.com/success");
+        mPaymentParams.setFurl("https://payuresponse.firebaseapp.com/failure");
         mPaymentParams.setNotifyURL(mPaymentParams.getSurl());  //for lazy pay
 
         /*
@@ -232,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-        //String salt = "eCwWELxi";
-        String salt = "13p0PXZk";
+        String salt = "eCwWELxi";
+       // String salt = "13p0PXZk";
         generateHashFromSDK(mPaymentParams, salt);
 
     }
