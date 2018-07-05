@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         mPaymentParams = new PaymentParams();
         /**
          * For Test Environment, merchantKey = please contact mobile.integration@payu.in with your app name and registered email id
-       
+
          */
         mPaymentParams.setKey(merchantKey);
         mPaymentParams.setAmount(amount);
@@ -225,16 +225,16 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         payuConfig.setEnvironment(environment);
          //   payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
         //TODO It is recommended to generate hash from server only. Keep your key and salt in server side hash generation code.
-      //  generateHashFromServer(mPaymentParams);
+          generateHashFromServer(mPaymentParams);
 
         /**
          * Below approach for generating hash is not recommended. However, this approach can be used to test in PRODUCTION_ENV
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-        String salt = "eCwWELxi";
-       // String salt = "13p0PXZk";
-        generateHashFromSDK(mPaymentParams, salt);
+        //String salt = "";
+        //
+        //generateHashFromSDK(mPaymentParams, salt);
 
     }
 

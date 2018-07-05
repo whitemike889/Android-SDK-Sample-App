@@ -189,8 +189,14 @@ public class PaymentsActivity extends FragmentActivity {
                  */
                 customBrowserConfig.setEnableSurePay(3);
 
-                customBrowserConfig.setGmsProviderUpdatedStatus(customBrowserConfig.FALSE);
+                //htmlData - HTML string received from PayU webservice using Server to Server call.
 
+               // customBrowserConfig.setHtmlData("");
+
+
+                //surepayS2Surl - Url on which HTML received from PayU webservice using Server to Server call is hosted.
+
+               // customBrowserConfig.setSurepayS2Surl("");
 
 
                 /**
