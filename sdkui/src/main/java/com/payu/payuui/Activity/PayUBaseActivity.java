@@ -46,6 +46,7 @@ import com.payu.payuui.Fragment.SavedCardItemFragment;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
+import com.payu.phonepe.PhonePe;
 import com.payu.samsungpay.PayUSUPIPostData;
 import com.payu.samsungpay.PayUSamsungPay;
 import com.payu.samsungpay.PayUSamsungPayCallback;
@@ -90,6 +91,8 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private HashMap<String, String> oneClickCardTokens;
     private ProgressBar mProgressBar;
     private boolean isSamsungPayAvailable = false;
+    private boolean isStandAlonePhonePeAvailable = false;
+    private  boolean isPaymentByPhonePe = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         bundle = getIntent().getExtras();
+
+
+
 
 
         if (bundle != null) {
@@ -135,6 +141,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             //In this method we check the availability of Samsung Pay as Payment option on device being used
 
             new CustomBrowser().checkForPaymentAvailability(this, paymentOption.SAMSUNGPAY, payUCustomBrowserCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), merchantKey, userCredentials);
+            new CustomBrowser().checkForPaymentAvailability(this, paymentOption.PHONEPE, payUCustomBrowserCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), merchantKey, userCredentials);
 
             ((TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
             ((TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
@@ -283,11 +290,26 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
 
             }
-            if (isSamsungPayAvailable==true)
+            if (isSamsungPayAvailable==true) {
                 paymentOptionsList.add("SAMPAY");
+            }
+
+            if(payuResponse.isPhonePeIntentAvailable()){
+
+                paymentOptionsList.add(SdkUIConstants.PHONEPE);
+            }
+
+            if(payuResponse.isPhonePeIntentAvailable()){
+                paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
+            }
 
 
-        } else {
+
+
+            }
+
+
+            else {
             Toast.makeText(this, "Something went wrong : " + payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
         }
 
@@ -376,6 +398,15 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
+                    case SdkUIConstants.PHONEPE:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
+                        break;
+
+                    case SdkUIConstants.CBPHONEPE:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
+                        break;
 
                 }
 
@@ -432,6 +463,16 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case "SAMPAY":
                         makePaymentBySamPay();
                         break;
+                    case SdkUIConstants.PHONEPE:
+                        isPaymentByPhonePe= true;
+                        makePaymentByPhonePe();
+                        break;
+
+                    case SdkUIConstants.CBPHONEPE:
+                        isPaymentByPhonePe=false;
+                        isStandAlonePhonePeAvailable=false;
+                        makePaymentByPhonePe();
+                        break;
                 }
             }
 
@@ -447,6 +488,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
             Intent intent = new Intent(this, PaymentsActivity.class);
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+            intent.putExtra("isStandAlonePhonePeAvailable",isStandAlonePhonePeAvailable);
+            intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
+
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
             if (mPostData != null)
@@ -474,6 +518,16 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void makePaymentByPhonePe(){
+
+        try {
+            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.PHONEPE_INTENT).getPaymentPostParams();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

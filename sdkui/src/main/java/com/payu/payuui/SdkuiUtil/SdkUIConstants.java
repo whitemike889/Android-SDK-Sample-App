@@ -11,6 +11,8 @@ public interface SdkUIConstants {
     String NET_BANKING = "Net Banking";
     String UPI = "UPI";
     String TEZ = "TEZ";
+    String PHONEPE = "PHONEPE";
+    String CBPHONEPE = "CBPHONEPE";
     String CASH_CARDS = "Cash Cards";
     String EMI = "EMI";
     String PAYU_MONEY = "PayU Money";
