@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.payu.india.Model.PayuResponse;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.Fragment.CreditDebitFragment;
+import com.payu.payuui.Fragment.GenericUpiIntentFragment;
 import com.payu.payuui.Fragment.LazyPayFragment;
 import com.payu.payuui.Fragment.NetBankingFragment;
 import com.payu.payuui.Fragment.PayuMoneyFragment;
@@ -84,6 +85,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
             case SdkUIConstants.TEZ:
                 fragment = new TEZFragment();
+                mPageReference.put(i, fragment);
+                return fragment;
+
+            case SdkUIConstants.GENERICINTENT:
+                fragment = new GenericUpiIntentFragment();
                 mPageReference.put(i, fragment);
                 return fragment;
 

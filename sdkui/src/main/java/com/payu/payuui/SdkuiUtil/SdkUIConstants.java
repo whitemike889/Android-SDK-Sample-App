@@ -10,6 +10,7 @@ public interface SdkUIConstants {
     String CREDIT_DEBIT_CARDS = "Credit/Debit Cards";
     String NET_BANKING = "Net Banking";
     String UPI = "UPI";
+    String GENERICINTENT="GENERICINTENT";
     String TEZ = "TEZ";
     String PHONEPE = "PHONEPE";
     String CBPHONEPE = "CBPHONEPE";
