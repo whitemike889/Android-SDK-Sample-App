@@ -107,8 +107,9 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
                     Toast.makeText(MainActivity.this, getString(R.string.use_live_key_in_production_environment), Toast.LENGTH_SHORT).show();
 
                     /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
-                    */
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
+                     */
+                    // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
                 }
                 else{
                     //set the test key in test environment
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
     public void navigateToBaseActivity(View view) {
 
 
-       // merchantKey="";
+        // merchantKey="";
         merchantKey = ((EditText) findViewById(R.id.editTextMerchantKey)).getText().toString();
         String amount = ((EditText) findViewById(R.id.editTextAmount)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
@@ -187,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
 
 
         /*
-        * Transaction Id should be kept unique for each transaction.
-        * */
+         * Transaction Id should be kept unique for each transaction.
+         * */
         mPaymentParams.setTxnId("" + System.currentTimeMillis());
 
         /**
@@ -217,24 +218,27 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
          * */
         mPaymentParams.setUserCredentials(userCredentials);
 
+
         //TODO Pass this param only if using offer key
         //mPaymentParams.setOfferKey("cardnumber@8370");
 
         //TODO Sets the payment environment in PayuConfig object
         payuConfig = new PayuConfig();
         payuConfig.setEnvironment(environment);
-         //   payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
+        //   payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
         //TODO It is recommended to generate hash from server only. Keep your key and salt in server side hash generation code.
-          generateHashFromServer(mPaymentParams);
+        // generateHashFromServer(mPaymentParams);
 
         /**
          * Below approach for generating hash is not recommended. However, this approach can be used to test in PRODUCTION_ENV
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-        //String salt = "";
+        String salt = "eCwWELxi";
+        // String salt = "13p0PXZk";
+        // String salt = "1b1b0";
         //
-        //generateHashFromSDK(mPaymentParams, salt);
+        generateHashFromSDK(mPaymentParams, salt);
 
     }
 
@@ -385,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
             try {
 
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-             //   URL url = new URL("https://tsd.payu.in/GetHash");
+                //   URL url = new URL("https://tsd.payu.in/GetHash");
                 URL url = new URL("https://payu.herokuapp.com/get_hash");
 
                 // get the payuConfig first
@@ -548,6 +552,7 @@ public class MainActivity extends AppCompatActivity implements OneClickPaymentLi
         Intent intent = new Intent(this, PayUBaseActivity.class);
         intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
         intent.putExtra(PayuConstants.PAYMENT_PARAMS, mPaymentParams);
+
         intent.putExtra(PayuConstants.PAYU_HASHES, payuHashes);
 
         //Lets fetch all the one click card tokens first

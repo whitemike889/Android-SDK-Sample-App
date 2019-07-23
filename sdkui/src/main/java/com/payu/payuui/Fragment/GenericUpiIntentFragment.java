@@ -53,7 +53,7 @@ public class GenericUpiIntentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_generic_upi_intent, container, false);
+        return inflater.inflate(R.layout.fragment_upiintent, container, false);
     }
 
 
