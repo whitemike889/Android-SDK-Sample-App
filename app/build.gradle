@@ -5,10 +5,10 @@ android {
 
     defaultConfig {
         applicationId "com.payu.testapp"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 27
-        versionCode 3
-        versionName "2.1.1"
+        versionCode 4
+        versionName "2.2"
     }
     buildTypes {
         release {

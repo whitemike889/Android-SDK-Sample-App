@@ -45,6 +45,7 @@ public class PaymentsActivity extends FragmentActivity {
     private String txnId = null;
     private String merchantKey;
     private PayUChecksum checksum;
+    private String salt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class PaymentsActivity extends FragmentActivity {
 
                 isStandAlonePhonePayAvailable = bundle.getBoolean("isStandAlonePhonePeAvailable", false);
                 isPaymentByPhonePe = bundle.getBoolean("isPaymentByPhonePe", false);
+                salt = bundle.getString(PayuConstants.SALT);
             }
 
 
@@ -128,7 +130,7 @@ public class PaymentsActivity extends FragmentActivity {
 
                         //This hash should be generated from server
 
-                        String input = merchantKey+"|validateVPA|"+vpa+"|1b1b0";
+                        String input = merchantKey+"|validateVPA|"+vpa+"|"+salt;
 
                          String verifyVpaHash = calculateHash(input.toString()).getResult();
 

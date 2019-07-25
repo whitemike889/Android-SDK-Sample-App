@@ -5,7 +5,7 @@ android {
     buildToolsVersion "27.0.2"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 2
         versionName "2.0.1"
@@ -21,10 +21,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.payu.india:payu-sdk:4.4.6'
-    compile 'com.payu.custombrowser:payu-custom-browser:7.3.0'
+    compile 'com.payu.custombrowser:payu-custom-browser:7.4.0'
     compile 'com.payu.samsungpay:samsungpay:1.0'
     compile 'com.android.support:appcompat-v7:27.1.0'
     compile 'com.android.support:support-v4:27.1.0'
-    compile 'com.payu.magicretry:magicretry:1.0.6'
-    compile 'com.payu.phonepe:phonepe-intent:1.0.0'
+    compile 'com.payu.magicretry:magicretry:1.0.7'
+    compile 'com.payu.phonepe:phonepe-intent:1.1.0'
+    compile 'com.payu.upisdk:upisdk:1.0.0'
+
+
 }
