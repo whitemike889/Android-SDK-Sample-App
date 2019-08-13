@@ -5,12 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        >
+        android:theme="@style/AppTheme" >
 
         <activity
             android:name=".Activity.PayUBaseActivity"
@@ -23,13 +22,7 @@
             android:name=".Activity.PaymentsActivity"
             android:label="@string/title_activity_payments"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent"
-            >
-        </activity>
-        <activity
-            android:name=".Activity.OldPaymentActivity"
-            android:label="@string/title_activity_payments"
-            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar"
             >
         </activity>
 

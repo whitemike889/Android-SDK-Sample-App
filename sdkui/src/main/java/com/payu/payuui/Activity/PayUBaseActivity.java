@@ -1,6 +1,5 @@
 package com.payu.payuui.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,36 +8,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.payu.custombrowser.CustomBrowser;
-import com.payu.custombrowser.PayUCustomBrowserCallback;
-import com.payu.custombrowser.bean.CustomBrowserResultData;
-import com.payu.custombrowser.util.PaymentOption;
-import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
-import com.payu.india.Interfaces.ValueAddedServiceApiListener;
-import com.payu.india.Model.MerchantWebService;
-import com.payu.india.Model.PaymentDetails;
+import com.payu.gpay.GPay;
+import com.payu.gpay.callbacks.PayUGPayCallback;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PayuResponse;
 import com.payu.india.Model.PostData;
-import com.payu.india.Model.StoredCard;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Payu.PayuUtils;
-import com.payu.india.PostParams.MerchantWebServicePostParams;
 import com.payu.india.PostParams.PaymentPostParams;
-import com.payu.india.Tasks.GetPaymentRelatedDetailsTask;
-import com.payu.india.Tasks.ValueAddedServiceTask;
 import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.Adapter.SavedCardItemFragmentAdapter;
 import com.payu.payuui.Fragment.CreditDebitFragment;
@@ -201,234 +183,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onValueAddedServiceApiResponse(PayuResponse payuResponse) {
-        valueAddedResponse = payuResponse;
-
-        if (mPayuResponse != null) {
-            if (mPayuResponse.isCreditCardAvailable() && mPayuResponse.isDebitCardAvailable()) {
-                //Disable the pay button initially for CC/DC
-                payNowButton.setEnabled(false);
-            } else {
-                //Enable the pay button for all other options
-                payNowButton.setEnabled(true);
-            }
-            setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
-        }
-    }
-
-    @Override
-    public void onPaymentRelatedDetailsResponse(PayuResponse payuResponse) {
-        mPayuResponse = payuResponse;
-
-
-        boolean lazypay = mPayuResponse.isLazyPayAvailable();
-
-        if (valueAddedResponse != null)
-            setupViewPagerAdapter(mPayuResponse, valueAddedResponse);
-
-        MerchantWebService valueAddedWebService = new MerchantWebService();
-        valueAddedWebService.setKey(mPaymentParams.getKey());
-        valueAddedWebService.setCommand(PayuConstants.VAS_FOR_MOBILE_SDK);
-        valueAddedWebService.setHash(mPayUHashes.getVasForMobileSdkHash());
-        valueAddedWebService.setVar1(PayuConstants.DEFAULT);
-        valueAddedWebService.setVar2(PayuConstants.DEFAULT);
-        valueAddedWebService.setVar3(PayuConstants.DEFAULT);
-
-        if ((postData = new MerchantWebServicePostParams(valueAddedWebService).getMerchantWebServicePostParams()) != null && postData.getCode() == PayuErrors.NO_ERROR) {
-            payuConfig.setData(postData.getResult());
-            valueAddedServiceTask = new ValueAddedServiceTask(this);
-            valueAddedServiceTask.execute(payuConfig);
-        } else {
-            if (postData != null)
-                Toast.makeText(this, postData.getResult(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * This method sets us the view pager with payment options.
-     *
-     * @param payuResponse       contains the payment options available on the merchant key
-     * @param valueAddedResponse contains the bank down status for various banks
-     */
-    private void setupViewPagerAdapter(final PayuResponse payuResponse, PayuResponse valueAddedResponse) {
-
-        if (payuResponse.isResponseAvailable() && payuResponse.getResponseStatus().getCode() == PayuErrors.NO_ERROR) { // ok we are good to go
-            Toast.makeText(this, payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
-
-
-            if (payuResponse.isStoredCardsAvailable()) {
-                paymentOptionsList.add(SdkUIConstants.SAVED_CARDS);
-
-            }
-
-            if (payuResponse.isCreditCardAvailable() || payuResponse.isDebitCardAvailable()) {
-                paymentOptionsList.add(SdkUIConstants.CREDIT_DEBIT_CARDS);
-            }
-
-            if (payuResponse.isNetBanksAvailable()) { // okay we have net banks now.
-                paymentOptionsList.add(SdkUIConstants.NET_BANKING);
-            }
-
-
-            if (payuResponse.isUpiAvailable()) { // adding UPI
-                paymentOptionsList.add(SdkUIConstants.UPI);
-            }
-
-            if (payuResponse.isGoogleTezAvailable()) { // adding TEZ
-                paymentOptionsList.add(SdkUIConstants.TEZ);
-
-            }
-
-            if(payuResponse.isGenericIntentAvailable()){
-                paymentOptionsList.add(SdkUIConstants.GENERICINTENT);
-            }
-
-
-            if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
-                paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
-            }
-
-            if (payuResponse.isLazyPayAvailable()) {
-                paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
-
-            }
-            if (isSamsungPayAvailable==true) {
-                paymentOptionsList.add("SAMPAY");
-            }
-
-            if(payuResponse.isPhonePeIntentAvailable()){
-
-                paymentOptionsList.add(SdkUIConstants.PHONEPE);
-            }
-
-            if(payuResponse.isPhonePeIntentAvailable()){
-                paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
-            }
-
-
-
-
-            }
-
-
-            else {
-            Toast.makeText(this, "Something went wrong : " + payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
-        }
-
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList, payuResponse, valueAddedResponse, oneClickCardTokens);
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(pagerAdapter);
-
-        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tab_layout);
-        slidingTabLayout.setDistributeEvenly(false);
-
-        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        slidingTabLayout.setViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                switch (paymentOptionsList.get(position)) {
-                    case SdkUIConstants.SAVED_CARDS:
-                        ViewPager myViewPager = (ViewPager) findViewById(R.id.pager_saved_card);
-                        int currentPosition = ((ViewPager) findViewById(R.id.pager_saved_card)).getCurrentItem();
-                        savedCards = payuResponse != null ? payuResponse.getStoredCards() : null;
-                        if (savedCards != null) {
-                            if (savedCards.size() == 0) {
-                                payNowButton.setEnabled(false);
-                                break;
-                            }
-                            if (savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && savedCards.get(currentPosition).getOneTapCard() == 1) {
-                                payNowButton.setEnabled(true);
-                            } else if (savedCards.get(currentPosition).getCardType().equals("SMAE")) {
-                                payNowButton.setEnabled(true);
-                            } else {
-                                SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) myViewPager.getAdapter();
-                                SavedCardItemFragment mSaveFragment = mSaveAdapter.getFragment(currentPosition) instanceof SavedCardItemFragment ? mSaveAdapter.getFragment(currentPosition) : null;
-
-                                if (mSaveFragment != null && mSaveFragment.cvvValidation()) {
-                                    payNowButton.setEnabled(true);
-                                } else {
-                                    payNowButton.setEnabled(false);
-                                }
-                            }
-                        }
-                        break;
-                    case SdkUIConstants.CREDIT_DEBIT_CARDS:
-                        PagerAdapter mPagerAdapter = (PagerAdapter) viewPager.getAdapter();
-                        CreditDebitFragment tempCreditDebitFragment = mPagerAdapter.getFragment(position) instanceof CreditDebitFragment ? (CreditDebitFragment) mPagerAdapter.getFragment(position) : null;
-                        if (tempCreditDebitFragment != null)
-                            tempCreditDebitFragment.checkData();
-                        break;
-                    case SdkUIConstants.NET_BANKING:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-                    case SdkUIConstants.PAYU_MONEY:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-                    case SdkUIConstants.UPI:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-                    case SdkUIConstants.TEZ:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-
-                    case SdkUIConstants.GENERICINTENT:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-
-                    case SdkUIConstants.LAZY_PAY:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-                    case "SAMPAY":
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-                    case SdkUIConstants.PHONEPE:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-
-                    case SdkUIConstants.CBPHONEPE:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
-
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        mProgressBar.setVisibility(View.GONE);
-
     }
 
     @Override
