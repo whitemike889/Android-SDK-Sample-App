@@ -33,5 +33,5 @@
     <style name="CustomListViewStyle" parent="Widget.AppCompat.ListView">
         <item name="android:listSelector">#003366</item>
     </style>
-
+    <style name="cb_snooze_dialog" parent="Theme.AppCompat.Light.Dialog.Alert" />
 </resources>
