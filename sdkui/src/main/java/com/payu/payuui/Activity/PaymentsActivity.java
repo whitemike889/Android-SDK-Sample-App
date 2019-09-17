@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.payu.custombrowser.Bank;
 import com.payu.custombrowser.CustomBrowser;
@@ -23,7 +24,6 @@ import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
-import com.payu.magicretry.MagicRetryFragment;
 import com.payu.payuui.R;
 import com.payu.phonepe.PhonePe;
 import com.payu.phonepe.callbacks.PayUPhonePeCallback;
@@ -130,7 +130,7 @@ public class PaymentsActivity extends FragmentActivity {
 
                         //This hash should be generated from server
 
-                        String input = merchantKey+"|validateVPA|"+vpa+"|"+salt;
+                        String input = "smsplus"+"|validateVPA|"+vpa+"|"+"1b1b0";
 
                          String verifyVpaHash = calculateHash(input.toString()).getResult();
 
@@ -210,16 +210,13 @@ public class PaymentsActivity extends FragmentActivity {
 
                     @Override
                     public void onCBErrorReceived(int code, String errormsg) {
+                        Toast.makeText(PaymentsActivity.this, errormsg, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void setCBProperties(WebView webview, Bank payUCustomBrowser) {
                         webview.setWebChromeClient(new PayUWebChromeClient(payUCustomBrowser));
 
-                        // The following setting is optional, set WV client only when using your custom WVclient
-                        // Also, custom WV client should inherit PayUSurePayWebViewClient in case of SurePay enabled,
-                        // Otherwise PayUWebViewClient.
-                        // webview.setWebViewClient(new PayUWebViewClient(payUCustomBrowser, merchantKey));
                     }
 
                     @Override
@@ -242,15 +239,6 @@ public class PaymentsActivity extends FragmentActivity {
                         super.onBackButton(alertDialogBuilder);
                     }
 
-                    //TODO Below code is used only when magicRetry is set to true in customBrowserConfig
-/*                    @Override
-                    public void initializeMagicRetry(Bank payUCustomBrowser, WebView webview, MagicRetryFragment magicRetryFragment) {
-                        webview.setWebViewClient(new PayUWebViewClient(payUCustomBrowser, magicRetryFragment, merchantKey));
-                        Map<String, String> urlList = new HashMap<String, String>();
-                        if(payuConfig!=null)
-                            urlList.put(url, payuConfig.getData());
-                        payUCustomBrowser.setMagicRetry(urlList);
-                    }*/
                 };
 
                 //Sets the configuration of custom browser
@@ -265,13 +253,13 @@ public class PaymentsActivity extends FragmentActivity {
                 customBrowserConfig.setDisableBackButtonDialog(false);
 
                 //Below flag is used for One Click Payments. It should always be set to CustomBrowserConfig.STOREONECLICKHASH_MODE_SERVER
-                customBrowserConfig.setStoreOneClickHash(CustomBrowserConfig.STOREONECLICKHASH_MODE_SERVER);
+
 
                 //Set it to true to enable run time permission dialog to appear for all Android 6.0 and above devices
                 customBrowserConfig.setMerchantSMSPermission(false);
 
                 //Set it to true to enable Magic retry (If MR is enabled SurePay should be disabled and vice-versa)
-                customBrowserConfig.setmagicRetry(false);
+
 
 
 
@@ -316,7 +304,7 @@ public class PaymentsActivity extends FragmentActivity {
 
                 if (isPaymentByPhonePe == true & isStandAlonePhonePayAvailable == true) {
 
-                    phonePe.makePayment(payUPhonePeCallback, PaymentsActivity.this, payuConfig.getData());
+                    phonePe.makePayment(payUPhonePeCallback, PaymentsActivity.this, payuConfig.getData(),false);
 
                 } else {
 

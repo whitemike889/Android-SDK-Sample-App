@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 19
@@ -19,15 +19,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.payu.india:payu-sdk:4.4.6'
-    compile 'com.payu.custombrowser:payu-custom-browser:7.4.0'
-    compile 'com.payu.samsungpay:samsungpay:1.0'
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support:support-v4:27.1.0'
-    compile 'com.payu.magicretry:magicretry:1.0.7'
-    compile 'com.payu.phonepe:phonepe-intent:1.1.0'
-    compile 'com.payu.upisdk:upisdk:1.0.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api 'com.payu.india:payu-sdk:4.4.8'
+    implementation 'com.payu.custombrowser:payu-custom-browser:7.5.0'
+    implementation 'com.payu.samsungpay:samsungpay:1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.payu.phonepe:phonepe-intent:1.2.0'
+    implementation 'com.payu.upisdk:upisdk:1.0.1'
+    implementation 'com.payu.gpay:payu-gpay:1.0.0'
 
 
 }

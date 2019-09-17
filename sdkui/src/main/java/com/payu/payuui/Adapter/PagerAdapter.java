@@ -31,15 +31,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<String> mTitles;
     private PayuResponse payuResponse;
     private PayuResponse valueAddedResponse;
-    private HashMap<String, String> oneClickCardTokens;
     private HashMap<Integer, Fragment> mPageReference = new HashMap<Integer, Fragment>();
 
-    public PagerAdapter(FragmentManager fragmentManager, ArrayList<String> titles, PayuResponse payuResponse, PayuResponse valueAddedResponse, HashMap<String, String> oneClickCardTokens) {
+    public PagerAdapter(FragmentManager fragmentManager, ArrayList<String> titles, PayuResponse payuResponse, PayuResponse valueAddedResponse) {
         super(fragmentManager);
         this.mTitles = titles;
         this.payuResponse = payuResponse;
         this.valueAddedResponse = valueAddedResponse;
-        this.oneClickCardTokens = oneClickCardTokens;
     }
 
     @Override
@@ -52,7 +50,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 bundle.putParcelableArrayList(PayuConstants.STORED_CARD, payuResponse.getStoredCards());
                 bundle.putSerializable(SdkUIConstants.VALUE_ADDED, valueAddedResponse.getIssuingBankStatus());
                 bundle.putInt(SdkUIConstants.POSITION, i);
-                bundle.putSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS, oneClickCardTokens);
                 fragment.setArguments(bundle);
                 mPageReference.put(i, fragment);
                 return fragment;

@@ -83,12 +83,8 @@ public final class SavedCardItemFragment extends Fragment {
             cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
         }
 
-        if (mStoredCard.getEnableOneClickPayment() == 1 && mStoredCard.getOneTapCard() == 1 ) {
 
-            cvvEditText.setVisibility(View.GONE);
-            enableOneClickPayment.setVisibility(View.GONE);
-            cvvTextView.setText("Click Pay Now to Pay through this card");
-        }else {
+            {
             enableOneClickPayment.setVisibility(View.VISIBLE);
 
         }

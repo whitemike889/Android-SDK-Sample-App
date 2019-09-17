@@ -88,7 +88,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
     private PostData mPostData;
     private PayUSamsungPay payUSamsungPay;
-    private HashMap<String, String> oneClickCardTokens;
     private ProgressBar mProgressBar;
     private boolean isSamsungPayAvailable = false;
     private boolean isStandAlonePhonePeAvailable = false;
@@ -119,7 +118,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             merchantKey = mPaymentParams.getKey();
             userCredentials = mPaymentParams.getUserCredentials();
 
-            oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
 
          // Call back method of PayU custom browser to check availability of Samsung Pay
 
@@ -128,6 +126,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 @Override
                 public void onCBErrorReceived(int code, String errormsg) {
                     super.onCBErrorReceived(code, errormsg);
+                    Toast.makeText(PayUBaseActivity.this, errormsg, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -318,7 +317,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             Toast.makeText(this, "Something went wrong : " + payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
         }
 
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList, payuResponse, valueAddedResponse, oneClickCardTokens);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList, payuResponse, valueAddedResponse);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
@@ -355,9 +354,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                                 payNowButton.setEnabled(false);
                                 break;
                             }
-                            if (savedCards.get(currentPosition).getEnableOneClickPayment() == 1 && savedCards.get(currentPosition).getOneTapCard() == 1) {
-                                payNowButton.setEnabled(true);
-                            } else if (savedCards.get(currentPosition).getCardType().equals("SMAE")) {
+
+
+                                if (savedCards.get(currentPosition).getCardType().equals("SMAE")) {
                                 payNowButton.setEnabled(true);
                             } else {
                                 SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) myViewPager.getAdapter();
@@ -590,11 +589,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             mPaymentParams.setStoreCard(0);
         }
 
-        if (enableOneClickPaymentCheckBox.isChecked()) {
-            mPaymentParams.setEnableOneClickPayment(1);// TODO set flag for one tap payment
-        } else {
-            mPaymentParams.setEnableOneClickPayment(0);
-        }
+
 
 
         // lets try to get the post params
@@ -656,22 +651,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         mPaymentParams.setExpiryMonth(selectedStoredCard.getExpiryMonth());
         mPaymentParams.setExpiryYear(selectedStoredCard.getExpiryYear());
 
-        String merchantHash;
-        if (selectedStoredCard.getOneTapCard() == 1) {
-            merchantHash = oneClickCardTokens.get(selectedStoredCard.getCardToken());
-        } else {
-            merchantHash = PayuConstants.DEFAULT;
-        }
 
-        if (selectedStoredCard.getEnableOneClickPayment() == 1 && !merchantHash.contentEquals(PayuConstants.DEFAULT)) {
-            mPaymentParams.setCardCvvMerchant(merchantHash);
-        } else {
-            mPaymentParams.setCvv(cvv);
-        }
-
-        if (mSaveFragment !=null && mSaveFragment.isEnableOneClickPaymentChecked()) {
-            mPaymentParams.setEnableOneClickPayment(1);
-        }
 
         try {
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.CC).getPaymentPostParams();

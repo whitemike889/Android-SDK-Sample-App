@@ -135,10 +135,7 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
                 PagerAdapter activityAdapter = (PagerAdapter) activityViewPager.getAdapter();
                 if(activityAdapter != null && activityAdapter.getPageTitle(activityViewPager.getCurrentItem()).toString().equals(SdkUIConstants.SAVED_CARDS)) {
 
-              if (mStoreCards.get(position).getEnableOneClickPayment() == 1 && mStoreCards.get(position).getOneTapCard() == 1) {
-
-                        getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-                    } else if (mStoreCards.get(position).getCardType().equals("SMAE")) {
+                        if (mStoreCards.get(position).getCardType().equals("SMAE")) {
                         getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
                     } else {
                         SavedCardItemFragmentAdapter mSaveAdapter = (SavedCardItemFragmentAdapter) mPager.getAdapter();
@@ -179,9 +176,7 @@ public class SavedCardsFragment extends Fragment implements View.OnClickListener
                 getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
             }
 
-            if (mStoreCards != null && mStoreCards.size() != 0 && mStoreCards.get(0).getEnableOneClickPayment() == 1  && mStoreCards.get(0).getOneTapCard() == 1 ) {
-                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
-            }
+
         }
 
         return mView;
