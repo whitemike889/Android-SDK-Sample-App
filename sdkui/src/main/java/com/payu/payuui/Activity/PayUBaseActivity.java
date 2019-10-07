@@ -11,22 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.payu.india.Model.PaymentDetails;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PayuResponse;
 import com.payu.india.Model.PostData;
-import com.payu.india.Model.StoredCard;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Payu.PayuUtils;
 import com.payu.india.PostParams.PaymentPostParams;
-import com.payu.india.Tasks.ValueAddedServiceTask;
 import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
@@ -35,7 +30,6 @@ import com.payu.phonepe.PhonePe;
 import com.payu.phonepe.callbacks.PayUPhonePeCallback;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class PayUBaseActivity extends FragmentActivity implements View.OnClickListener {
@@ -53,9 +47,6 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
     private TextView transactionIdTextView;
     private Button payNowButton;
     private PostData mPostData;
-    HashMap<String, String> oneClickCardTokens;
-    private int storeOneClickHash;
-    private final String TAG = "PayuBaseActivity";
     /**
      * Callback of payment availability while doing through PhonePE.
      */
@@ -142,7 +133,6 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
                 payuConfig.setData(mPostData.getResult());
                 Intent intent = new Intent(this, PaymentsActivity.class);
                 intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-                intent.putExtra(PayuConstants.STORE_ONE_CLICK_HASH, storeOneClickHash);
                 startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
             }
 

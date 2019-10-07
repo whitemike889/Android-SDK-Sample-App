@@ -21,21 +21,13 @@ import java.util.StringTokenizer;
 public class PaymentsActivity extends FragmentActivity {
     Bundle bundle;
     String url;
-    boolean cancelTransaction = false;
     PayuConfig payuConfig;
-    private BroadcastReceiver mReceiver = null;
     private String UTF = "UTF-8";
-    private boolean viewPortWide = false;
-    private PayuUtils mPayuUtils;
-    private int storeOneClickHash;
-    private String merchantHash;
     String txnId = null;
     String merchantKey;
     boolean isPhonePeOnlyFlow = false;
-    String magicRetry;
     String userCredentials;
 
-    private static String TAG = "PayU";
 
     @Override
     protected void onResume() {
@@ -48,11 +40,8 @@ public class PaymentsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         Log.v("PayU", "oncreate class name:" + getClass().getCanonicalName());
         if (savedInstanceState == null) {
-            mPayuUtils = new PayuUtils();
             bundle = getIntent().getExtras();
             payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-            storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
-            magicRetry = bundle.getString("magic_retry");
             url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
             String[] list = payuConfig.getData().split("&");
 
@@ -69,11 +58,6 @@ public class PaymentsActivity extends FragmentActivity {
                             break;
                         case "var1":
                             userCredentials = items[1];
-                            break;
-                        case "pg":
-                            if (items[1].contentEquals("NB")) {
-                                viewPortWide = true;
-                            }
                             break;
                     }
                 }

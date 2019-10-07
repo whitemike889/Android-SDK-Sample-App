@@ -1,11 +1,9 @@
 package com.payu.testapp;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,14 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.payu.india.CallBackHandler.OnetapCallback;
 import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Extras.PayUSdkDetails;
-import com.payu.india.Interfaces.OneClickPaymentListener;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
@@ -29,22 +24,6 @@ import com.payu.india.Payu.Payu;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.payuui.Activity.PayUBaseActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * This activity prepares PaymentParams, fetches hashes from server and send it to PayuBaseActivity.java.
@@ -134,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                  * PayU sends the same response to merchant server and in app. In response check the value of key "status"
                  * for identifying status of transaction. There are two possible status like, success or failure
                  * */
-                new AlertDialog.Builder(this,R.style.cb_snooze_dialog)
+                new AlertDialog.Builder(this,R.style.Theme_AppCompat_Light_Dialog_Alert)
                         .setCancelable(false)
                         .setMessage("Payu's Data : " + data.getStringExtra("payu_response") + "\n\n\n Merchant's Data: " + data.getStringExtra("result"))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
