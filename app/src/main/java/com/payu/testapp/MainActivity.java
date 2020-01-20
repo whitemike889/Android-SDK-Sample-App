@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Used when generating hash from SDK
     private PayUChecksum checksum;
-    String salt = null;
+    private EditText etSalt;
+    private String salt = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
                      */
                     // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
                     ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
+                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("1b1b0");
                 }
                 else{
                     //set the test key in test environment
                     ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFX");
+                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("eCwWELxi");
 
                 }
             }
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                  * PayU sends the same response to merchant server and in app. In response check the value of key "status"
                  * for identifying status of transaction. There are two possible status like, success or failure
                  * */
-                new AlertDialog.Builder(this, R.style.cb_snooze_dialog)
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
                         .setCancelable(false)
                         .setMessage("Payu's Data : " + data.getStringExtra("payu_response") + "\n\n\n Merchant's Data: " + data.getStringExtra("result"))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -136,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         // merchantKey="";
         merchantKey = ((EditText) findViewById(R.id.editTextMerchantKey)).getText().toString();
+        etSalt = ((EditText) findViewById(R.id.editTextMerchantSalt));
         String amount = ((EditText) findViewById(R.id.editTextAmount)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
 
@@ -214,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
             //Production Env
             salt = "1b1b0";
         }
+        etSalt.setText(salt);
 //        String salt = "eCwWELxi";
         // String salt = "13p0PXZk";
         // String salt = "1b1b0";

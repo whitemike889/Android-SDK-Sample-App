@@ -295,8 +295,12 @@ public class PaymentsActivity extends FragmentActivity {
                 customBrowserConfig.setPostURL(url);
 
                // String postData = "device_type=1&udid=51e15a3e697d56fe&imei=default&key=smsplus&txnid=1547804005142&amount=10&productinfo=product_info&firstname=firstname&email=test@gmail.com&surl=+https%3A%2F%2Fpayuresponse.firebaseapp.com%2Fsuccess&furl=https%3A%2F%2Fpayuresponse.firebaseapp.com%2Ffailure&hash=a7e524ef46e320c4b5a67e23f6d22a3709eefb9fd9801cebf7ea94e273b6c5d15cafffdebda58a8176fcbb81868f0acddf277cb3214f55b3565a21662dd6a510&udf1=udf1&udf2=udf2&udf3=udf3&udf4=udf4&udf5=udf5&phone=&bankcode=INTENT&pg=upi";
+                // Set Package name in case want to make UPI Intent Payment by specific app.
+                // Like - com.phonepe.app(PhonePe),com.google.android.apps.nbu.paisa.user(GPay) etc
+                // customBrowserConfig.setPackageNameForSpecificApp("com.phonepe.app");
 
-
+                //Set below parameter to enable/disable Intent Collect Fallback for UPI Intent payment type.
+                // customBrowserConfig.setDisableIntentSeamlessFailure(CustomBrowserConfig.ENABLE);
 
 
                 if (payuConfig!=null)

@@ -10,11 +10,11 @@ public interface SdkUIConstants {
     String CREDIT_DEBIT_CARDS = "Credit/Debit Cards";
     String NET_BANKING = "Net Banking";
     String UPI = "UPI";
-    String GENERICINTENT="GENERICINTENT";
+    String GENERICINTENT="UPI INTENT";
     String TEZ = "TEZ";
     String PHONEPE = "PHONEPE";
     String CBPHONEPE = "CBPHONEPE";
-    String CASH_CARDS = "Cash Cards";
+    String CASH_CARDS = "Wallets";
     String EMI = "EMI";
     String PAYU_MONEY = "PayU Money";
     String AMOUNT = "Amount";

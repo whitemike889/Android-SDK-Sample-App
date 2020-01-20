@@ -21,13 +21,13 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.payu.india:payu-sdk:4.4.8'
-    implementation 'com.payu.custombrowser:payu-custom-browser:7.5.0'
+    implementation 'com.payu.custombrowser:payu-custom-browser:7.6.0'
     implementation 'com.payu.samsungpay:samsungpay:1.0'
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
-    implementation 'com.payu.phonepe:phonepe-intent:1.2.0'
-    implementation 'com.payu.upisdk:upisdk:1.0.1'
-    implementation 'com.payu.gpay:payu-gpay:1.0.0'
+    implementation 'com.payu.phonepe:phonepe-intent:1.4'
+    implementation 'com.payu.upisdk:upisdk:1.0.5'
+    implementation 'com.payu.gpay:payu-gpay:1.2.1'
 
 
 }

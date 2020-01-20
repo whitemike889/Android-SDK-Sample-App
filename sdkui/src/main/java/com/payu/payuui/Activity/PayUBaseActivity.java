@@ -306,7 +306,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             if(payuResponse.isPhonePeIntentAvailable()){
                 paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
             }
-
+            if(payuResponse.isCashCardAvailable()){
+                paymentOptionsList.add(SdkUIConstants.CASH_CARDS);
+            }
 
 
 
@@ -412,10 +414,10 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         break;
 
                     case SdkUIConstants.CBPHONEPE:
+                    case SdkUIConstants.CASH_CARDS:
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
-
                 }
 
             }
@@ -452,6 +454,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         makePaymentByNB();
                         break;
                     case SdkUIConstants.CASH_CARDS:
+                        makePaymentByWallets();
                         break;
                     case SdkUIConstants.EMI:
                         break;
@@ -627,6 +630,25 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
         try {
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.NB).getPaymentPostParams();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void makePaymentByWallets() {
+
+        spinnerNetbanking = (Spinner) findViewById(R.id.spinnerWallets);
+        ArrayList<PaymentDetails> walletList = null;
+        if(mPayuResponse!=null)
+            walletList = mPayuResponse.getCashCard();
+
+        if(walletList!=null && walletList.get(spinnerNetbanking.getSelectedItemPosition()) !=null)
+        bankCode = walletList.get(spinnerNetbanking.getSelectedItemPosition()).getBankCode();
+
+        mPaymentParams.setBankCode(bankCode);
+
+        try {
+            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.CASH).getPaymentPostParams();
         } catch (Exception e) {
             e.printStackTrace();
         }
