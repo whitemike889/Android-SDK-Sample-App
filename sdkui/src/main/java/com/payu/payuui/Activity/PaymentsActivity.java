@@ -5,318 +5,201 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.webkit.WebView;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.payu.custombrowser.Bank;
-import com.payu.custombrowser.CustomBrowser;
-import com.payu.custombrowser.PackageListDialogFragment;
-import com.payu.custombrowser.PayUCustomBrowserCallback;
-import com.payu.custombrowser.PayUSurePayWebViewClient;
-import com.payu.custombrowser.PayUWebChromeClient;
-import com.payu.custombrowser.PayUWebViewClient;
-import com.payu.custombrowser.bean.CustomBrowserConfig;
-//import com.payu.custombrowser.upiintent.Payment;
-import com.payu.custombrowser.util.PaymentOption;
-import com.payu.india.Extras.PayUChecksum;
-import com.payu.india.Model.PayuConfig;
-import com.payu.india.Model.PostData;
-import com.payu.india.Payu.PayuConstants;
-import com.payu.india.Payu.PayuErrors;
 import com.payu.payuui.R;
-import com.payu.phonepe.PhonePe;
-import com.payu.phonepe.callbacks.PayUPhonePeCallback;
+import com.payu.upisdk.Upi;
+import com.payu.upisdk.bean.UpiConfig;
+import com.payu.upisdk.callbacks.PayUUPICallback;
+import com.payu.upisdk.upi.IValidityCheck;
+import com.payu.upisdk.util.UpiConstant;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.StringTokenizer;
 
 public class PaymentsActivity extends FragmentActivity {
-    private Bundle bundle;
-    private String url;
-    private PayuConfig payuConfig;
-    private boolean isStandAlonePhonePayAvailable;
-    private boolean isPaymentByPhonePe;
-    private String UTF = "UTF-8";
-    private boolean viewPortWide = false;
-    private String merchantHash;
-    private String txnId = null;
-    private String merchantKey;
-    private PayUChecksum checksum;
-    private String salt;
+    Bundle bundle;
+    String url;
+    String txnId = null;
+    String prod_url = "https://secure.payu.in/_payment";
+    String staging_url = "https://test.payu.in/_payment";
+    private static int prodEnvironment =0;
+    String merchantKey;
+    String userCredentials;
+    private Upi upi;
+    UpiConfig upiConfig;
+    String postData;
+    private int environment;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("PayU", "class name:" + getClass().getCanonicalName());
+    }
+;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v("PayU", "oncreate class name:" + getClass().getCanonicalName());
         if (savedInstanceState == null) {
             bundle = getIntent().getExtras();
+            environment = bundle.getInt("environment");
+            upiConfig = bundle.getParcelable(UpiConstant.UPI_CONFIG);
+            url = environment == prodEnvironment? prod_url : staging_url;
+            postData = upiConfig.getPayuPostData();
+            String[] list = upiConfig.getPayuPostData().split("&");
 
-            PhonePe phonePe = PhonePe.getInstance();
-
-
-            if (bundle != null) {
-
-                isStandAlonePhonePayAvailable = bundle.getBoolean("isStandAlonePhonePeAvailable", false);
-                isPaymentByPhonePe = bundle.getBoolean("isPaymentByPhonePe", false);
-                salt = bundle.getString(PayuConstants.SALT);
+            for (String item : list) {
+                String[] items = item.split("=");
+                if (items.length >= 2) {
+                    String id = items[0];
+                    switch (id) {
+                        case "txnid":
+                            txnId = items[1];
+                            break;
+                        case "key":
+                            merchantKey = items[1];
+                            break;
+                        case "var1":
+                            userCredentials = items[1];
+                            break;
+                    }
+                }
             }
 
+        }
+        paymentThroughSDKFlow();
+    }
 
-            if (bundle != null)
-                payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-
-            if (payuConfig != null) {
-                url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
-              //  url="https://mobiletest.payu.in/_payment";
-                String[] list=null;
-                if(payuConfig.getData()!=null)
-                list = payuConfig.getData().split("&");
-
-                if(list != null) {
-                    for (String item : list) {
-                        String[] items = item.split("=");
-                        if (items.length >= 2) {
-                            String id = items[0];
-                            switch (id) {
-                                case "txnid":
-                                    txnId = items[1];
-                                    break;
-                                case "key":
-                                    merchantKey = items[1];
-                                    break;
-                                case "pg":
-                                    if (items[1].contentEquals("NB")) {
-                                        viewPortWide = true;
-                                    }
-                                    break;
-
-                            }
-                        }
-                    }
+    private HashMap<String, String> getDataFromPostData(String postData) {
+        HashMap<String, String> postParamsMap = new HashMap<>();
+        if (null != postData) {
+            StringTokenizer tokens = new StringTokenizer(postData, "&");
+            while (tokens.hasMoreTokens()) {
+                String[] keyValue = tokens.nextToken().split("=");
+                if (null != keyValue && keyValue.length > 0 && null != keyValue[0]) {
+                    postParamsMap.put(keyValue[0], keyValue.length > 1 ? keyValue[1] : "");
                 }
-
-
-                PayUPhonePeCallback payUPhonePeCallback = new PayUPhonePeCallback() {
-
-                    // Called when Payment gets Successful
-                    @Override
-                    public void onPaymentOptionSuccess(String payuResponse) {
-
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        setResult(PayuConstants.PAYU_REQUEST_CODE,intent);
-                        finish();
-
-                    }
-
-
-                    // Called when Payment is failed
-                    @Override
-                    public void onPaymentOptionFailure(String payuResponse) {
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        setResult(PayuConstants.PAYU_REQUEST_CODE,intent);
-                        finish();
-                    }
-                };
-
-                //set callback to track important events
-                PayUCustomBrowserCallback payUCustomBrowserCallback = new PayUCustomBrowserCallback() {
-
-
-
-                    public void onVpaEntered(String vpa, PackageListDialogFragment packageListDialogFragment) {
-
-                        //This hash should be generated from server
-
-                        String input = "smsplus"+"|validateVPA|"+vpa+"|"+"1b1b0";
-
-                         String verifyVpaHash = calculateHash(input.toString()).getResult();
-
-                        packageListDialogFragment.verifyVpa(verifyVpaHash);
-
-
-                    }
-
-                    private PostData calculateHash(String hashString) {
-                        try {
-                            StringBuilder hash = new StringBuilder();
-                            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-                            messageDigest.update(hashString.getBytes());
-                            byte[] mdbytes = messageDigest.digest();
-                            for (byte hashByte : mdbytes) {
-                                hash.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
-                            }
-
-                            return getReturnData(PayuErrors.NO_ERROR, PayuConstants.SUCCESS, hash.toString());
-                        } catch (NoSuchAlgorithmException e) {
-                            return getReturnData(PayuErrors.NO_SUCH_ALGORITHM_EXCEPTION, PayuErrors.INVALID_ALGORITHM_SHA);
-                        }
-                    }
-
-                    protected PostData getReturnData(int code, String status, String result) {
-                        PostData postData = new PostData();
-                        postData.setCode(code);
-                        postData.setStatus(status);
-                        postData.setResult(result);
-                        return postData;
-                    }
-
-                    protected PostData getReturnData(int code, String result) {
-                        return getReturnData(code, PayuConstants.ERROR, result);
-                    }
-
-                    /**
-                     * This method will be called after a failed transaction.
-                     *
-                     * @param payuResponse     response sent by PayU in App
-                     * @param merchantResponse response received from Furl
-                     */
-                    @Override
-                    public void onPaymentFailure(String payuResponse, String merchantResponse) {
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_result), merchantResponse);
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        if (null != merchantHash) {
-                            intent.putExtra(PayuConstants.MERCHANT_HASH, merchantHash);
-                        }
-                        setResult(Activity.RESULT_CANCELED, intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onPaymentTerminate() {
-                        finish();
-                    }
-
-                    /**
-                     * This method will be called after a successful transaction.
-                     *
-                     * @param payuResponse     response sent by PayU in App
-                     * @param merchantResponse response received from Furl
-                     */
-                    @Override
-                    public void onPaymentSuccess(String payuResponse, String merchantResponse) {
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_result), merchantResponse);
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        if (null != merchantHash) {
-                            intent.putExtra(PayuConstants.MERCHANT_HASH, merchantHash);
-                        }
-                        setResult(Activity.RESULT_OK, intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCBErrorReceived(int code, String errormsg) {
-                        Toast.makeText(PaymentsActivity.this, errormsg, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void setCBProperties(WebView webview, Bank payUCustomBrowser) {
-                        webview.setWebChromeClient(new PayUWebChromeClient(payUCustomBrowser));
-
-                    }
-
-                    @Override
-                    public void onBackApprove() {
-                        PaymentsActivity.this.finish();
-                    }
-
-                    @Override
-                    public void onBackDismiss() {
-                        super.onBackDismiss();
-                    }
-
-                    /**
-                     * This callback method will be invoked when setDisableBackButtonDialog is set to true.
-                     *
-                     * @param alertDialogBuilder a reference of AlertDialog.Builder to customize the dialog
-                     */
-                    @Override
-                    public void onBackButton(AlertDialog.Builder alertDialogBuilder) {
-                        super.onBackButton(alertDialogBuilder);
-                    }
-
-                };
-
-                //Sets the configuration of custom browser
-                CustomBrowserConfig customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
-                customBrowserConfig.setViewPortWideEnable(viewPortWide);
-
-                //TODO don't forgot to set AutoApprove and AutoSelectOTP to true for One Tap payments
-                customBrowserConfig.setAutoApprove(false);  // set true to automatically approve the OTP
-                customBrowserConfig.setAutoSelectOTP(false); // set true to automatically select the OTP flow
-
-                //Set below flag to true to disable the default alert dialog of Custom Browser and use your custom dialog
-                customBrowserConfig.setDisableBackButtonDialog(false);
-
-                //Below flag is used for One Click Payments. It should always be set to CustomBrowserConfig.STOREONECLICKHASH_MODE_SERVER
-
-
-                //Set it to true to enable run time permission dialog to appear for all Android 6.0 and above devices
-                customBrowserConfig.setMerchantSMSPermission(false);
-
-                //Set it to true to enable Magic retry (If MR is enabled SurePay should be disabled and vice-versa)
-
-
-
-
-                //Set it to false if you do not want the transaction with web-collect flow
-                //customBrowserConfig.setEnableWebFlow(Payment.TEZ,true);
-
-
-
-                /**
-                 * Maximum number of times the SurePay dialog box will prompt the user to retry a transaction in case of network failures
-                 * Setting the sure pay count to 0, diables the sure pay dialog
-                 */
-                customBrowserConfig.setEnableSurePay(3);
-
-                //htmlData - HTML string received from PayU webservice using Server to Server call.
-
-               // customBrowserConfig.setHtmlData("");
-
-
-                //surepayS2Surl - Url on which HTML received from PayU webservice using Server to Server call is hosted.
-
-               // customBrowserConfig.setSurepayS2Surl("");
-
-
-                /**
-                 * set Merchant activity(Absolute path of activity)
-                 * By the time CB detects good network, if CBWebview is destroyed, we resume the transaction by passing payment post data to,
-                 * this, merchant checkout activity.
-                 * */
-                customBrowserConfig.setMerchantCheckoutActivityPath("com.payu.testapp.MerchantCheckoutActivity");
-
-                //Set the first url to open in WebView
-                customBrowserConfig.setPostURL(url);
-
-               // String postData = "device_type=1&udid=51e15a3e697d56fe&imei=default&key=smsplus&txnid=1547804005142&amount=10&productinfo=product_info&firstname=firstname&email=test@gmail.com&surl=+https%3A%2F%2Fpayuresponse.firebaseapp.com%2Fsuccess&furl=https%3A%2F%2Fpayuresponse.firebaseapp.com%2Ffailure&hash=a7e524ef46e320c4b5a67e23f6d22a3709eefb9fd9801cebf7ea94e273b6c5d15cafffdebda58a8176fcbb81868f0acddf277cb3214f55b3565a21662dd6a510&udf1=udf1&udf2=udf2&udf3=udf3&udf4=udf4&udf5=udf5&phone=&bankcode=INTENT&pg=upi";
-                // Set Package name in case want to make UPI Intent Payment by specific app.
-                // Like - com.phonepe.app(PhonePe),com.google.android.apps.nbu.paisa.user(GPay) etc
-                // customBrowserConfig.setPackageNameForSpecificApp("com.phonepe.app");
-
-                //Set below parameter to enable/disable Intent Collect Fallback for UPI Intent payment type.
-                // customBrowserConfig.setDisableIntentSeamlessFailure(CustomBrowserConfig.ENABLE);
-
-
-                if (payuConfig!=null)
-                customBrowserConfig.setPayuPostData(payuConfig.getData());
-
-                if (isPaymentByPhonePe == true & isStandAlonePhonePayAvailable == true) {
-
-                    phonePe.makePayment(payUPhonePeCallback, PaymentsActivity.this, payuConfig.getData(),false);
-
-                } else {
-
-                    new CustomBrowser().addCustomBrowser(PaymentsActivity.this, customBrowserConfig, payUCustomBrowserCallback);
-                }
-
-
             }
         }
+        return postParamsMap;
     }
+
+    private void paymentThroughSDKFlow()
+    {
+        UpiConfig upiConfig = new UpiConfig();
+        upiConfig.setMerchantKey(merchantKey);
+        upiConfig.setPayuPostData(postData);
+        upi = Upi.getInstance(); // setting the context of UPI
+        paymentThroughUpiSdk(payUUpiSdkCallbackUpiSdk, upiConfig);
+
+
+    }
+    private void paymentThroughUpiSdk(PayUUPICallback payUUpiSdkCallbackUpiSdk, UpiConfig upiConfig) {
+        upi.makePayment(payUUpiSdkCallbackUpiSdk, PaymentsActivity.this, upiConfig);
+    }
+
+    PayUUPICallback payUUpiSdkCallbackUpiSdk = new PayUUPICallback() {
+        @Override
+        public void onPaymentFailure(String payuResult, String merchantResponse) {
+            super.onPaymentFailure(payuResult, merchantResponse);
+            Log.v("PayU", "Paymentfail .. " + payuResult);
+            Intent intent = new Intent();
+            intent.putExtra(getString(R.string.cb_result), merchantResponse);
+            intent.putExtra(getString(R.string.cb_payu_response), payuResult);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+
+        @Override
+        public void onPaymentTerminate() {
+            super.onPaymentTerminate();
+        }
+
+        @Override
+        public void onPaymentSuccess(String payuResult, String merchantResponse) {
+            super.onPaymentSuccess(payuResult, merchantResponse);
+            Log.v("PayU", "onPaymentSuccess .. " + payuResult);
+            Intent intent = new Intent();
+            intent.putExtra(getString(R.string.cb_result), merchantResponse);
+            intent.putExtra(getString(R.string.cb_payu_response), payuResult);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+
+
+
+       /* @Override
+        public void onVpaEntered(com.payu.upisdk.upi.IValidityCheck iValidityCheck, String vpa) {
+            super.onVpaEntered(iValidityCheck, vpa);
+            Log.v("PayU", "onVpaEntered .. ");
+            String input = merchantKey + "|validateVPA|" + vpa + "|" + bundle.getString(PayuConstants.SALT);
+            iValidityCheck.verifyVpa(calculateHash(input));
+        }*/
+
+
+        @Override
+        public void onVpaEntered(String vpa, IValidityCheck iValidityCheck) {
+            super.onVpaEntered(vpa, iValidityCheck);
+            Log.v("PayU", "onVpaEntered .. ");
+            String input = merchantKey + "|validateVPA|" + vpa + "|" + "1b1b0"; // recommended to generate the validate vpa hash from server
+            iValidityCheck.verifyVpa(calculateHash(input));
+
+           // bundle.getString(PayuConstants.SALT
+        }
+
+        @Override
+        public void onUpiErrorReceived(int code, String errormsg) {
+            super.onUpiErrorReceived(code, errormsg);
+            Log.v("PayU", "onUpiErrorReceived .. " + errormsg);
+        }
+
+
+        @Override
+        public void onBackButton(AlertDialog.Builder alertDialogBuilder) {
+            super.onBackButton(alertDialogBuilder);
+            Log.v("PayU", "onBackButton .. ");
+        }
+
+        @Override
+        public void onBackApprove() {
+            super.onBackApprove();
+            Log.v("PayU", "onBackApprove .. ");
+        }
+
+        @Override
+        public void onBackDismiss() {
+            super.onBackDismiss();
+            Log.v("PayU", "onBackDismiss .. ");
+        }
+
+
+        @Override
+        public void isPaymentOptionAvailable(boolean isAvaialble, String paymentType) {
+            super.isPaymentOptionAvailable(isAvaialble, paymentType);
+            Log.v("PayU", "isPaymentOptionAvailable .. " + isAvaialble);
+        }
+
+    };
+
+
+    private String calculateHash(String inputString) {
+        try {
+            StringBuilder hash = new StringBuilder();
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+            messageDigest.update(inputString.getBytes());
+            byte[] mdbytes = messageDigest.digest();
+            for (byte hashByte : mdbytes) {
+                hash.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return hash.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

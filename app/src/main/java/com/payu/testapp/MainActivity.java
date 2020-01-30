@@ -14,16 +14,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.payu.india.Extras.PayUChecksum;
-import com.payu.india.Extras.PayUSdkDetails;
-import com.payu.india.Model.PaymentParams;
-import com.payu.india.Model.PayuConfig;
-import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
-import com.payu.india.Payu.Payu;
-import com.payu.india.Payu.PayuConstants;
-import com.payu.india.Payu.PayuErrors;
 import com.payu.payuui.Activity.PayUBaseActivity;
+import com.payu.upisdk.generatepostdata.PaymentParamsUpiSdk;
+import com.payu.upisdk.generatepostdata.PostDataGenerate;
+import com.payu.upisdk.util.UpiConstant;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * This activity prepares PaymentParams, fetches hashes from server and send it to PayuBaseActivity.java.
@@ -35,24 +32,31 @@ public class MainActivity extends AppCompatActivity {
     private String merchantKey, userCredentials;
 
     // These will hold all the payment parameters
-    private PaymentParams mPaymentParams;
+
+  //  private PaymentParams mPaymentParams;
+
+
+    private PaymentParamsUpiSdk mPaymentParamsUpiSdk;
 
     // This sets the configuration
-    private PayuConfig payuConfig;
+  //  private PayuConfig payuConfig;
 
     private Spinner environmentSpinner;
 
-    // Used when generating hash from SDK
-    private PayUChecksum checksum;
-    private EditText etSalt;
-    private String salt = null;
+    private int Staging_Env = 2;
+    private int Production_Env = 0;
+    private int environment;
+    private String paymentHash;
+    private String paymentRelatedHash;
+    String postDataFromUpiSdk;
+    int requestCode = 123;
+    String salt = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO Must write below code in your activity to set up initial context for PayU
-        Payu.setInstance(this);
+
 
         // lets set up the tool bar;
         Toolbar toolBar = (Toolbar) findViewById(R.id.app_bar);
@@ -60,10 +64,9 @@ public class MainActivity extends AppCompatActivity {
         toolBar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolBar);
 
-        // lets tell the people what version of sdk we are using
-        PayUSdkDetails payUSdkDetails = new PayUSdkDetails();
 
-        Toast.makeText(this, "Build No: " + payUSdkDetails.getSdkBuildNumber() + "\n Build Type: " + payUSdkDetails.getSdkBuildType() + " \n Build Flavor: " + payUSdkDetails.getSdkFlavor() + "\n Application Id: " + payUSdkDetails.getSdkApplicationId() + "\n Version Code: " + payUSdkDetails.getSdkVersionCode() + "\n Version Name: " + payUSdkDetails.getSdkVersionName(), Toast.LENGTH_LONG).show();
+
+
 
         //Lets setup the environment spinner
         environmentSpinner = (Spinner) findViewById(R.id.spinner_environment);
@@ -86,13 +89,12 @@ public class MainActivity extends AppCompatActivity {
                     /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
                      */
                     // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
-                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("1b1b0");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
                 }
                 else{
                     //set the test key in test environment
                     ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFX");
-                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("eCwWELxi");
+                    // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("VgZldf");
 
                 }
             }
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+        if (requestCode == requestCode) {
             if (data != null) {
 
                 /**
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                  * PayU sends the same response to merchant server and in app. In response check the value of key "status"
                  * for identifying status of transaction. There are two possible status like, success or failure
                  * */
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
+                new AlertDialog.Builder(this,R.style.Theme_AppCompat_Light_Dialog_Alert)
                         .setCancelable(false)
                         .setMessage("Payu's Data : " + data.getStringExtra("payu_response") + "\n\n\n Merchant's Data: " + data.getStringExtra("result"))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -139,71 +141,46 @@ public class MainActivity extends AppCompatActivity {
 
         // merchantKey="";
         merchantKey = ((EditText) findViewById(R.id.editTextMerchantKey)).getText().toString();
-        etSalt = ((EditText) findViewById(R.id.editTextMerchantSalt));
         String amount = ((EditText) findViewById(R.id.editTextAmount)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
 
         String value = environmentSpinner.getSelectedItem().toString();
-        int environment;
+
         String TEST_ENVIRONMENT = getResources().getString(R.string.test);
         if (value.equals(TEST_ENVIRONMENT))
-            environment = PayuConstants.STAGING_ENV;
+          environment = Staging_Env;
         else
-            environment = PayuConstants.PRODUCTION_ENV;
+            environment = Production_Env;
 
         userCredentials = merchantKey + ":" + email;
 
         //TODO Below are mandatory params for hash genetation
-        mPaymentParams = new PaymentParams();
-        /**
-         * For Test Environment, merchantKey = please contact mobile.integration@payu.in with your app name and registered email id
+       mPaymentParamsUpiSdk = new PaymentParamsUpiSdk();
+        mPaymentParamsUpiSdk.setKey(merchantKey);
+        mPaymentParamsUpiSdk.setProductInfo("product_info");
+        mPaymentParamsUpiSdk.setFirstName("firstname"); //Customer First name
+        mPaymentParamsUpiSdk.setEmail("xyz@gmail.com"); //Customer Email
+        mPaymentParamsUpiSdk.setTxnId("" + System.currentTimeMillis()); //Your transaction id
+        mPaymentParamsUpiSdk.setAmount(amount); //Your transaction Amount(In Double as String)
+        mPaymentParamsUpiSdk.setSurl("https://payuresponse.firebaseapp.com/success");
+        mPaymentParamsUpiSdk.setFurl("https://payuresponse.firebaseapp.com/failure");
+        mPaymentParamsUpiSdk.setUdf1("udf1");
+        mPaymentParamsUpiSdk.setUdf2("udf2");
+        mPaymentParamsUpiSdk.setUdf3("udf3");
+        mPaymentParamsUpiSdk.setUdf4("udf4");
+        mPaymentParamsUpiSdk.setUdf5("udf5");
+        mPaymentParamsUpiSdk.setVpa(""); //In case of UPI Collect set customer vpa here
+        mPaymentParamsUpiSdk.setUserCredentials(userCredentials);
+      //  mPaymentParamsUpiSdk.setOfferKey("");
+        mPaymentParamsUpiSdk.setPhone("");//Customer Phone Number
+      //  mPaymentParamsUpiSdk.setHash(paymentHash);//Your Payment Hash
 
-         */
-        mPaymentParams.setKey(merchantKey);
-        mPaymentParams.setAmount(amount);
-        mPaymentParams.setProductInfo("product_info");
-        mPaymentParams.setFirstName("firstname");
-        mPaymentParams.setEmail("test@gmail.com");
-        mPaymentParams.setPhone("");
+         postDataFromUpiSdk = new PostDataGenerate.PostDataBuilder(this).
+                setPaymentMode(UpiConstant.UPI).setPaymentParamUpiSdk(mPaymentParamsUpiSdk).
+                build().toString();
 
+        //TODO Below are mandatory params for hash genetation
 
-        /*
-         * Transaction Id should be kept unique for each transaction.
-         * */
-        mPaymentParams.setTxnId("" + System.currentTimeMillis());
-
-        /**
-         * Surl --> Success url is where the transaction response is posted by PayU on successful transaction
-         * Furl --> Failre url is where the transaction response is posted by PayU on failed transaction
-         */
-        mPaymentParams.setSurl(" https://payuresponse.firebaseapp.com/success");
-        mPaymentParams.setFurl("https://payuresponse.firebaseapp.com/failure");
-        mPaymentParams.setNotifyURL(mPaymentParams.getSurl());  //for lazy pay
-
-        /*
-         * udf1 to udf5 are options params where you can pass additional information related to transaction.
-         * If you don't want to use it, then send them as empty string like, udf1=""
-         * */
-        mPaymentParams.setUdf1("udf1");
-        mPaymentParams.setUdf2("udf2");
-        mPaymentParams.setUdf3("udf3");
-        mPaymentParams.setUdf4("udf4");
-        mPaymentParams.setUdf5("udf5");
-
-        /**
-         * These are used for store card feature. If you are not using it then user_credentials = "default"
-         * user_credentials takes of the form like user_credentials = "merchant_key : user_id"
-         * here merchant_key = your merchant key,
-         * user_id = unique id related to user like, email, phone number, etc.
-         * */
-        mPaymentParams.setUserCredentials(userCredentials);
-
-        //TODO Pass this param only if using offer key
-        //mPaymentParams.setOfferKey("cardnumber@8370");
-
-        //TODO Sets the payment environment in PayuConfig object
-        payuConfig = new PayuConfig();
-        payuConfig.setEnvironment(environment);
         //TODO It is recommended to generate hash from server only. Keep your key and salt in server side hash generation code.
         // generateHashFromServer(mPaymentParams);
 
@@ -212,18 +189,18 @@ public class MainActivity extends AppCompatActivity {
          * if your server side hash generation code is not completely setup. While going live this approach for hash generation
          * should not be used.
          * */
-        if(environment== PayuConstants.STAGING_ENV){
+        if(environment== Staging_Env){
             salt = "eCwWELxi";
+            //salt = "wpAo1AgO";
         }else {
             //Production Env
-            salt = "1b1b0";
+            salt = "13p0PXZk";
         }
-        etSalt.setText(salt);
 //        String salt = "eCwWELxi";
         // String salt = "13p0PXZk";
         // String salt = "1b1b0";
         //
-        generateHashFromSDK(mPaymentParams, salt);
+        generateHashFromSDK(mPaymentParamsUpiSdk, salt);
 
     }
 
@@ -234,99 +211,55 @@ public class MainActivity extends AppCompatActivity {
     // lets generate hashes.
     // This should be done from server side..
     // Do not keep salt anywhere in app.
-    public void generateHashFromSDK(PaymentParams mPaymentParams, String salt) {
-        PayuHashes payuHashes = new PayuHashes();
-        PostData postData = new PostData();
+    public void generateHashFromSDK(PaymentParamsUpiSdk mPaymentParamsUpiSdk, String salt) {
 
-        // payment Hash;
-        checksum = null;
-        checksum = new PayUChecksum();
-        checksum.setAmount(mPaymentParams.getAmount());
-        checksum.setKey(mPaymentParams.getKey());
-        checksum.setTxnid(mPaymentParams.getTxnId());
-        checksum.setEmail(mPaymentParams.getEmail());
-        checksum.setSalt(salt);
-        checksum.setProductinfo(mPaymentParams.getProductInfo());
-        checksum.setFirstname(mPaymentParams.getFirstName());
-        checksum.setUdf1(mPaymentParams.getUdf1());
-        checksum.setUdf2(mPaymentParams.getUdf2());
-        checksum.setUdf3(mPaymentParams.getUdf3());
-        checksum.setUdf4(mPaymentParams.getUdf4());
-        checksum.setUdf5(mPaymentParams.getUdf5());
 
-        postData = checksum.getHash();
-        if (postData.getCode() == PayuErrors.NO_ERROR) {
-            payuHashes.setPaymentHash(postData.getResult());
-        }
+        String paymentHashString = mPaymentParamsUpiSdk.getKey() + "|" + mPaymentParamsUpiSdk.getTxnId() + "|" + mPaymentParamsUpiSdk.getAmount() + "|" + mPaymentParamsUpiSdk.getProductInfo() + "|" + mPaymentParamsUpiSdk.getFirstName() + "|" + mPaymentParamsUpiSdk.getEmail() + "|" + mPaymentParamsUpiSdk.getUdf1() + "|" + mPaymentParamsUpiSdk.getUdf2() + "|" + mPaymentParamsUpiSdk.getUdf3() + "|" + mPaymentParamsUpiSdk.getUdf4() + "|" + mPaymentParamsUpiSdk.getUdf5() + "||||||" + salt  ;
 
-        // checksum for payemnt related details
-        // var1 should be either user credentials or default
-        String var1 = mPaymentParams.getUserCredentials() == null ? PayuConstants.DEFAULT : mPaymentParams.getUserCredentials();
-        String key = mPaymentParams.getKey();
+      paymentHash =  calculateHash(paymentHashString);
 
-        if ((postData = calculateHash(key, PayuConstants.PAYMENT_RELATED_DETAILS_FOR_MOBILE_SDK, var1, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR) // Assign post data first then check for success
-            payuHashes.setPaymentRelatedDetailsForMobileSdkHash(postData.getResult());
-        //vas
-        if ((postData = calculateHash(key, PayuConstants.VAS_FOR_MOBILE_SDK, PayuConstants.DEFAULT, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR)
-            payuHashes.setVasForMobileSdkHash(postData.getResult());
+        String paymentRelatedHashString = mPaymentParamsUpiSdk.getKey() + "|" + "payment_related_details_for_mobile_sdk" + "|" + mPaymentParamsUpiSdk.getUserCredentials() + "|" + salt;
 
-        // getIbibocodes
-        if ((postData = calculateHash(key, PayuConstants.GET_MERCHANT_IBIBO_CODES, PayuConstants.DEFAULT, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR)
-            payuHashes.setMerchantIbiboCodesHash(postData.getResult());
+        paymentRelatedHash = calculateHash(paymentRelatedHashString);
 
-        if (!var1.contentEquals(PayuConstants.DEFAULT)) {
-            // get user card
-            if ((postData = calculateHash(key, PayuConstants.GET_USER_CARDS, var1, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR) // todo rename storedc ard
-                payuHashes.setStoredCardsHash(postData.getResult());
-            // save user card
-            if ((postData = calculateHash(key, PayuConstants.SAVE_USER_CARD, var1, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR)
-                payuHashes.setSaveCardHash(postData.getResult());
-            // delete user card
-            if ((postData = calculateHash(key, PayuConstants.DELETE_USER_CARD, var1, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR)
-                payuHashes.setDeleteCardHash(postData.getResult());
-            // edit user card
-            if ((postData = calculateHash(key, PayuConstants.EDIT_USER_CARD, var1, salt)) != null && postData.getCode() == PayuErrors.NO_ERROR)
-                payuHashes.setEditCardHash(postData.getResult());
-        }
+        launchSdkUI();
+    }
 
-        if (mPaymentParams.getOfferKey() != null) {
-            postData = calculateHash(key, PayuConstants.OFFER_KEY, mPaymentParams.getOfferKey(), salt);
-            if (postData.getCode() == PayuErrors.NO_ERROR) {
-                payuHashes.setCheckOfferStatusHash(postData.getResult());
+    private String calculateHash(String inputString) {
+        try {
+            StringBuilder hash = new StringBuilder();
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+            messageDigest.update(inputString.getBytes());
+            byte[] mdbytes = messageDigest.digest();
+            for (byte hashByte : mdbytes) {
+                hash.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
             }
+            return hash.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-
-        if (mPaymentParams.getOfferKey() != null && (postData = calculateHash(key, PayuConstants.CHECK_OFFER_STATUS, mPaymentParams.getOfferKey(), salt)) != null && postData.getCode() == PayuErrors.NO_ERROR) {
-            payuHashes.setCheckOfferStatusHash(postData.getResult());
-        }
-
-        // we have generated all the hases now lest launch sdk's ui
-        launchSdkUI(payuHashes);
+        return null;
     }
 
-    // deprecated, should be used only for testing.
-    private PostData calculateHash(String key, String command, String var1, String salt) {
-        checksum = null;
-        checksum = new PayUChecksum();
-        checksum.setKey(key);
-        checksum.setCommand(command);
-        checksum.setVar1(var1);
-        checksum.setSalt(salt);
-        return checksum.getHash();
-    }
+
+
     /**
      * This method adds the Payuhashes and other required params to intent and launches the PayuBaseActivity.java
      *
-     * @param payuHashes it contains all the hashes generated from merchant server
+    // * @param it contains all the hashes generated from merchant server
      */
-    public void launchSdkUI(PayuHashes payuHashes) {
+    public void launchSdkUI() {
 
         Intent intent = new Intent(this, PayUBaseActivity.class);
-        intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-        intent.putExtra(PayuConstants.PAYMENT_PARAMS, mPaymentParams);
-        intent.putExtra(PayuConstants.SALT,salt);
-        intent.putExtra(PayuConstants.PAYU_HASHES, payuHashes);
-        startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
+       // intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+        intent.putExtra("postData",postDataFromUpiSdk);
+       // intent.putExtra(PayuConstants.PAYMENT_PARAMS, mPaymentParams);
+        intent.putExtra(UpiConstant.PAYMENT_PARAMS_UPI_SDK,mPaymentParamsUpiSdk);
+        intent.putExtra("salt",salt);
+        intent.putExtra("paymentHash", paymentHash);
+        intent.putExtra("paymentRelatedHash",paymentRelatedHash);
+        intent.putExtra("environment",environment);
+        startActivityForResult(intent, requestCode);
     }
 
 

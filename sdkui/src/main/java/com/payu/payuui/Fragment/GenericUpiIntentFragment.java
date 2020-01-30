@@ -1,16 +1,15 @@
 package com.payu.payuui.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.R;
+
+/*import com.payu.india.Payu.PayuConstants;*/
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +25,7 @@ public class GenericUpiIntentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private int requestCode1 = 123;
 
 
     public GenericUpiIntentFragment() {
@@ -53,13 +53,13 @@ public class GenericUpiIntentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_generic_upi_intent, container, false);
+        return inflater.inflate(R.layout.fragment_upiintent, container, false);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+        if (requestCode == requestCode1) {
             getActivity().setResult(resultCode, data);
             getActivity().finish();
         }

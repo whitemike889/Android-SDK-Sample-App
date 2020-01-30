@@ -22,8 +22,9 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.R;
+
+/*import com.payu.india.Payu.PayuConstants;*/
 
 
 /**
@@ -40,6 +41,8 @@ public class UPIFragment extends Fragment {
     private SpannableString vpaSpannableMore ;
     private SpannableString vpaSpannableLess;
     private EditText etVirtualAddress;
+    private int requestCode1 = 123;
+    private int MAX_VPA_SIZE = 50 ;
     public UPIFragment() {
         // Required empty public constructor
 
@@ -134,7 +137,7 @@ public class UPIFragment extends Fragment {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+        if (requestCode == requestCode1) {
             getActivity().setResult(resultCode, data);
             getActivity().finish();
         }
@@ -180,7 +183,7 @@ public class UPIFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(!(count== PayuConstants.MAX_VPA_SIZE && intialTextSize > PayuConstants.MAX_VPA_SIZE)){
+            if(!(count==MAX_VPA_SIZE && intialTextSize > MAX_VPA_SIZE)){
                 etVirtualAddress.setError(null);
             }
         }
@@ -188,10 +191,10 @@ public class UPIFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(s.length()> PayuConstants.MAX_VPA_SIZE){
+            if(s.length()> MAX_VPA_SIZE){
                 etVirtualAddress.setError(getActivity().getText(R.string.error_invalid_vpa));
-                etVirtualAddress.setText(s.subSequence(0, PayuConstants.MAX_VPA_SIZE));
-                etVirtualAddress.setSelection(PayuConstants.MAX_VPA_SIZE);
+                etVirtualAddress.setText(s.subSequence(0, MAX_VPA_SIZE));
+                etVirtualAddress.setSelection(MAX_VPA_SIZE);
             }else{
 
 

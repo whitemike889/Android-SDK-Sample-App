@@ -1,16 +1,15 @@
 package com.payu.payuui.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.R;
+
+/*import com.payu.india.Payu.PayuConstants;*/
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +24,7 @@ public class TEZFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private int requestCode1 = 123;
 
 
 
@@ -65,7 +65,7 @@ public class TEZFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+        if (requestCode == requestCode1) {
             getActivity().setResult(resultCode, data);
             getActivity().finish();
         }

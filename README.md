@@ -1,4 +1,4 @@
 # Android-SDK-Sample-App
-Sample application for CB 7.6.0, SDK 4.4.8
+Sample application for UPI 1.0.5
 
-Try SampleApp.apk to get a feel of how PayU PG and CB works.
+Try SampleApp.apk to get a feel of how UPI Sdk works.
