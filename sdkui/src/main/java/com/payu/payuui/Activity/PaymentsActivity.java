@@ -6,59 +6,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.payu.custombrowser.Bank;
 import com.payu.custombrowser.CustomBrowser;
 import com.payu.custombrowser.PackageListDialogFragment;
 import com.payu.custombrowser.PayUCustomBrowserCallback;
-import com.payu.custombrowser.PayUSurePayWebViewClient;
 import com.payu.custombrowser.PayUWebChromeClient;
-import com.payu.custombrowser.PayUWebViewClient;
 import com.payu.custombrowser.bean.CustomBrowserConfig;
-//import com.payu.custombrowser.upiintent.Payment;
-import com.payu.custombrowser.util.PaymentOption;
-import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.payuui.R;
-import com.payu.phonepe.PhonePe;
-import com.payu.phonepe.callbacks.PayUPhonePeCallback;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PaymentsActivity extends FragmentActivity {
     private Bundle bundle;
     private String url;
     private PayuConfig payuConfig;
-    private boolean isStandAlonePhonePayAvailable;
-    private boolean isPaymentByPhonePe;
-    private String UTF = "UTF-8";
     private boolean viewPortWide = false;
-    private String merchantHash;
     private String txnId = null;
     private String merchantKey;
-    private PayUChecksum checksum;
     private String salt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             bundle = getIntent().getExtras();
-
-            PhonePe phonePe = PhonePe.getInstance();
-
-
             if (bundle != null) {
 
-                isStandAlonePhonePayAvailable = bundle.getBoolean("isStandAlonePhonePeAvailable", false);
-                isPaymentByPhonePe = bundle.getBoolean("isPaymentByPhonePe", false);
+//                isStandAlonePhonePayAvailable = bundle.getBoolean("isStandAlonePhonePeAvailable", false);
+//                isPaymentByPhonePe = bundle.getBoolean("isPaymentByPhonePe", false);
                 salt = bundle.getString(PayuConstants.SALT);
             }
 
@@ -96,30 +77,6 @@ public class PaymentsActivity extends FragmentActivity {
                     }
                 }
 
-
-                PayUPhonePeCallback payUPhonePeCallback = new PayUPhonePeCallback() {
-
-                    // Called when Payment gets Successful
-                    @Override
-                    public void onPaymentOptionSuccess(String payuResponse) {
-
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        setResult(PayuConstants.PAYU_REQUEST_CODE,intent);
-                        finish();
-
-                    }
-
-
-                    // Called when Payment is failed
-                    @Override
-                    public void onPaymentOptionFailure(String payuResponse) {
-                        Intent intent = new Intent();
-                        intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        setResult(PayuConstants.PAYU_REQUEST_CODE,intent);
-                        finish();
-                    }
-                };
 
                 //set callback to track important events
                 PayUCustomBrowserCallback payUCustomBrowserCallback = new PayUCustomBrowserCallback() {
@@ -178,9 +135,6 @@ public class PaymentsActivity extends FragmentActivity {
                         Intent intent = new Intent();
                         intent.putExtra(getString(R.string.cb_result), merchantResponse);
                         intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        if (null != merchantHash) {
-                            intent.putExtra(PayuConstants.MERCHANT_HASH, merchantHash);
-                        }
                         setResult(Activity.RESULT_CANCELED, intent);
                         finish();
                     }
@@ -201,9 +155,6 @@ public class PaymentsActivity extends FragmentActivity {
                         Intent intent = new Intent();
                         intent.putExtra(getString(R.string.cb_result), merchantResponse);
                         intent.putExtra(getString(R.string.cb_payu_response), payuResponse);
-                        if (null != merchantHash) {
-                            intent.putExtra(PayuConstants.MERCHANT_HASH, merchantHash);
-                        }
                         setResult(Activity.RESULT_OK, intent);
                         finish();
                     }
@@ -300,20 +251,13 @@ public class PaymentsActivity extends FragmentActivity {
                 // customBrowserConfig.setPackageNameForSpecificApp("com.phonepe.app");
 
                 //Set below parameter to enable/disable Intent Collect Fallback for UPI Intent payment type.
-                // customBrowserConfig.setDisableIntentSeamlessFailure(CustomBrowserConfig.ENABLE);
+                 customBrowserConfig.setDisableIntentSeamlessFailure(CustomBrowserConfig.ENABLE);
 
 
                 if (payuConfig!=null)
                 customBrowserConfig.setPayuPostData(payuConfig.getData());
+                new CustomBrowser().addCustomBrowser(PaymentsActivity.this, customBrowserConfig, payUCustomBrowserCallback);
 
-                if (isPaymentByPhonePe == true & isStandAlonePhonePayAvailable == true) {
-
-                    phonePe.makePayment(payUPhonePeCallback, PaymentsActivity.this, payuConfig.getData(),false);
-
-                } else {
-
-                    new CustomBrowser().addCustomBrowser(PaymentsActivity.this, customBrowserConfig, payUCustomBrowserCallback);
-                }
 
 
             }

@@ -46,18 +46,10 @@ import com.payu.payuui.Fragment.SavedCardItemFragment;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
-import com.payu.phonepe.PhonePe;
-import com.payu.samsungpay.PayUSUPIPostData;
-import com.payu.samsungpay.PayUSamsungPay;
-import com.payu.samsungpay.PayUSamsungPayCallback;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.R.attr.description;
-import static android.R.attr.key;
 
 /**
  * This activity is where you get the payment options.
@@ -87,7 +79,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private ArrayList<StoredCard> savedCards;
 
     private PostData mPostData;
-    private PayUSamsungPay payUSamsungPay;
     private ProgressBar mProgressBar;
     private boolean isSamsungPayAvailable = false;
     private boolean isStandAlonePhonePeAvailable = false;
@@ -276,36 +267,36 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 paymentOptionsList.add(SdkUIConstants.UPI);
             }
 
-            if (payuResponse.isGoogleTezAvailable()) { // adding TEZ
-                paymentOptionsList.add(SdkUIConstants.TEZ);
-
-            }
+//            if (payuResponse.isGoogleTezAvailable()) { // adding TEZ
+//                paymentOptionsList.add(SdkUIConstants.TEZ);
+//
+//            }
 
             if(payuResponse.isGenericIntentAvailable()){
                 paymentOptionsList.add(SdkUIConstants.GENERICINTENT);
             }
 
 
-            if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
-                paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
-            }
+//            if (payuResponse.isPaisaWalletAvailable() && payuResponse.getPaisaWallet().get(0).getBankCode().contains(PayuConstants.PAYUW)) {
+//                paymentOptionsList.add(SdkUIConstants.PAYU_MONEY);
+//            }
 
-            if (payuResponse.isLazyPayAvailable()) {
-                paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
+//            if (payuResponse.isLazyPayAvailable()) {
+//                paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
+//
+//            }
+//            if (isSamsungPayAvailable==true) {
+//                paymentOptionsList.add("SAMPAY");
+//            }
 
-            }
-            if (isSamsungPayAvailable==true) {
-                paymentOptionsList.add("SAMPAY");
-            }
-
-            if(payuResponse.isPhonePeIntentAvailable()){
-
-                paymentOptionsList.add(SdkUIConstants.PHONEPE);
-            }
-
-            if(payuResponse.isPhonePeIntentAvailable()){
-                paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
-            }
+//            if(payuResponse.isPhonePeIntentAvailable()){
+//
+//                paymentOptionsList.add(SdkUIConstants.PHONEPE);
+//            }
+//
+//            if(payuResponse.isPhonePeIntentAvailable()){
+//                paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
+//            }
             if(payuResponse.isCashCardAvailable()){
                 paymentOptionsList.add(SdkUIConstants.CASH_CARDS);
             }

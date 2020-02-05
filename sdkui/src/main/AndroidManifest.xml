@@ -22,7 +22,6 @@
         <activity
             android:name=".Activity.PaymentsActivity"
             android:label="@string/title_activity_payments"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
             >
         </activity>
