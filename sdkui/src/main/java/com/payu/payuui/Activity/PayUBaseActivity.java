@@ -18,9 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.payu.custombrowser.CustomBrowser;
-import com.payu.custombrowser.PayUCustomBrowserCallback;
-import com.payu.custombrowser.bean.CustomBrowserResultData;
 import com.payu.custombrowser.util.PaymentOption;
 import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
 import com.payu.india.Interfaces.ValueAddedServiceApiListener;
@@ -112,26 +109,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
          // Call back method of PayU custom browser to check availability of Samsung Pay
 
-            PayUCustomBrowserCallback payUCustomBrowserCallback = new PayUCustomBrowserCallback() {
-
-                @Override
-                public void onCBErrorReceived(int code, String errormsg) {
-                    super.onCBErrorReceived(code, errormsg);
-                    Toast.makeText(PayUBaseActivity.this, errormsg, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void isPaymentOptionAvailable(CustomBrowserResultData resultData) {
-                    isSamsungPayAvailable = true;
-                    if(pagerAdapter!=null)
-                        pagerAdapter.notifyDataSetChanged();
-                }
-            };
 
             //In this method we check the availability of Samsung Pay as Payment option on device being used
 
-            new CustomBrowser().checkForPaymentAvailability(this, paymentOption.SAMSUNGPAY, payUCustomBrowserCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), merchantKey, userCredentials);
-            new CustomBrowser().checkForPaymentAvailability(this, paymentOption.PHONEPE, payUCustomBrowserCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), merchantKey, userCredentials);
 
             ((TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
             ((TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
