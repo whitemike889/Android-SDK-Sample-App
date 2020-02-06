@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class PaymentsActivity extends FragmentActivity {
     private String txnId = null;
     private String merchantKey;
     private String salt;
+    private String packagdId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +46,10 @@ public class PaymentsActivity extends FragmentActivity {
             }
 
 
-            if (bundle != null)
+            if (bundle != null) {
                 payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
+                packagdId = bundle.getString("app","");
+            }
 
             if (payuConfig != null) {
                 url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
@@ -211,7 +215,9 @@ public class PaymentsActivity extends FragmentActivity {
 
                 //Set it to true to enable Magic retry (If MR is enabled SurePay should be disabled and vice-versa)
 
-
+                if(!TextUtils.isEmpty(packagdId)){
+                    customBrowserConfig.setPackageNameForSpecificApp(packagdId);
+                }
 
 
                 //Set it to false if you do not want the transaction with web-collect flow

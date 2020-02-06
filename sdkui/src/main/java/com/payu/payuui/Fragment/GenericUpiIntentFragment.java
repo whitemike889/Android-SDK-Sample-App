@@ -2,15 +2,31 @@ package com.payu.payuui.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.payu.india.Model.PayuConfig;
+import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
+import com.payu.payuui.Adapter.PackageListAdapter;
+import com.payu.payuui.IntentCallback;
+import com.payu.payuui.PackageBean;
 import com.payu.payuui.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,11 +39,12 @@ import com.payu.payuui.R;
 public class GenericUpiIntentFragment extends Fragment {
 
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
+    private RecyclerView recyclerView;
+    private Context context;
+    List<PackageBean> appList;
+    String UPI_INTENT_PREFIX = "upi://pay?";
+    PostData postData;
+    PayuConfig payuConfig;
     public GenericUpiIntentFragment() {
         // Required empty public constructor
     }
@@ -48,15 +65,48 @@ public class GenericUpiIntentFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_generic_upi_intent, container, false);
+        View view = inflater.inflate(R.layout.fragment_generic_upi_intent, container, false);
+        recyclerView = view.findViewById(R.id.rvUpiApps);
+        return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initUpiAppsData();
+        if(!appList.isEmpty()){
+            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+            recyclerView.setAdapter(new PackageListAdapter(appList,context,(IntentCallback)getActivity()));
+        }
+    }
 
+    private void initUpiAppsData(){
+       appList = new ArrayList<>();
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(UPI_INTENT_PREFIX));
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            PackageInfo packageInfo = null;
+            try {
+                Log.v("UPI"," Installed App....... "+resolveInfo.activityInfo.packageName);
+                packageInfo = context.getPackageManager().getPackageInfo(resolveInfo.activityInfo.packageName, 0);
+                String name = (String) context.getPackageManager().getApplicationLabel(packageInfo.applicationInfo);
+                appList.add(new PackageBean(name, packageInfo.packageName));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {

@@ -40,6 +40,7 @@ import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.Adapter.SavedCardItemFragmentAdapter;
 import com.payu.payuui.Fragment.CreditDebitFragment;
 import com.payu.payuui.Fragment.SavedCardItemFragment;
+import com.payu.payuui.IntentCallback;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
@@ -51,7 +52,7 @@ import java.util.regex.Pattern;
 /**
  * This activity is where you get the payment options.
  */
-public class PayUBaseActivity extends FragmentActivity implements PaymentRelatedDetailsListener, ValueAddedServiceApiListener, View.OnClickListener {
+public class PayUBaseActivity extends FragmentActivity implements PaymentRelatedDetailsListener, ValueAddedServiceApiListener, View.OnClickListener, IntentCallback {
 
     public Bundle bundle;
     private ArrayList<String> paymentOptionsList = new ArrayList<String>();
@@ -80,6 +81,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private boolean isSamsungPayAvailable = false;
     private boolean isStandAlonePhonePeAvailable = false;
     private  boolean isPaymentByPhonePe = false;
+    private String selectedPackageId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -475,6 +477,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
             intent.putExtra("isStandAlonePhonePeAvailable",isStandAlonePhonePeAvailable);
             intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
+            intent.putExtra("app",selectedPackageId);
 
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
@@ -737,5 +740,8 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
+    @Override
+    public void onAppSelected(String packageId) {
+        selectedPackageId = packageId;
+    }
 }
