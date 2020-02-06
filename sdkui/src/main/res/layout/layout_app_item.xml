@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/cb_background"
-    android:layout_width="wrap_content" android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/cb_twelve"
-        android:layout_marginRight="@dimen/cb_twelve"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+
+<LinearLayout android:layout_width="80dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/cb_twelve"
+    android:layout_marginRight="@dimen/cb_twelve"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,11 +31,3 @@
             android:textColor="@color/cb_item_color"
             android:textSize="12sp" />
     </LinearLayout>
-    <ImageView
-        android:id="@+id/ivChecked"
-        android:visibility="gone"
-        android:src="@drawable/ic_check_circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|top"/>
-</FrameLayout>

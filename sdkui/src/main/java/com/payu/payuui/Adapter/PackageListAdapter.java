@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.payu.payuui.IntentCallback;
@@ -49,16 +49,16 @@ public class PackageListAdapter extends RecyclerView.Adapter<PackageListAdapter.
         final PackageBean packageBean = packageBeanList.get(holder.getAdapterPosition());
         if(-1!=selectedPosition){
             if(position ==selectedPosition){
-                holder.relativeLayout.setBackgroundResource(R.color.color_enter_cvv);
+                holder.linearLayout.setBackgroundResource(R.color.color_enter_cvv);
             }else {
-                holder.relativeLayout.setBackgroundResource(android.R.color.transparent);
+                holder.linearLayout.setBackgroundResource(android.R.color.transparent);
             }
         }else {
-            holder.relativeLayout.setBackgroundResource(android.R.color.transparent);
+            holder.linearLayout.setBackgroundResource(android.R.color.transparent);
         }
         holder.packageName.setText(packageBean.getPackageName());
         holder.packageDrawable.setImageDrawable(getAppIcon(this.context,packageBean.getPackageId()));
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedPosition = holder.getAdapterPosition();
@@ -79,11 +79,11 @@ public class PackageListAdapter extends RecyclerView.Adapter<PackageListAdapter.
     class PackageViewHolder extends RecyclerView.ViewHolder {
         ImageView packageDrawable;
         TextView packageName;
-        FrameLayout relativeLayout;
+        LinearLayout linearLayout;
 
         public PackageViewHolder(View itemView) {
             super(itemView);
-            relativeLayout = (FrameLayout) itemView;
+            linearLayout = (LinearLayout) itemView;
             packageDrawable = itemView.findViewById(com.payu.upisdk.R.id.image);
             packageName = itemView.findViewById(com.payu.upisdk.R.id.text);
         }
