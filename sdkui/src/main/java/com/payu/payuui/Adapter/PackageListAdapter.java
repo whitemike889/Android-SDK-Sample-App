@@ -84,8 +84,8 @@ public class PackageListAdapter extends RecyclerView.Adapter<PackageListAdapter.
         public PackageViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView;
-            packageDrawable = itemView.findViewById(com.payu.upisdk.R.id.image);
-            packageName = itemView.findViewById(com.payu.upisdk.R.id.text);
+            packageDrawable = itemView.findViewById(R.id.image);
+            packageName = itemView.findViewById(R.id.text);
         }
     }
 

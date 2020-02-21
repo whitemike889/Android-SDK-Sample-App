@@ -33,6 +33,7 @@ public class PaymentsActivity extends FragmentActivity {
     private String merchantKey;
     private String salt;
     private String packagdId;
+    private CustomBrowserConfig customBrowserConfig;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class PaymentsActivity extends FragmentActivity {
             if (bundle != null) {
                 payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
                 packagdId = bundle.getString("app","");
+                customBrowserConfig = bundle.getParcelable("cb_config");
             }
 
             if (payuConfig != null) {
@@ -197,21 +199,20 @@ public class PaymentsActivity extends FragmentActivity {
                 };
 
                 //Sets the configuration of custom browser
-                CustomBrowserConfig customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
+//                CustomBrowserConfig customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
                 customBrowserConfig.setViewPortWideEnable(viewPortWide);
-
                 //TODO don't forgot to set AutoApprove and AutoSelectOTP to true for One Tap payments
-                customBrowserConfig.setAutoApprove(false);  // set true to automatically approve the OTP
-                customBrowserConfig.setAutoSelectOTP(false); // set true to automatically select the OTP flow
+//                customBrowserConfig.setAutoApprove(false);  // set true to automatically approve the OTP
+//                customBrowserConfig.setAutoSelectOTP(false); // set true to automatically select the OTP flow
 
                 //Set below flag to true to disable the default alert dialog of Custom Browser and use your custom dialog
-                customBrowserConfig.setDisableBackButtonDialog(false);
+//                customBrowserConfig.setDisableBackButtonDialog(false);
 
                 //Below flag is used for One Click Payments. It should always be set to CustomBrowserConfig.STOREONECLICKHASH_MODE_SERVER
 
 
                 //Set it to true to enable run time permission dialog to appear for all Android 6.0 and above devices
-                customBrowserConfig.setMerchantSMSPermission(false);
+//                customBrowserConfig.setMerchantSMSPermission(smsPermission);
 
                 //Set it to true to enable Magic retry (If MR is enabled SurePay should be disabled and vice-versa)
 
@@ -229,7 +230,7 @@ public class PaymentsActivity extends FragmentActivity {
                  * Maximum number of times the SurePay dialog box will prompt the user to retry a transaction in case of network failures
                  * Setting the sure pay count to 0, diables the sure pay dialog
                  */
-                customBrowserConfig.setEnableSurePay(3);
+//                customBrowserConfig.setEnableSurePay(3);
 
                 //htmlData - HTML string received from PayU webservice using Server to Server call.
 
@@ -268,5 +269,8 @@ public class PaymentsActivity extends FragmentActivity {
 
             }
         }
+    }
+    private void createReviewOrder(){
+
     }
 }

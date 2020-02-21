@@ -3,12 +3,11 @@ package com.payu.payuui.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.payu.custombrowser.bean.CustomBrowserConfig;
 import com.payu.india.Model.PaymentDetails;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
@@ -57,7 +57,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
     private ImageButton sbiImageButton;
     private ImageButton iciciImageButton;
     private TextView bankDownText;
-
+    private CustomBrowserConfig customBrowserConfig;
     public NetBankingFragment() {
         // Required empty public constructor
     }
@@ -83,6 +83,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
         mPaymentParams = mBundle.getParcelable(PayuConstants.PAYMENT_PARAMS);
         payuHashes = mBundle.getParcelable(PayuConstants.PAYU_HASHES);
         payuConfig = mBundle.getParcelable(PayuConstants.PAYU_CONFIG);
+        customBrowserConfig = mBundle.getParcelable("cb_config");
         payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
         postData = new PostData();
 
@@ -200,6 +201,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
             payuConfig.setData(postData.getResult());
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+            intent.putExtra("cb_config", customBrowserConfig);
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
             Toast.makeText(this.getActivity(), postData.getResult(), Toast.LENGTH_LONG).show();

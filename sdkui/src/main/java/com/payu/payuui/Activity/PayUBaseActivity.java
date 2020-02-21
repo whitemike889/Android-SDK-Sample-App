@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.payu.custombrowser.bean.CustomBrowserConfig;
 import com.payu.custombrowser.util.PaymentOption;
 import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
 import com.payu.india.Interfaces.ValueAddedServiceApiListener;
@@ -82,6 +83,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private boolean isStandAlonePhonePeAvailable = false;
     private  boolean isPaymentByPhonePe = false;
     private String selectedPackageId = "";
+    private CustomBrowserConfig customBrowserConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             mPayUHashes = bundle.getParcelable(PayuConstants.PAYU_HASHES);
             merchantKey = mPaymentParams.getKey();
             userCredentials = mPaymentParams.getUserCredentials();
-
+            customBrowserConfig = bundle.getParcelable("cb_config");
+//            Log.v("PayU",bundle.getString("config"));
+//            createCbConfig(bundle.getString("config"));
 
          // Call back method of PayU custom browser to check availability of Samsung Pay
 
@@ -451,13 +455,13 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         makePaymentBySamPay();
                         break;
                     case SdkUIConstants.PHONEPE:
-                        isPaymentByPhonePe= true;
+                        isPaymentByPhonePe = true;
                         makePaymentByPhonePe();
                         break;
 
                     case SdkUIConstants.CBPHONEPE:
-                        isPaymentByPhonePe=false;
-                        isStandAlonePhonePeAvailable=false;
+                        isPaymentByPhonePe = false;
+                        isStandAlonePhonePeAvailable = false;
                         makePaymentByPhonePe();
                         break;
                 }
@@ -466,24 +470,26 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             if (mPostData != null && mPostData.getCode() == PayuErrors.NO_ERROR) {
                 payuConfig.setData(mPostData.getResult());
 
-            }
+//            }
 //            else if (paymentOptionsList.get(viewPager.getCurrentItem()).equalsIgnoreCase("SAMPAY")) {
 //                        payuConfig.setData(samPayPostData);
 //
 //            }
 
 
-            Intent intent = new Intent(this, PaymentsActivity.class);
-            intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-            intent.putExtra("isStandAlonePhonePeAvailable",isStandAlonePhonePeAvailable);
-            intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
-            intent.putExtra("app",selectedPackageId);
+                Intent intent = new Intent(this, PaymentsActivity.class);
+                intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+                intent.putExtra("isStandAlonePhonePeAvailable", isStandAlonePhonePeAvailable);
+                intent.putExtra("isPaymentByPhonePe", isPaymentByPhonePe);
+                intent.putExtra("app", selectedPackageId);
+                intent.putExtra("cb_config", customBrowserConfig);
 
-            startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
-        } else {
-            if (mPostData != null)
-                Toast.makeText(this, mPostData.getResult(), Toast.LENGTH_LONG).show();
+                startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
+            } else {
+                if (mPostData != null)
+                    Toast.makeText(this, mPostData.getResult(), Toast.LENGTH_LONG).show();
 
+            }
         }
     }
 
