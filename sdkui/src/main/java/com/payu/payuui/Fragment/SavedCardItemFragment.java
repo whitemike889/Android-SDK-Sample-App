@@ -16,10 +16,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.payu.india.Model.StoredCard;
@@ -27,8 +25,6 @@ import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuUtils;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
-
-import java.util.HashMap;
 
 
 public final class SavedCardItemFragment extends Fragment {
@@ -39,13 +35,10 @@ public final class SavedCardItemFragment extends Fragment {
     private String issuingBankStatus;
     private TextView issuingBankDownText;
     private TextView cvvTextView;
-    private Boolean oneClickPayment;
     private ViewPager mViewPager;
-    private CheckBox enableOneClickPayment;
     private int position;
     private Boolean isCvvValid = false;
 
-    HashMap<String, String> oneClickCardTokens;
 
     public SavedCardItemFragment() {
 
@@ -57,9 +50,7 @@ public final class SavedCardItemFragment extends Fragment {
         Bundle bundle = getArguments();
         mStoredCard = bundle.getParcelable(PayuConstants.STORED_CARD);
         issuingBankStatus = bundle.getString(SdkUIConstants.ISSUING_BANK_STATUS);
-        oneClickPayment = bundle.getBoolean(PayuConstants.ONE_CLICK_PAYMENT);
         position = bundle.getInt(SdkUIConstants.POSITION);
-        oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
 
     }
 
@@ -74,19 +65,12 @@ public final class SavedCardItemFragment extends Fragment {
         mPayuUtils = new PayuUtils();
 
         cvvEditText = (EditText) view.findViewById(R.id.edit_text_cvv);
-        enableOneClickPayment = (CheckBox) view.findViewById(R.id.check_box_save_card_enable_one_click_payment);
         cvvTextView = (TextView) view.findViewById(R.id.cvv_text_view);
 
 //        saveCvvLinearlayout = (LinearLayout) view.findViewById(R.id.layout_save_cvv_checkbox);
 
         if (mStoredCard.getCardBrand().equals("AMEX")) {
             cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-        }
-
-
-            {
-            enableOneClickPayment.setVisibility(View.VISIBLE);
-
         }
 
         if (mStoredCard.getMaskedCardNumber().length() == 19 && mStoredCard.getCardBrand() == "SMAE") {
@@ -220,11 +204,6 @@ public final class SavedCardItemFragment extends Fragment {
     public String getCvv() {
         return cvvEditText.getText().toString();
     }
-
-    public Boolean isEnableOneClickPaymentChecked() {
-        return enableOneClickPayment.isChecked();
-    }
-
     public Boolean cvvValidation() {
         String cvv = "";
         PayuUtils myPayuUtils = new PayuUtils();
