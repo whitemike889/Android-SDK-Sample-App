@@ -28,7 +28,7 @@ public class MonthYearPickerDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_AppCompat_Light_Dialog_Alert);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

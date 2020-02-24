@@ -13,17 +13,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:layout_weight="5">
+        >
 
 
 
@@ -31,12 +31,12 @@
                 android:layout_width="wrap_content"
                 android:textColor="#9C9C9C"
                 android:textStyle="bold"
-                android:text="@string/enter_card_details"></TextView>
+                android:text="@string/enter_card_details"/>
 
         <TextView android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textStyle="bold"
-            android:text=""></TextView>
+            android:text=""/>
 
 
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_rect_shape"
                 android:orientation="vertical"
-                android:weightSum="3">
+                android:layout_weight="3">
 
             <!--<LinearLayout-->
                 <!--android:layout_width="match_parent"-->
@@ -272,10 +272,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <EditText
@@ -287,17 +285,11 @@
 
             <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/save_card"
-                android:textColor="#9C9C9C"
+                android:textColor="@color/black"
                 android:id="@+id/check_box_save_card"/>
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enable_one_click_checkout"
-                android:textColor="#9C9C9C"
-                android:id="@+id/check_box_enable_oneclick_payment"/>
 
             <TextView
                 android:id="@+id/text_view_issuing_bank_down_error"

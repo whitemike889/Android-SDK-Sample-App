@@ -118,6 +118,7 @@
     </LinearLayout>
 
         <CheckBox
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enable_one_click_checkout"

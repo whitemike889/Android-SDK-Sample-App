@@ -4,21 +4,18 @@ package com.payu.payuui.Fragment;
 import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
-
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +72,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
     private EditText cardExpiryYearEditText;
     private EditText cardNameEditText;
     private CheckBox saveCardCheckBox;
-    private CheckBox enableOneClickPaymentCheckBox;
     private ImageView cardImage;
     private ImageView cvvImage;
     private DatePickerDialog.OnDateSetListener datePickerListener;
@@ -116,7 +112,6 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
         cardExpiryYearEditText = (EditText) view.findViewById(R.id.edit_text_expiry_year);
         cardNameEditText = (EditText) view.findViewById(R.id.edit_text_card_label);
         saveCardCheckBox = (CheckBox) view.findViewById(R.id.check_box_save_card);
-        enableOneClickPaymentCheckBox = (CheckBox) view.findViewById(R.id.check_box_enable_oneclick_payment);
         cardImage = (ImageView) view.findViewById(R.id.image_card_type);
         cvvImage = (ImageView) view.findViewById(R.id.image_cvv);
         mLinearLayout = (LinearLayout) view.findViewById(R.id.layout_expiry_date);
@@ -206,21 +201,15 @@ public class CreditDebitFragment extends Fragment implements GetOfferStatusApiLi
 
         }
         cardNameEditText.setVisibility(View.GONE);
-        enableOneClickPaymentCheckBox.setVisibility(View.GONE);
 
         saveCardCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                 if (compoundButton.isChecked()) {
-                    if(null != mPaymentParams.getUserCredentials()) {
-                        enableOneClickPaymentCheckBox.setVisibility(View.VISIBLE);
-                    }
                     cardNameEditText.setVisibility(View.VISIBLE);
                 } else {
                     cardNameEditText.setVisibility(View.GONE);
-                    enableOneClickPaymentCheckBox.setVisibility(View.GONE);
-                    enableOneClickPaymentCheckBox.setChecked(false);
                 }
 
             }

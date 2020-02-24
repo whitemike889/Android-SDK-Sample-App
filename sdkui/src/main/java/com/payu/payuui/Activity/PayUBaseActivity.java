@@ -564,7 +564,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
     private void makePaymentByCreditCard() {
         CheckBox saveCardCheckBox = (CheckBox) findViewById(R.id.check_box_save_card);
-        CheckBox enableOneClickPaymentCheckBox = (CheckBox) findViewById(R.id.check_box_enable_oneclick_payment);
 
         if (saveCardCheckBox.isChecked()) {
             mPaymentParams.setStoreCard(1);

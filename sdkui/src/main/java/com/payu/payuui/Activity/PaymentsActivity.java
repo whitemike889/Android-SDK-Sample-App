@@ -199,7 +199,8 @@ public class PaymentsActivity extends FragmentActivity {
                 };
 
                 //Sets the configuration of custom browser
-//                CustomBrowserConfig customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
+                if(null ==customBrowserConfig)
+                    customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
                 customBrowserConfig.setViewPortWideEnable(viewPortWide);
                 //TODO don't forgot to set AutoApprove and AutoSelectOTP to true for One Tap payments
 //                customBrowserConfig.setAutoApprove(false);  // set true to automatically approve the OTP
@@ -219,7 +220,7 @@ public class PaymentsActivity extends FragmentActivity {
                 if(!TextUtils.isEmpty(packagdId)){
                     customBrowserConfig.setPackageNameForSpecificApp(packagdId);
                 }
-
+//                customBrowserConfig.setEnableReviewOrder(CustomBrowserConfig.ENABLE);
 
                 //Set it to false if you do not want the transaction with web-collect flow
                 //customBrowserConfig.setEnableWebFlow(Payment.TEZ,true);
