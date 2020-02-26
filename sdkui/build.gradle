@@ -21,10 +21,10 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.payu.india:payu-sdk:4.4.8'
-    implementation 'com.payu.custombrowser:payu-custom-browser:7.6.0'
+    implementation 'com.payu.custombrowser:payu-custom-browser:7.6.1'
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
-    implementation 'com.payu.upisdk:upisdk:1.0.5'
+    implementation 'com.payu.upisdk:upisdk:1.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
 
 

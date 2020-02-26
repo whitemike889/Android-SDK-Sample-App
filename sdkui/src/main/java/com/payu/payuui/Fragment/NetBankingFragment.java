@@ -199,7 +199,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        disableButtonAfterClick();
         if (postData.getCode() == PayuErrors.NO_ERROR) {
             payuConfig.setData(postData.getResult());
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
@@ -218,5 +218,13 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         netBankingList = getArguments().getParcelableArrayList(PayuConstants.NETBANKING);
         valueAddedHashMap = (HashMap<String, Integer>) getArguments().getSerializable(SdkUIConstants.VALUE_ADDED);
+    }
+
+    private void disableButtonAfterClick(){
+        iciciImageButton.setEnabled(false);
+        axisImageButton.setEnabled(false);
+        sbiImageButton.setEnabled(false);
+        hdfcImageButton.setEnabled(false);
+        citiImageButton.setEnabled(false);
     }
 }
