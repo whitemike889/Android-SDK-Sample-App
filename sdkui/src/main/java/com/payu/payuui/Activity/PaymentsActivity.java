@@ -15,6 +15,8 @@ import com.payu.custombrowser.PackageListDialogFragment;
 import com.payu.custombrowser.PayUCustomBrowserCallback;
 import com.payu.custombrowser.PayUWebChromeClient;
 import com.payu.custombrowser.bean.CustomBrowserConfig;
+import com.payu.custombrowser.bean.ReviewOrderBundle;
+import com.payu.custombrowser.bean.ReviewOrderData;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
@@ -23,6 +25,8 @@ import com.payu.payuui.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PaymentsActivity extends FragmentActivity {
     private Bundle bundle;
@@ -34,6 +38,7 @@ public class PaymentsActivity extends FragmentActivity {
     private String salt;
     private String packagdId;
     private CustomBrowserConfig customBrowserConfig;
+    private ArrayList<ReviewOrderData> reviewOrderDataArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +59,7 @@ public class PaymentsActivity extends FragmentActivity {
             }
 
             if (payuConfig != null) {
-                url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
+                url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.MOBILE_TEST_PAYMENT_URL;
               //  url="https://mobiletest.payu.in/_payment";
                 String[] list=null;
                 if(payuConfig.getData()!=null)
@@ -202,6 +207,16 @@ public class PaymentsActivity extends FragmentActivity {
                 if(null ==customBrowserConfig)
                     customBrowserConfig = new CustomBrowserConfig(merchantKey, txnId);
                 customBrowserConfig.setViewPortWideEnable(viewPortWide);
+                reviewOrderDataArrayList = bundle.getParcelableArrayList("review_order");
+                if(null!=reviewOrderDataArrayList && reviewOrderDataArrayList.size()>0){
+                    ReviewOrderBundle reviewOrderBundle = new ReviewOrderBundle();
+                    Iterator iterator = reviewOrderDataArrayList.iterator();
+                    while (iterator.hasNext()){
+                        ReviewOrderData data = (ReviewOrderData)iterator.next();
+                        reviewOrderBundle.addOrderDetails(data.getKey(),data.getValue());
+                    }
+                    customBrowserConfig.setReviewOrderDefaultViewData(reviewOrderBundle);
+                }
                 //TODO don't forgot to set AutoApprove and AutoSelectOTP to true for One Tap payments
 //                customBrowserConfig.setAutoApprove(false);  // set true to automatically approve the OTP
 //                customBrowserConfig.setAutoSelectOTP(false); // set true to automatically select the OTP flow

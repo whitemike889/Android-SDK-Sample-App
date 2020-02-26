@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.payu.custombrowser.bean.CustomBrowserConfig;
+import com.payu.custombrowser.bean.ReviewOrderData;
 import com.payu.india.Model.PaymentDetails;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
@@ -58,6 +59,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
     private ImageButton iciciImageButton;
     private TextView bankDownText;
     private CustomBrowserConfig customBrowserConfig;
+    private ArrayList<ReviewOrderData> reviewOrderDataArrayList;
     public NetBankingFragment() {
         // Required empty public constructor
     }
@@ -84,6 +86,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
         payuHashes = mBundle.getParcelable(PayuConstants.PAYU_HASHES);
         payuConfig = mBundle.getParcelable(PayuConstants.PAYU_CONFIG);
         customBrowserConfig = mBundle.getParcelable("cb_config");
+        reviewOrderDataArrayList = mBundle.getParcelableArrayList("review_order");
         payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
         postData = new PostData();
 
@@ -202,6 +205,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
             intent.putExtra("cb_config", customBrowserConfig);
+            intent.putParcelableArrayListExtra("review_order", reviewOrderDataArrayList);
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
             Toast.makeText(this.getActivity(), postData.getResult(), Toast.LENGTH_LONG).show();

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.payu.custombrowser.bean.CustomBrowserConfig;
+import com.payu.custombrowser.bean.ReviewOrderData;
 import com.payu.custombrowser.util.PaymentOption;
 import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
 import com.payu.india.Interfaces.ValueAddedServiceApiListener;
@@ -84,6 +85,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private  boolean isPaymentByPhonePe = false;
     private String selectedPackageId = "";
     private CustomBrowserConfig customBrowserConfig;
+    private ArrayList<ReviewOrderData> reviewOrderDataArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
         (payNowButton = (Button) findViewById(R.id.button_pay_now)).setOnClickListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
         bundle = getIntent().getExtras();
 
 
@@ -110,6 +111,16 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             merchantKey = mPaymentParams.getKey();
             userCredentials = mPaymentParams.getUserCredentials();
             customBrowserConfig = bundle.getParcelable("cb_config");
+            reviewOrderDataArrayList = bundle.getParcelableArrayList("review_order");
+//            if(null!=reviewOrderDataArrayList && reviewOrderDataArrayList.size()>0){
+//                ReviewOrderBundle reviewOrderBundle = new ReviewOrderBundle();
+//                Iterator iterator = reviewOrderDataArrayList.iterator();
+//                while (iterator.hasNext()){
+//                    ReviewOrderData data = (ReviewOrderData)iterator.next();
+//                    reviewOrderBundle.addOrderDetails(data.getKey(),data.getValue());
+//                }
+//                customBrowserConfig.setReviewOrderDefaultViewData(reviewOrderBundle);
+//            }
 //            Log.v("PayU",bundle.getString("config"));
 //            createCbConfig(bundle.getString("config"));
 
@@ -232,7 +243,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private void setupViewPagerAdapter(final PayuResponse payuResponse, PayuResponse valueAddedResponse) {
 
         if (payuResponse.isResponseAvailable() && payuResponse.getResponseStatus().getCode() == PayuErrors.NO_ERROR) { // ok we are good to go
-            Toast.makeText(this, payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, payuResponse.getResponseStatus().getResult(), Toast.LENGTH_LONG).show();
 
 
             if (payuResponse.isStoredCardsAvailable()) {
@@ -415,6 +426,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         if (view.getId() == R.id.button_pay_now) {
 
             mPostData = null;
+            payNowButton.setEnabled(false);
 
             if (mPayUHashes != null)
                 mPaymentParams.setHash(mPayUHashes.getPaymentHash());
@@ -483,6 +495,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 intent.putExtra("isPaymentByPhonePe", isPaymentByPhonePe);
                 intent.putExtra("app", selectedPackageId);
                 intent.putExtra("cb_config", customBrowserConfig);
+                intent.putParcelableArrayListExtra("review_order", reviewOrderDataArrayList);
 
                 startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
             } else {
