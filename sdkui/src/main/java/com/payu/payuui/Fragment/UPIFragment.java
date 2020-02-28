@@ -200,6 +200,9 @@ public class UPIFragment extends Fragment {
                         s.replace(i-1, i, "");
                 }
             }
+            if(s.length() ==0){
+                getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
+            }
 
         }
     }
