@@ -664,6 +664,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
         mPaymentParams.setCardName(selectedStoredCard.getCardName());
         mPaymentParams.setExpiryMonth(selectedStoredCard.getExpiryMonth());
         mPaymentParams.setExpiryYear(selectedStoredCard.getExpiryYear());
+        mPaymentParams.setCvv(selectedStoredCard.getCvv());
 
 
 
