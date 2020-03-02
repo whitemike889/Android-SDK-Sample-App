@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -24,6 +25,11 @@ import android.widget.TextView;
 
 import com.payu.india.Payu.PayuConstants;
 import com.payu.payuui.R;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.payu.india.Payu.PayuConstants.MAX_VPA_SIZE;
 
 
 /**
@@ -180,7 +186,7 @@ public class UPIFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(!(count== PayuConstants.MAX_VPA_SIZE && intialTextSize > PayuConstants.MAX_VPA_SIZE)){
+            if(!(count== MAX_VPA_SIZE && intialTextSize > MAX_VPA_SIZE)){
                 etVirtualAddress.setError(null);
             }
         }
@@ -188,10 +194,10 @@ public class UPIFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(s.length()> PayuConstants.MAX_VPA_SIZE){
+            if(s.length()> MAX_VPA_SIZE){
                 etVirtualAddress.setError(getActivity().getText(R.string.error_invalid_vpa));
-                etVirtualAddress.setText(s.subSequence(0, PayuConstants.MAX_VPA_SIZE));
-                etVirtualAddress.setSelection(PayuConstants.MAX_VPA_SIZE);
+                etVirtualAddress.setText(s.subSequence(0, MAX_VPA_SIZE));
+                etVirtualAddress.setSelection(MAX_VPA_SIZE);
             }else{
 
 
@@ -200,8 +206,10 @@ public class UPIFragment extends Fragment {
                         s.replace(i-1, i, "");
                 }
             }
-            if(s.length() ==0){
+            if(isValidVpa(s.toString())){
                 getActivity().findViewById(R.id.button_pay_now).setEnabled(true);
+            }else {
+                getActivity().findViewById(R.id.button_pay_now).setEnabled(false);
             }
 
         }
@@ -219,5 +227,14 @@ public class UPIFragment extends Fragment {
                 etVirtualAddress.setError(null);
             }
         }
+    }
+
+    private boolean isValidVpa(String text){
+        if(TextUtils.isEmpty(text)||text.length()>MAX_VPA_SIZE){
+            return false;
+        }
+        Pattern pattern = Pattern.compile(".+@.+"); // VPA Check: non empty + @ + non empty
+        Matcher matcher = pattern.matcher(text);
+        return matcher.matches();
     }
 }

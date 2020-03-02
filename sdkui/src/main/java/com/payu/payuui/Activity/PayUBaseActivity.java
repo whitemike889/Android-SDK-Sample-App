@@ -375,7 +375,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         hideKeyboard();
                         break;
                     case SdkUIConstants.UPI:
-                        payNowButton.setEnabled(true);
+                        payNowButton.setEnabled(false);
                         hideKeyboard();
                         break;
                     case SdkUIConstants.TEZ:
