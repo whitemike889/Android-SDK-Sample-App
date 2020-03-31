@@ -1,5 +1,6 @@
 package com.payu.payuui.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,26 +9,27 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.payu.gpay.GPay;
 import com.payu.gpay.callbacks.PayUGPayCallback;
-import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Payu.PayuUtils;
-import com.payu.india.PostParams.PaymentPostParams;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PaymentPostParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
 import com.payu.payuui.Widget.SwipeTab.SlidingTabLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class PayUBaseActivity extends FragmentActivity implements View.OnClickListener {
@@ -36,61 +38,37 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
     ArrayList<String> paymentOptionsList = new ArrayList<String>();
     PayuConfig payuConfig;
     PaymentParams mPaymentParams;
+    PaymentPostParams paymentPostParams;
     PayuHashes mPayUHashes;
     PayuUtils mPayuUtils;
     public PagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
+    private TextView amountTextView;
+    private TextView transactionIdTextView;
     private Button payNowButton;
-    private Boolean smsPermission;
     private PostData mPostData;
-    HashMap<String, String> oneClickCardTokens;
-    private int storeOneClickHash;
-    private boolean isGPaySupported = false;
     /**
-
      * Callback of payment availability while doing through GPay SDK.
      */
-   PayUGPayCallback payUGPayCallback = new PayUGPayCallback(){
+    PayUGPayCallback payUGPayCallback = new PayUGPayCallback() {
 
         @Override
         public void onPaymentInitialisationSuccess() {
             super.onPaymentInitialisationSuccess();
-            isGPaySupported = true;
             paymentOptionsList.add(SdkUIConstants.TEZ);
-            setupViewPager();
+            setupViewPagerAdapter();
 
         }
 
         @Override
         public void onPaymentInitialisationFailure(int errorCode, String description) {
             super.onPaymentInitialisationFailure(errorCode, description);
-            isGPaySupported = false;
+            Toast.makeText(PayUBaseActivity.this, description, Toast.LENGTH_SHORT).show();
+            finish();
+            // isGPaySupported = false;
         }
     };
-
-    private void setupViewPager() {
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList);
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(pagerAdapter);
-
-        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tab_layout);
-        slidingTabLayout.setDistributeEvenly(false);
-
-        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        slidingTabLayout.setViewPager(viewPager);
-        payNowButton.setEnabled(true);
-        payNowButton.setOnClickListener(this);
-        findViewById(R.id.progress_bar).setVisibility(View.GONE);
-    }
 
 
     @Override
@@ -115,6 +93,32 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void setupViewPagerAdapter() {
+
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), paymentOptionsList);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(pagerAdapter);
+
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tab_layout);
+        slidingTabLayout.setDistributeEvenly(false);
+
+        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        slidingTabLayout.setViewPager(viewPager);
+        payNowButton.setEnabled(true);
+        hide_keyboard();
+        findViewById(R.id.progress_bar).setVisibility(View.GONE);
+
+    }
+
     @Override
     public void onClick(View view) {
 
@@ -127,14 +131,12 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
                     makePaymentByTez();
                     break;
             }
-                if(mPostData!=null && mPostData.getCode()==PayuErrors.NO_ERROR) {
-                    payuConfig.setData(mPostData.getResult());
-                    Intent intent = new Intent(this, PaymentsActivity.class);
-                    intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-                    intent.putExtra(PayuConstants.STORE_ONE_CLICK_HASH, storeOneClickHash);
-                    intent.putExtra(PayuConstants.SMS_PERMISSION, smsPermission);
-                    startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
-                }
+            if (mPostData != null && mPostData.getCode() == PayuErrors.NO_ERROR) {
+                payuConfig.setData(mPostData.getResult());
+                Intent intent = new Intent(this, PaymentsActivity.class);
+                intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
+                startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
+            }
 
 
         }
@@ -142,6 +144,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payu_base);
 
@@ -154,23 +157,19 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
         payuConfig = null != payuConfig ? payuConfig : new PayuConfig();
 
         mPayuUtils = new PayuUtils();
-
-
         mPaymentParams = bundle.getParcelable(PayuConstants.PAYMENT_PARAMS); // Todo change the name to PAYMENT_PARAMS
         mPayUHashes = bundle.getParcelable(PayuConstants.PAYU_HASHES);
-        storeOneClickHash = bundle.getInt(PayuConstants.STORE_ONE_CLICK_HASH);
-        smsPermission = bundle.getBoolean(PayuConstants.SMS_PERMISSION);
-
-        oneClickCardTokens = (HashMap<String, String>) bundle.getSerializable(PayuConstants.ONE_CLICK_CARD_TOKENS);
-        ((TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
-        ((TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
+        (amountTextView = (TextView) findViewById(R.id.textview_amount)).setText(SdkUIConstants.AMOUNT + ": " + mPaymentParams.getAmount());
+        (transactionIdTextView = (TextView) findViewById(R.id.textview_txnid)).setText(SdkUIConstants.TXN_ID + ": " + mPaymentParams.getTxnId());
         initUsingGPaySDK();
+
     }
 
     /**
      * Payment by GPay
      */
     private void makePaymentByTez() {
+
         try {
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.TEZ).getPaymentPostParams();
         } catch (Exception e) {
@@ -178,6 +177,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -188,9 +188,21 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
 
     }
 
+    public void hide_keyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = this.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    // Check the availability of GPay
     private void initUsingGPaySDK() {
 
-        GPay.getInstance().checkForPaymentAvailability(this,payUGPayCallback,mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(),mPaymentParams.getKey(),mPaymentParams.getUserCredentials());
+        GPay.getInstance().checkForPaymentAvailability(this, payUGPayCallback, mPayUHashes.getPaymentRelatedDetailsForMobileSdkHash(), mPaymentParams.getKey(), mPaymentParams.getUserCredentials());
 
     }
 

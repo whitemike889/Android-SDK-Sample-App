@@ -11,24 +11,15 @@ import com.payu.gpay.callbacks.PayUGPayCallback;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Payu.PayuConstants;
 
-import java.util.HashMap;
-import java.util.StringTokenizer;
-
 public class PaymentsActivity extends FragmentActivity {
     Bundle bundle;
     String url;
     PayuConfig payuConfig;
     String txnId = null;
     String merchantKey;
-    String magicRetry;
     String userCredentials;
-    private static String TAG = "PayU";
+    String TAG = "PayU";
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v(TAG, "class name:" + getClass().getCanonicalName());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +28,6 @@ public class PaymentsActivity extends FragmentActivity {
         if (savedInstanceState == null) {
             bundle = getIntent().getExtras();
             payuConfig = bundle.getParcelable(PayuConstants.PAYU_CONFIG);
-            magicRetry = bundle.getString("magic_retry");
             url = payuConfig.getEnvironment() == PayuConstants.PRODUCTION_ENV ? PayuConstants.PRODUCTION_PAYMENT_URL : PayuConstants.TEST_PAYMENT_URL;
             String[] list = payuConfig.getData().split("&");
 
@@ -65,25 +55,8 @@ public class PaymentsActivity extends FragmentActivity {
 
     }
 
-    private HashMap<String, String> getDataFromPostData(String postData) {
-        HashMap<String, String> postParamsMap = new HashMap<>();
-        if (null != postData) {
-            StringTokenizer tokens = new StringTokenizer(postData, "&");
-            while (tokens.hasMoreTokens()) {
-                String[] keyValue = tokens.nextToken().split("=");
-                if (null != keyValue && keyValue.length > 0 && null != keyValue[0]) {
-                    postParamsMap.put(keyValue[0], keyValue.length > 1 ? keyValue[1] : "");
-                }
-            }
-        }
-        return postParamsMap;
-    }
-
-
-
-
     private void paymentThroughGPayStandalone(){
-        GPay.getInstance().makePayment(this,payuConfig.getData(),payUGPayCallback,merchantKey);
+        GPay.getInstance().makePayment(this,payuConfig.getData(),payUGPayCallback,merchantKey,null);
     }
 
     // Callback for GPay
@@ -116,5 +89,4 @@ public class PaymentsActivity extends FragmentActivity {
 
         }
     };
-
 }
