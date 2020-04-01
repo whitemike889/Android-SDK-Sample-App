@@ -14,14 +14,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.payu.india.Model.PaymentParams;
+//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
+//import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Payu.PayuUtils;
-import com.payu.india.PostParams.PaymentPostParams;
+//import com.payu.india.PostParams.PaymentPostParams;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PaymentPostParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.R;
 import com.payu.payuui.SdkuiUtil.SdkUIConstants;
@@ -38,6 +41,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
     ArrayList<String> paymentOptionsList = new ArrayList<String>();
     PayuConfig payuConfig;
     PaymentParams mPaymentParams;
+  //  PaymentPostParams paymentPostParams;
     PayuHashes mPayUHashes;
     PayuUtils mPayuUtils;
     public PagerAdapter pagerAdapter;

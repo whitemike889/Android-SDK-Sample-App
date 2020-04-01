@@ -9,8 +9,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <meta-data android:name="payu_debug_mode_enabled" android:value="false" /> <!--// set the value to false for production environment-->
-        <!--<meta-data android:name="payu_web_service_url" android:value="https://test.payu.in" /> //Comment in case of Production-->
-        <!--<meta-data android:name="payu_post_url" android:value="https://test.payu.in" /> //Comment in case of Production-->
+        <!--<meta-data android:name="payu_web_service_url" android:value="https://test.payu.in" /> //Comment in case of Production
+        <meta-data android:name="payu_post_url" android:value="https://test.payu.in" /> -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

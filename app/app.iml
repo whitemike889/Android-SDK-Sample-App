@@ -28,6 +28,7 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/build/intermediates/javac/debug/classes" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/javac/debugUnitTest/classes" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/debug/compileDebugAidl/out" isTestSource="false" generated="true" />
@@ -102,7 +103,8 @@
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:runtime:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel:1.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.payu.india:payu-sdk:4.4.8@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.payu.india:payu-sdk:4.5.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.payu.paymentparamhelper:paymentparamhelper:1.0.0@aar" level="project" />
     <orderEntry type="module" module-name="sdkui" />
   </component>
 </module>

@@ -16,13 +16,15 @@ import android.widget.Toast;
 
 import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Extras.PayUSdkDetails;
-import com.payu.india.Model.PaymentParams;
+//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
+//import com.payu.india.Model.PostData;
 import com.payu.india.Payu.Payu;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Activity.PayUBaseActivity;
 
 /**
@@ -35,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private String merchantKey, userCredentials;
 
     // These will hold all the payment parameters
+  //  private PaymentParams mPaymentParams;
     private PaymentParams mPaymentParams;
+
 
     // This sets the configuration
     private PayuConfig payuConfig;
@@ -84,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
                     /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
                      */
-                    // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
+                     ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
+                   // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
                 }
                 else{
                     //set the test key in test environment
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("CWVmYL");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFx");
 
                 }
             }
@@ -209,10 +213,10 @@ public class MainActivity extends AppCompatActivity {
          * should not be used.
          * */
         if(environment==PayuConstants.STAGING_ENV){
-            salt = "CXDUTqMT";
+            salt = "eCwWELxi";
         }else {
             //Production Env
-            salt = "1b1b0";
+            salt = "13p0PXZk";
         }
 //        String salt = "eCwWELxi";
         // String salt = "13p0PXZk";
