@@ -26,19 +26,22 @@ import com.payu.india.Interfaces.PaymentRelatedDetailsListener;
 import com.payu.india.Interfaces.ValueAddedServiceApiListener;
 import com.payu.india.Model.MerchantWebService;
 import com.payu.india.Model.PaymentDetails;
-import com.payu.india.Model.PaymentParams;
+//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
 import com.payu.india.Model.PayuResponse;
-import com.payu.india.Model.PostData;
+//import com.payu.india.Model.PostData;
 import com.payu.india.Model.StoredCard;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.Payu.PayuUtils;
 import com.payu.india.PostParams.MerchantWebServicePostParams;
-import com.payu.india.PostParams.PaymentPostParams;
+//import com.payu.india.PostParams.PaymentPostParams;
 import com.payu.india.Tasks.GetPaymentRelatedDetailsTask;
 import com.payu.india.Tasks.ValueAddedServiceTask;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PaymentPostParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Adapter.PagerAdapter;
 import com.payu.payuui.Adapter.SavedCardItemFragmentAdapter;
 import com.payu.payuui.Fragment.CreditDebitFragment;
@@ -68,6 +71,7 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private ArrayList<String> paymentOptionsList = new ArrayList<String>();
     private PayuConfig payuConfig;
     private PaymentParams mPaymentParams;
+    private PaymentPostParams paymentPostParams;
     private String merchantKey;
     private String userCredentials;
     private PayuHashes mPayUHashes;
@@ -89,9 +93,9 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
     private PostData mPostData;
     private PayUSamsungPay payUSamsungPay;
     private ProgressBar mProgressBar;
-    private boolean isSamsungPayAvailable = false;
-    private boolean isStandAlonePhonePeAvailable = false;
-    private  boolean isPaymentByPhonePe = false;
+    private boolean isSamsungPaySupported = false;
+    private boolean isPhonePeSupported = false;
+   // private  boolean isPaymentByPhonePe = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,15 +130,21 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 @Override
                 public void onCBErrorReceived(int code, String errormsg) {
                     super.onCBErrorReceived(code, errormsg);
-                    Toast.makeText(PayUBaseActivity.this, errormsg, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void isPaymentOptionAvailable(CustomBrowserResultData resultData) {
-                    isSamsungPayAvailable = true;
-                    if(pagerAdapter!=null)
-                        pagerAdapter.notifyDataSetChanged();
+                    switch (resultData.getPaymentOption()) {
+                        case SAMSUNGPAY:
+                            isSamsungPaySupported = resultData.isPaymentOptionAvailable();
+                            break;
+                        case PHONEPE:
+                            isPhonePeSupported = resultData.isPaymentOptionAvailable();
+                            break;
+
+                    }
                 }
+
             };
 
             //In this method we check the availability of Samsung Pay as Payment option on device being used
@@ -294,21 +304,18 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                 paymentOptionsList.add(SdkUIConstants.LAZY_PAY); // added Lazy Pay Option
 
             }
-            if (isSamsungPayAvailable==true) {
+            if (isSamsungPaySupported==true) {
                 paymentOptionsList.add("SAMPAY");
             }
 
-            if(payuResponse.isPhonePeIntentAvailable()){
+           /* if(payuResponse.isPhonePeIntentAvailable()){
 
+                paymentOptionsList.add(SdkUIConstants.PHONEPE);
+            }*/
+            if (isPhonePeSupported) {
                 paymentOptionsList.add(SdkUIConstants.PHONEPE);
             }
 
-            if(payuResponse.isPhonePeIntentAvailable()){
-                paymentOptionsList.add(SdkUIConstants.CBPHONEPE);
-            }
-            if(payuResponse.isCashCardAvailable()){
-                paymentOptionsList.add(SdkUIConstants.CASH_CARDS);
-            }
 
 
 
@@ -408,16 +415,16 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
+                    /*case SdkUIConstants.PHONEPE:
+                        payNowButton.setEnabled(true);
+                        hideKeyboard();
+                        break;*/
+
                     case SdkUIConstants.PHONEPE:
                         payNowButton.setEnabled(true);
                         hideKeyboard();
                         break;
 
-                    case SdkUIConstants.CBPHONEPE:
-                    case SdkUIConstants.CASH_CARDS:
-                        payNowButton.setEnabled(true);
-                        hideKeyboard();
-                        break;
                 }
 
             }
@@ -454,7 +461,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                         makePaymentByNB();
                         break;
                     case SdkUIConstants.CASH_CARDS:
-                        makePaymentByWallets();
                         break;
                     case SdkUIConstants.EMI:
                         break;
@@ -477,14 +483,12 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
                     case "SAMPAY":
                         makePaymentBySamPay();
                         break;
-                    case SdkUIConstants.PHONEPE:
+                   /* case SdkUIConstants.PHONEPE:
                         isPaymentByPhonePe= true;
                         makePaymentByPhonePe();
-                        break;
+                        break;*/
 
-                    case SdkUIConstants.CBPHONEPE:
-                        isPaymentByPhonePe=false;
-                        isStandAlonePhonePeAvailable=false;
+                    case SdkUIConstants.PHONEPE:
                         makePaymentByPhonePe();
                         break;
                 }
@@ -502,8 +506,11 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
             Intent intent = new Intent(this, PaymentsActivity.class);
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
-            intent.putExtra("isStandAlonePhonePeAvailable",isStandAlonePhonePeAvailable);
-            intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
+            startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
+
+
+
+         //   intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
 
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
@@ -630,25 +637,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
 
         try {
             mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.NB).getPaymentPostParams();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-    private void makePaymentByWallets() {
-
-        spinnerNetbanking = (Spinner) findViewById(R.id.spinnerWallets);
-        ArrayList<PaymentDetails> walletList = null;
-        if(mPayuResponse!=null)
-            walletList = mPayuResponse.getCashCard();
-
-        if(walletList!=null && walletList.get(spinnerNetbanking.getSelectedItemPosition()) !=null)
-        bankCode = walletList.get(spinnerNetbanking.getSelectedItemPosition()).getBankCode();
-
-        mPaymentParams.setBankCode(bankCode);
-
-        try {
-            mPostData = new PaymentPostParams(mPaymentParams, PayuConstants.CASH).getPaymentPostParams();
         } catch (Exception e) {
             e.printStackTrace();
         }

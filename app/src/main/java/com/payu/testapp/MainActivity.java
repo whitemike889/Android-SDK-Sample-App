@@ -16,13 +16,15 @@ import android.widget.Toast;
 
 import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Extras.PayUSdkDetails;
-import com.payu.india.Model.PaymentParams;
+//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
+//import com.payu.india.Model.PostData;
 import com.payu.india.Payu.Payu;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Activity.PayUBaseActivity;
 
 /**
@@ -44,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Used when generating hash from SDK
     private PayUChecksum checksum;
-    private EditText etSalt;
-    private String salt = null;
+    String salt = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
                     /* For test keys, please contact mobile.integration@payu.in with your app name and registered email id
                      */
-                    // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
-                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("1b1b0");
+                     ((EditText) findViewById(R.id.editTextMerchantKey)).setText("0MQaQP");
+                //  ((EditText) findViewById(R.id.editTextMerchantKey)).setText("smsplus");
+                   // ((EditText) findViewById(R.id.editTextMerchantKey)).setText("l80gyM");
                 }
                 else{
                     //set the test key in test environment
-                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFX");
-                    ((EditText) findViewById(R.id.editTextMerchantSalt)).setText("eCwWELxi");
+                    //((EditText) findViewById(R.id.editTextMerchantKey)).setText("gtKFFX");
+                    ((EditText) findViewById(R.id.editTextMerchantKey)).setText("YqFhqG");
 
                 }
             }
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                  * PayU sends the same response to merchant server and in app. In response check the value of key "status"
                  * for identifying status of transaction. There are two possible status like, success or failure
                  * */
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
+                new AlertDialog.Builder(this)
                         .setCancelable(false)
                         .setMessage("Payu's Data : " + data.getStringExtra("payu_response") + "\n\n\n Merchant's Data: " + data.getStringExtra("result"))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -139,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
         // merchantKey="";
         merchantKey = ((EditText) findViewById(R.id.editTextMerchantKey)).getText().toString();
-        etSalt = ((EditText) findViewById(R.id.editTextMerchantSalt));
         String amount = ((EditText) findViewById(R.id.editTextAmount)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
 
@@ -176,8 +176,10 @@ public class MainActivity extends AppCompatActivity {
          * Surl --> Success url is where the transaction response is posted by PayU on successful transaction
          * Furl --> Failre url is where the transaction response is posted by PayU on failed transaction
          */
-        mPaymentParams.setSurl(" https://payuresponse.firebaseapp.com/success");
-        mPaymentParams.setFurl("https://payuresponse.firebaseapp.com/failure");
+       // mPaymentParams.setSurl(" https://www.fitternity.com/paymentsuccessandroid");
+        mPaymentParams.setSurl("https://payu.herokuapp.com/success");
+        mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
+      //  mPaymentParams.setFurl("https://www.fitternity.com/paymentsuccessandroid");
         mPaymentParams.setNotifyURL(mPaymentParams.getSurl());  //for lazy pay
 
         /*
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         mPaymentParams.setUserCredentials(userCredentials);
 
         //TODO Pass this param only if using offer key
-        //mPaymentParams.setOfferKey("cardnumber@8370");
+       // mPaymentParams.setOfferKey("YONOYSF@6445");
 
         //TODO Sets the payment environment in PayuConfig object
         payuConfig = new PayuConfig();
@@ -213,16 +215,20 @@ public class MainActivity extends AppCompatActivity {
          * should not be used.
          * */
         if(environment== PayuConstants.STAGING_ENV){
-            salt = "eCwWELxi";
+          //  salt = "eCwWELxi";
+            salt = "65GdodrX";
         }else {
             //Production Env
-            salt = "1b1b0";
+           // salt = "1b1b0";
+          // salt = "QBl78dtK";
+           // salt = "Xd4VtaFd";
+            salt = "13p0PXZk";
         }
-        etSalt.setText(salt);
 //        String salt = "eCwWELxi";
         // String salt = "13p0PXZk";
         // String salt = "1b1b0";
-        //
+
+      //  String salt = "mF1Rgbi5";
         generateHashFromSDK(mPaymentParams, salt);
 
     }

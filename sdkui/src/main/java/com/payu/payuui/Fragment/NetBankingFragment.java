@@ -18,13 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.payu.india.Model.PaymentDetails;
-import com.payu.india.Model.PaymentParams;
+//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
+//import com.payu.india.Model.PostData;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
-import com.payu.india.PostParams.PaymentPostParams;
+//import com.payu.india.PostParams.PaymentPostParams;
+import com.payu.paymentparamhelper.PaymentParams;
+import com.payu.paymentparamhelper.PaymentPostParams;
+import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Activity.PayUBaseActivity;
 import com.payu.payuui.Activity.PaymentsActivity;
 import com.payu.payuui.R;
@@ -44,6 +47,7 @@ public class NetBankingFragment extends Fragment implements View.OnClickListener
     private ArrayList<PaymentDetails> netBankingList;
     private Spinner spinnerNetbanking;
     private PaymentParams mPaymentParams;
+    private PaymentPostParams paymentPostParams;
     private PayuHashes payuHashes;
     private ArrayAdapter<String> mAdapter;
     private PayuConfig payuConfig;
