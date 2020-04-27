@@ -508,11 +508,6 @@ public class PayUBaseActivity extends FragmentActivity implements PaymentRelated
             intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
             startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
 
-
-
-         //   intent.putExtra("isPaymentByPhonePe",isPaymentByPhonePe);
-
-            startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
         } else {
             if (mPostData != null)
                 Toast.makeText(this, mPostData.getResult(), Toast.LENGTH_LONG).show();
